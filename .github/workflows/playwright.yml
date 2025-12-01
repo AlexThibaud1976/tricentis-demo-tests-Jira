@@ -6,6 +6,13 @@ on:
   pull_request:
     branches: [ main, master ]
   workflow_dispatch:
+    inputs:
+      issueKey:
+        description: "Jira issue key"
+        required: true
+      summary:
+        description: "Jira issue summary"
+        required: false
 
 jobs:
   # 🧪 Exécution locale (headed + Xvfb)
