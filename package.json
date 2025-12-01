@@ -1,0 +1,37 @@
+{
+  "name": "tricentis-demo-tests",
+  "version": "1.0.0",
+  "description": "Suite de tests automatisés Playwright pour demowebshop.tricentis.com et application Flutter",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:ui": "npx playwright test --ui",
+    "test:debug": "npx playwright test --debug",
+    "test:report": "npx playwright show-report",
+    "test:creation": "npx playwright test tests/01-account-creation.spec.js",
+    "test:login": "npx playwright test tests/02-login.spec.js",
+    "test:catalog": "npx playwright test tests/03-catalog.spec.js",
+    "test:cart": "npx playwright test tests/04-cart.spec.js",
+    "test:order": "npx playwright test tests/05-order.spec.js",
+    "test:flutter": "npx playwright test --config=playwright.config.flutter.js",
+    "test:flutter:headed": "npx playwright test --config=playwright.config.flutter.js --headed",
+    "test:flutter:ui": "npx playwright test --config=playwright.config.flutter.js --ui",
+    "test:flutter:debug": "npx playwright test --config=playwright.config.flutter.js --debug"
+  },
+  "keywords": [
+    "playwright",
+    "testing",
+    "e2e",
+    "automation",
+    "flutter",
+    "dart"
+  ],
+  "author": "Alexandre",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.0",
+    "browserstack-local": "^1.5.8"
+  }
+}

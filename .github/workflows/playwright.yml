@@ -1,0 +1,140 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  # 🧪 Exécution locale (headed + Xvfb)
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: Run Playwright tests (headed mode with Xvfb)
+      run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npx playwright test --headed --reporter=list,html
+      env:
+        CI: true
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+
+    - name: Upload test screenshots
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: test-failures
+        path: test-results/
+        retention-days: 7
+
+  # 🌐 BrowserStack - Chrome desktop
+  test-browserstack-chrome:
+    timeout-minutes: 90
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright (chromium driver)
+      run: npx playwright install chromium
+
+    - name: Run tests on BrowserStack (Chrome)
+      run: npx playwright test --config=playwright.config.browserstack.js
+      env:
+        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        BROWSERSTACK_BUILD_NAME: "GitHub Actions #${{ github.run_number }} - ${{ github.ref_name }} - chrome"
+        BS_OS: "Windows"
+        BS_OS_VERSION: "11"
+        BS_BROWSER: "chrome"
+        BS_BROWSER_VERSION: "latest"
+        BS_WORKERS: "5"
+        CI: true
+      continue-on-error: true
+
+    - name: Upload BrowserStack test results (Chrome)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: browserstack-report-chrome
+        path: |
+          playwright-report/
+          test-results.json
+        retention-days: 30
+
+  # 🌐 BrowserStack - Firefox desktop
+  test-browserstack-firefox:
+    timeout-minutes: 90
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright (chromium driver)
+      run: npx playwright install chromium
+
+    - name: Run tests on BrowserStack (Firefox)
+      run: npx playwright test --config=playwright.config.browserstack.js
+      env:
+        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        BROWSERSTACK_BUILD_NAME: "GitHub Actions #${{ github.run_number }} - ${{ github.ref_name }} - firefox"
+        BS_OS: "Windows"
+        BS_OS_VERSION: "11"
+        BS_BROWSER: "playwright-firefox"
+        BS_BROWSER_VERSION: "latest"
+        BS_WORKERS: "5"
+        CI: true
+      continue-on-error: true
+
+    - name: Upload BrowserStack test results (Firefox)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: browserstack-report-firefox
+        path: |
+          playwright-report/
+          test-results.json
+        retention-days: 30
+
+
