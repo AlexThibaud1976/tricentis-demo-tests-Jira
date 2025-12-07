@@ -119,16 +119,74 @@ if (-not (Test-Path "results.xml")) {
 }
 
 $junitContent = Get-Content -Path "results.xml" -Raw
+Write-Host "results.xml size: $($junitContent.Length) characters"
+if ($junitContent.Length -gt 0) {
+    Write-Host "results.xml preview (first 200 chars):"
+    Write-Host $junitContent.Substring(0, [Math]::Min(200, $junitContent.Length))
+} else {
+    Write-Host "ERROR: results.xml is empty"
+    exit 1
+}
+
+$importUri = "https://$XrayEndpoint/api/v2/import/execution/junit?projectKey=$JiraProjectKey&testPlanKey=$IssueKey&testEnvironments=$DeviceName"
+Write-Host "Import URI: $importUri"
 
 try {
-  $response = Invoke-RestMethod -Uri "https://$XrayEndpoint/api/v2/import/execution/junit?projectKey=$JiraProjectKey&testPlanKey=$IssueKey&testEnvironments=$DeviceName" `
+  $response = Invoke-RestMethod -Uri $importUri `
     -Method POST -ContentType "text/xml" -Headers @{ "Authorization" = "Bearer $token" } -Body $junitContent -ErrorAction Stop
 } catch {
   Write-Host "Import request failed: $($_.Exception.Message)"
   if ($_.Exception.Response) {
-    try { $s = $_.Exception.Response.GetResponseStream(); if ($s) { $sr = New-Object IO.StreamReader($s); $b = $sr.ReadToEnd(); Write-Host "Import response body: $b" } } catch { Write-Host "Unable to read import response body: $($_.Exception.Message)" }
+    try { 
+        $s = $_.Exception.Response.GetResponseStream()
+        if ($s) { 
+            $sr = New-Object IO.StreamReader($s)
+            $b = $sr.ReadToEnd()
+            Write-Host "Import response body: $b" 
+        }
+    } catch { 
+        Write-Host "Unable to read import response body: $($_.Exception.Message)" 
+    }
   }
-  exit 1
+  
+  # Fallback to curl if Invoke-RestMethod fails, to see if we get better info or if it works
+  $curlCommand = $null
+  foreach ($cmdName in @("curl.exe", "curl")) {
+    $cmd = Get-Command $cmdName -ErrorAction SilentlyContinue
+    if ($cmd) { $curlCommand = $cmd.Source; break }
+  }
+
+  if ($curlCommand) {
+    Write-Host "Retrying import with $curlCommand..."
+    # Note: curl expects file path with @ for binary/file data in --data-binary or --data, but for raw body we can pipe or use file
+    # Using --data @results.xml is standard for curl
+    try {
+        # We need to pass the token. 
+        # Note: Windows curl might be alias to Invoke-WebRequest in PS, but we found the exe above.
+        $curlArgs = @(
+            "-s",
+            "-H", "Content-Type: text/xml",
+            "-H", "Authorization: Bearer $token",
+            "-X", "POST",
+            "--data", "@results.xml",
+            "$importUri"
+        )
+        $curlOutput = & $curlCommand $curlArgs
+        Write-Host "curl output: $curlOutput"
+        # If curl succeeds, we might want to parse the output to get the key
+        if ($curlOutput -match '"key"\s*:\s*"([^"]+)"') {
+             $response = @{ key = $matches[1] }
+             Write-Host "Recovered key from curl: $($response.key)"
+        } else {
+             exit 1
+        }
+    } catch {
+        Write-Host "curl retry failed: $($_.Exception.Message)"
+        exit 1
+    }
+  } else {
+      exit 1
+  }
 }
 
 Write-Host "Response: $($response | ConvertTo-Json)"
