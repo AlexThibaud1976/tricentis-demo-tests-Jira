@@ -8,15 +8,30 @@ on:
   workflow_dispatch:
     inputs:
       issueKey:
-        description: "Jira issue key"
+        description: "Jira Test Plan Key"
         required: true
       summary:
         description: "Jira issue summary"
         required: false
+      browser:
+        description: "Browser/Device pour l'exécution"
+        required: true
+        type: choice
+        options:
+          - local
+          - win11-ff136
+          - win10-ff136
+          - iphone15promax
+          - Firefox
+
+env:
+  XRAY_ENDPOINT: xray.cloud.getxray.app
+  JIRA_PROJECT_KEY: DEMO
 
 jobs:
   # 🧪 Exécution locale (headed + Xvfb)
-  test:
+  test-local:
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.browser == 'local' }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
@@ -36,28 +51,309 @@ jobs:
       run: npx playwright install --with-deps
 
     - name: Run Playwright tests (headed mode with Xvfb)
-      run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npx playwright test --headed --reporter=list,html
+      run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npx playwright test --headed --reporter=list,html,junit
       env:
         CI: true
+        PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
+
+    - name: Generate PDF report from HTML
+      if: always()
+      run: |
+        # Installation de wkhtmltopdf pour convertir HTML en PDF
+        sudo apt-get update
+        sudo apt-get install -y wkhtmltopdf
+        
+        # Conversion du rapport HTML en PDF
+        if [ -f "playwright-report/index.html" ]; then
+          wkhtmltopdf --enable-local-file-access playwright-report/index.html playwright-report/report.pdf || true
+        fi
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-report
-        path: playwright-report/
+        name: playwright-report-local
+        path: |
+          playwright-report/
+          results.xml
         retention-days: 30
 
     - name: Upload test screenshots
       uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: test-failures
+        name: test-failures-local
         path: test-results/
         retention-days: 7
 
-  # 🌐 BrowserStack - Chrome desktop
-  test-browserstack-chrome:
+    # 📤 Upload vers Xray (uniquement si déclenché depuis Jira)
+    - name: Upload results to Xray
+      if: ${{ always() && github.event_name == 'workflow_dispatch' }}
+      id: xray-upload
+      run: |
+        echo "🔐 Authentification Xray..."
+        TOKEN=$(curl -s -H "Content-Type: application/json" \
+          -X POST \
+          --data '{"client_id": "${{ secrets.XRAY_CLIENT_ID }}", "client_secret": "${{ secrets.XRAY_CLIENT_SECRET }}"}' \
+          "https://${{ env.XRAY_ENDPOINT }}/api/v2/authenticate" | tr -d '"')
+        
+        echo "📤 Import des résultats JUnit..."
+        RESPONSE=$(curl -s -H "Content-Type: text/xml" \
+          -H "Authorization: Bearer $TOKEN" \
+          -X POST \
+          --data @results.xml \
+          "https://${{ env.XRAY_ENDPOINT }}/api/v2/import/execution/junit?projectKey=${{ env.JIRA_PROJECT_KEY }}&testPlanKey=${{ github.event.inputs.issueKey }}&testEnvironments=local")
+        
+        echo "Response: $RESPONSE"
+        
+        # Extraction de la clé de Test Execution
+        EXEC_KEY=$(echo $RESPONSE | jq -r '.key // empty')
+        if [ -z "$EXEC_KEY" ]; then
+          EXEC_KEY=$(echo $RESPONSE | grep -o '"key":"[^"]*"' | head -1 | cut -d'"' -f4)
+        fi
+        
+        echo "Test Execution Key: $EXEC_KEY"
+        echo "exec_key=$EXEC_KEY" >> $GITHUB_OUTPUT
+
+    - name: Update Test Execution title
+      if: ${{ always() && github.event_name == 'workflow_dispatch' && steps.xray-upload.outputs.exec_key != '' }}
+      run: |
+        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
+        
+        echo "📝 Mise à jour du titre de la Test Execution..."
+        curl -s --request PUT \
+          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY" \
+          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
+          --header "Accept: application/json" \
+          --header "Content-Type: application/json" \
+          --data "{\"fields\": {\"summary\": \"Test exécution - device : local\"}}"
+
+    - name: Attach reports to Test Execution
+      if: ${{ always() && github.event_name == 'workflow_dispatch' && steps.xray-upload.outputs.exec_key != '' }}
+      run: |
+        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
+        
+        echo "📎 Ajout du rapport HTML..."
+        if [ -f "playwright-report/index.html" ]; then
+          curl -s --request POST \
+            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/attachments" \
+            --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
+            --header "X-Atlassian-Token: no-check" \
+            --form file=@"playwright-report/index.html"
+        fi
+        
+        echo "📎 Ajout du rapport PDF..."
+        if [ -f "playwright-report/report.pdf" ]; then
+          curl -s --request POST \
+            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/attachments" \
+            --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
+            --header "X-Atlassian-Token: no-check" \
+            --form file=@"playwright-report/report.pdf"
+        fi
+
+    - name: Add remote link to GitHub Actions
+      if: ${{ always() && github.event_name == 'workflow_dispatch' && steps.xray-upload.outputs.exec_key != '' }}
+      run: |
+        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
+        
+        echo "🔗 Ajout du lien vers GitHub Actions..."
+        curl -s --request POST \
+          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/remotelink" \
+          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
+          --header "Accept: application/json" \
+          --header "Content-Type: application/json" \
+          --data "{
+            \"object\": {
+              \"url\": \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\",
+              \"title\": \"GitHub Actions Run #${{ github.run_number }}\"
+            }
+          }"
+
+  # 🌐 BrowserStack - Exécution dynamique basée sur le device choisi
+  test-browserstack:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser != 'local' }}
+    timeout-minutes: 90
+    runs-on: ubuntu-latest
+    
+    strategy:
+      max-parallel: 5
+      matrix:
+        include:
+          - browser_input: win11-ff136
+            os: "Windows"
+            os_version: "11"
+            browser: "playwright-firefox"
+            browser_version: "136.0"
+            device: ""
+          - browser_input: win10-ff136
+            os: "Windows"
+            os_version: "10"
+            browser: "playwright-firefox"
+            browser_version: "136.0"
+            device: ""
+          - browser_input: iphone15promax
+            os: "ios"
+            os_version: "17"
+            browser: "safari"
+            browser_version: "latest"
+            device: "iPhone 15 Pro Max"
+          - browser_input: Firefox
+            os: "Windows"
+            os_version: "11"
+            browser: "playwright-firefox"
+            browser_version: "latest"
+            device: ""
+
+    steps:
+    - name: Check if this matrix job should run
+      id: check
+      run: |
+        if [ "${{ github.event.inputs.browser }}" == "${{ matrix.browser_input }}" ]; then
+          echo "should_run=true" >> $GITHUB_OUTPUT
+        else
+          echo "should_run=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Checkout code
+      if: steps.check.outputs.should_run == 'true'
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      if: steps.check.outputs.should_run == 'true'
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      if: steps.check.outputs.should_run == 'true'
+      run: npm ci
+
+    - name: Install Playwright (chromium driver)
+      if: steps.check.outputs.should_run == 'true'
+      run: npx playwright install chromium
+
+    - name: Run tests on BrowserStack
+      if: steps.check.outputs.should_run == 'true'
+      run: npx playwright test --config=playwright.config.browserstack.js --reporter=list,html,junit
+      env:
+        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        BROWSERSTACK_BUILD_NAME: "GitHub Actions #${{ github.run_number }} - ${{ github.ref_name }} - ${{ matrix.browser_input }}"
+        BS_OS: ${{ matrix.os }}
+        BS_OS_VERSION: ${{ matrix.os_version }}
+        BS_BROWSER: ${{ matrix.browser }}
+        BS_BROWSER_VERSION: ${{ matrix.browser_version }}
+        BS_DEVICE: ${{ matrix.device }}
+        BS_WORKERS: "5"
+        CI: true
+        PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
+      continue-on-error: true
+
+    - name: Generate PDF report from HTML
+      if: ${{ always() && steps.check.outputs.should_run == 'true' }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wkhtmltopdf
+        
+        if [ -f "playwright-report/index.html" ]; then
+          wkhtmltopdf --enable-local-file-access playwright-report/index.html playwright-report/report.pdf || true
+        fi
+
+    - name: Upload BrowserStack test results
+      uses: actions/upload-artifact@v4
+      if: ${{ always() && steps.check.outputs.should_run == 'true' }}
+      with:
+        name: browserstack-report-${{ matrix.browser_input }}
+        path: |
+          playwright-report/
+          results.xml
+        retention-days: 30
+
+    # 📤 Upload vers Xray
+    - name: Upload results to Xray
+      if: ${{ always() && steps.check.outputs.should_run == 'true' }}
+      id: xray-upload
+      run: |
+        echo "🔐 Authentification Xray..."
+        TOKEN=$(curl -s -H "Content-Type: application/json" \
+          -X POST \
+          --data '{"client_id": "${{ secrets.XRAY_CLIENT_ID }}", "client_secret": "${{ secrets.XRAY_CLIENT_SECRET }}"}' \
+          "https://${{ env.XRAY_ENDPOINT }}/api/v2/authenticate" | tr -d '"')
+        
+        echo "📤 Import des résultats JUnit..."
+        RESPONSE=$(curl -s -H "Content-Type: text/xml" \
+          -H "Authorization: Bearer $TOKEN" \
+          -X POST \
+          --data @results.xml \
+          "https://${{ env.XRAY_ENDPOINT }}/api/v2/import/execution/junit?projectKey=${{ env.JIRA_PROJECT_KEY }}&testPlanKey=${{ github.event.inputs.issueKey }}&testEnvironments=${{ matrix.browser_input }}")
+        
+        echo "Response: $RESPONSE"
+        
+        EXEC_KEY=$(echo $RESPONSE | jq -r '.key // empty')
+        if [ -z "$EXEC_KEY" ]; then
+          EXEC_KEY=$(echo $RESPONSE | grep -o '"key":"[^"]*"' | head -1 | cut -d'"' -f4)
+        fi
+        
+        echo "Test Execution Key: $EXEC_KEY"
+        echo "exec_key=$EXEC_KEY" >> $GITHUB_OUTPUT
+
+    - name: Update Test Execution title
+      if: ${{ always() && steps.check.outputs.should_run == 'true' && steps.xray-upload.outputs.exec_key != '' }}
+      run: |
+        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
+        
+        echo "📝 Mise à jour du titre de la Test Execution..."
+        curl -s --request PUT \
+          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY" \
+          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
+          --header "Accept: application/json" \
+          --header "Content-Type: application/json" \
+          --data "{\"fields\": {\"summary\": \"Test exécution - device : ${{ matrix.browser_input }}\"}}"
+
+    - name: Attach reports to Test Execution
+      if: ${{ always() && steps.check.outputs.should_run == 'true' && steps.xray-upload.outputs.exec_key != '' }}
+      run: |
+        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
+        
+        echo "📎 Ajout du rapport HTML..."
+        if [ -f "playwright-report/index.html" ]; then
+          curl -s --request POST \
+            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/attachments" \
+            --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
+            --header "X-Atlassian-Token: no-check" \
+            --form file=@"playwright-report/index.html"
+        fi
+        
+        echo "📎 Ajout du rapport PDF..."
+        if [ -f "playwright-report/report.pdf" ]; then
+          curl -s --request POST \
+            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/attachments" \
+            --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
+            --header "X-Atlassian-Token: no-check" \
+            --form file=@"playwright-report/report.pdf"
+        fi
+
+    - name: Add remote link to GitHub Actions
+      if: ${{ always() && steps.check.outputs.should_run == 'true' && steps.xray-upload.outputs.exec_key != '' }}
+      run: |
+        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
+        
+        echo "🔗 Ajout du lien vers GitHub Actions..."
+        curl -s --request POST \
+          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/remotelink" \
+          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
+          --header "Accept: application/json" \
+          --header "Content-Type: application/json" \
+          --data "{
+            \"object\": {
+              \"url\": \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\",
+              \"title\": \"GitHub Actions Run #${{ github.run_number }}\"
+            }
+          }"
+
+  # 🧪 Jobs pour push/PR (inchangés - exécution parallèle sur BrowserStack)
+  test-browserstack-chrome-pr:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
     timeout-minutes: 90
     runs-on: ubuntu-latest
 
@@ -100,8 +396,8 @@ jobs:
           test-results.json
         retention-days: 30
 
-  # 🌐 BrowserStack - Firefox desktop
-  test-browserstack-firefox:
+  test-browserstack-firefox-pr:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
     timeout-minutes: 90
     runs-on: ubuntu-latest
 
@@ -143,5 +439,3 @@ jobs:
           playwright-report/
           test-results.json
         retention-days: 30
-
-
