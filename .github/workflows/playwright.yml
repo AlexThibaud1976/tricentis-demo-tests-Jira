@@ -96,44 +96,33 @@ jobs:
       shell: powershell
       run: |
         $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
-        
         Write-Host "📝 Mise à jour du titre de la Test Execution..."
-        
         $credentials = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"))
-        
-        $bodyObj = @{
-          fields = @{
-            summary = "Test exécution - device : ${{ env.DEVICE_NAME }}"
-          }
-        }
+        $bodyObj = @{ fields = @{ summary = "Test exécution - device : ${{ env.DEVICE_NAME }}" } }
         $body = $bodyObj | ConvertTo-Json
-        
         $headers = @{ "Authorization" = "Basic $credentials"; "Accept" = "application/json" }
-        
-        Invoke-RestMethod -Uri "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey" `
-          -Method PUT `
-          -ContentType "application/json" `
-          -Headers $headers `
-          -Body $body
+        $params = @{
+          Uri = "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey"
+          Method = "PUT"
+          ContentType = "application/json"
+          Headers = $headers
+          Body = $body
+        }
+        Invoke-RestMethod @params
 
     - name: Attach HTML report to Test Execution
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
       shell: powershell
       run: |
         $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
-        
         Write-Host "📎 Ajout du rapport HTML..."
-        
         if (Test-Path "playwright-report/index.html") {
           $credentials = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"))
-          
           $filePath = (Resolve-Path "playwright-report/index.html").Path
           $fileName = "index.html"
           $fileBytes = [System.IO.File]::ReadAllBytes($filePath)
-          
           $boundary = [System.Guid]::NewGuid().ToString()
           $LF = "`r`n"
-          
           $bodyLines = @(
             "--$boundary",
             "Content-Disposition: form-data; name=`"file`"; filename=`"$fileName`"",
@@ -142,17 +131,15 @@ jobs:
             [System.Text.Encoding]::UTF8.GetString($fileBytes),
             "--$boundary--"
           ) -join $LF
-          
-          $headers = @{ 
-              "Authorization" = "Basic $credentials"
-              "X-Atlassian-Token" = "no-check"
+          $headers = @{ "Authorization" = "Basic $credentials"; "X-Atlassian-Token" = "no-check" }
+          $params = @{
+            Uri = "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/attachments"
+            Method = "POST"
+            ContentType = "multipart/form-data; boundary=$boundary"
+            Headers = $headers
+            Body = $bodyLines
           }
-          
-          Invoke-RestMethod -Uri "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/attachments" `
-            -Method POST `
-            -ContentType "multipart/form-data; boundary=$boundary" `
-            -Headers $headers `
-            -Body $bodyLines
+          Invoke-RestMethod @params
         }
 
     - name: Attach PDF report to Test Execution
@@ -160,23 +147,12 @@ jobs:
       shell: powershell
       run: |
         $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
-        
         Write-Host "📎 Ajout du rapport PDF..."
-        
         if (Test-Path "playwright-report/report.pdf") {
-          $credentials = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"))
-          
           $filePath = (Resolve-Path "playwright-report/report.pdf").Path
-          
-          # Utiliser curl.exe qui est disponible sur Windows
-          $curlArgs = @(
-            "--request", "POST",
-            "--url", "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/attachments",
-            "--user", "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}",
-            "--header", "X-Atlassian-Token: no-check",
-            "--form", "file=@$filePath"
-          )
-          & curl.exe $curlArgs
+          $curlUrl = "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/attachments"
+          $curlUser = "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"
+          Start-Process -FilePath "curl.exe" -ArgumentList "--request", "POST", "--url", $curlUrl, "--user", $curlUser, "--header", "X-Atlassian-Token: no-check", "--form", "file=@$filePath" -Wait -NoNewWindow
         }
 
     - name: Add remote link to GitHub Actions
@@ -184,11 +160,8 @@ jobs:
       shell: powershell
       run: |
         $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
-        
         Write-Host "🔗 Ajout du lien vers GitHub Actions..."
-        
         $credentials = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"))
-        
         $bodyObj = @{
           object = @{
             url = "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
@@ -196,14 +169,15 @@ jobs:
           }
         }
         $body = $bodyObj | ConvertTo-Json
-        
         $headers = @{ "Authorization" = "Basic $credentials"; "Accept" = "application/json" }
-        
-        Invoke-RestMethod -Uri "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/remotelink" `
-          -Method POST `
-          -ContentType "application/json" `
-          -Headers $headers `
-          -Body $body
+        $params = @{
+          Uri = "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/remotelink"
+          Method = "POST"
+          ContentType = "application/json"
+          Headers = $headers
+          Body = $body
+        }
+        Invoke-RestMethod @params
 
   # ============================================================================
   # 🌐 BROWSERSTACK - Windows 11 Firefox (latest)
