@@ -101,13 +101,13 @@ jobs:
 
         # Extraire le token de façon robuste (la réponse peut être une string brute ou un objet JSON)
         if ($authResponse -is [string]) {
-          $token = $authResponse.Trim('"')
+          $token = $authResponse.Trim([char]34)
         } elseif ($authResponse -is [System.Management.Automation.PSCustomObject]) {
           if ($authResponse.token) { $token = $authResponse.token }
           elseif ($authResponse.jwt) { $token = $authResponse.jwt }
-          else { $token = ($authResponse | ConvertTo-Json -Compress).Trim('"') }
+          else { $token = ($authResponse | ConvertTo-Json -Compress).Trim([char]34) }
         } else {
-          $token = $authResponse.ToString().Trim('"')
+          $token = $authResponse.ToString().Trim([char]34)
         }
 
         Write-Host "Token length: $($token.Length) characters"
