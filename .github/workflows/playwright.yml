@@ -55,7 +55,7 @@ jobs:
       run: npx playwright install firefox
 
     - name: Run Playwright tests (Firefox headless)
-      run: npx playwright test --browser=firefox --reporter=list,html,junit
+      run: npx playwright test --project=firefox --reporter=list,html,junit
       env:
         CI: true
         PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
