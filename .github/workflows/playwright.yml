@@ -1,4 +1,4 @@
-name: Playwright Tests
+﻿name: Playwright Tests
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
         description: "Jira issue summary"
         required: false
       browser:
-        description: "Browser/Device pour l'exécution"
+        description: "Browser/Device pour l'exÃ©cution"
         required: true
         type: choice
         options:
@@ -29,7 +29,7 @@ env:
 
 jobs:
   # ============================================================================
-  # 🦊 FIREFOX LOCAL - Runner Self-Hosted (votre PC)
+  # ðŸ¦Š FIREFOX LOCAL - Runner Self-Hosted (votre PC)
   # ============================================================================
   test-firefox-local:
     if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'Firefox-latest' }}
@@ -86,110 +86,24 @@ jobs:
       if: always()
       id: xray-upload
       shell: powershell
+      env:
+        XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+        XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
       run: |
-        Write-Host "🔐 Authentification Xray..."
-        $authBody = @{
-          client_id = "${{ secrets.XRAY_CLIENT_ID }}"
-          client_secret = "${{ secrets.XRAY_CLIENT_SECRET }}"
-        } | ConvertTo-Json
-
-        # Appel d'authentification avec gestion des erreurs
-        try {
-          $authResponse = Invoke-RestMethod -Uri "https://${{ env.XRAY_ENDPOINT }}/api/v2/authenticate" `
-            -Method POST `
-            -ContentType "application/json" `
-            -Body $authBody -ErrorAction Stop
-        } catch {
-          Write-Host "Authentication request failed: $($_.Exception.Message)"
-          if ($_.Exception.Response) {
-            try {
-              $stream = $_.Exception.Response.GetResponseStream()
-              if ($stream) {
-                $sr = New-Object System.IO.StreamReader($stream)
-                $body = $sr.ReadToEnd()
-                Write-Host "Authentication response body: $body"
-              }
-            } catch {
-              Write-Host "Unable to read response body: $($_.Exception.Message)"
-            }
-          }
-          throw
-        }
-
-        # Si la réponse est vide, tenter Invoke-WebRequest pour récupérer le contenu brut
-        if (-not $authResponse -or $authResponse -eq "") {
-          Write-Host "Auth response empty, retrying with Invoke-WebRequest to capture raw body..."
-          try {
-            $web = Invoke-WebRequest -Uri "https://${{ env.XRAY_ENDPOINT }}/api/v2/authenticate" -Method POST -ContentType "application/json" -Body $authBody -UseBasicParsing -ErrorAction Stop
-            $raw = $web.Content
-            Write-Host "Auth raw content length: $($raw.Length)"
-            $token = $raw.Trim([char]34)
-          } catch {
-            Write-Host "Retry authentication failed: $($_.Exception.Message)"
-            if ($_.Exception.Response) {
-              try {
-                $stream = $_.Exception.Response.GetResponseStream()
-                if ($stream) {
-                  $sr = New-Object System.IO.StreamReader($stream)
-                  $body = $sr.ReadToEnd()
-                  Write-Host "Authentication retry response body: $body"
-                }
-              } catch {
-                Write-Host "Unable to read retry response body: $($_.Exception.Message)"
-              }
-            }
-            throw
-          }
-        } else {
-          # Extraire le token de façon robuste (la réponse peut être une string brute ou un objet JSON)
-          if ($authResponse -is [string]) {
-            $token = $authResponse.Trim([char]34)
-          } elseif ($authResponse -is [System.Management.Automation.PSCustomObject]) {
-            if ($authResponse.token) { $token = $authResponse.token }
-            elseif ($authResponse.jwt) { $token = $authResponse.jwt }
-            else { $token = ($authResponse | ConvertTo-Json -Compress).Trim([char]34) }
-          } else {
-            $token = $authResponse.ToString().Trim([char]34)
-          }
-        }
-
-        if (-not $token) {
-          Write-Host "ERROR: token is empty after authentication. Aborting upload to Xray."
-          throw "Empty token returned from Xray authenticate endpoint"
-        }
-
-        Write-Host "Token length: $($token.Length) characters"
-
-        Write-Host "📤 Import des résultats JUnit..."
-        $junitContent = Get-Content -Path "results.xml" -Raw
-
-        $response = Invoke-RestMethod -Uri "https://${{ env.XRAY_ENDPOINT }}/api/v2/import/execution/junit?projectKey=${{ env.JIRA_PROJECT_KEY }}&testPlanKey=${{ github.event.inputs.issueKey }}&testEnvironments=${{ env.DEVICE_NAME }}" `
-          -Method POST `
-          -ContentType "text/xml" `
-          -Headers @{ "Authorization" = "Bearer $token" } `
-          -Body $junitContent
-
-        Write-Host "Response: $($response | ConvertTo-Json)"
-
-        $execKey = $response.key
-        Write-Host "Test Execution Key: $execKey"
-
-        # Écrire dans GITHUB_OUTPUT
-        "exec_key=$execKey" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-
+        .\scripts\upload-xray.ps1 -IssueKey "${{ github.event.inputs.issueKey }}"
     - name: Update Test Execution title
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
       shell: powershell
       run: |
         $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
         
-        Write-Host "📝 Mise à jour du titre de la Test Execution..."
+        Write-Host "ðŸ“ Mise Ã  jour du titre de la Test Execution..."
         
         $credentials = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"))
         
         $body = @{
           fields = @{
-            summary = "Test exécution - device : ${{ env.DEVICE_NAME }}"
+            summary = "Test exÃ©cution - device : ${{ env.DEVICE_NAME }}"
           }
         } | ConvertTo-Json
         
@@ -205,7 +119,7 @@ jobs:
       run: |
         $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
         
-        Write-Host "📎 Ajout du rapport HTML..."
+        Write-Host "ðŸ“Ž Ajout du rapport HTML..."
         
         if (Test-Path "playwright-report/index.html") {
           $credentials = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"))
@@ -242,7 +156,7 @@ jobs:
       run: |
         $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
         
-        Write-Host "📎 Ajout du rapport PDF..."
+        Write-Host "ðŸ“Ž Ajout du rapport PDF..."
         
         if (Test-Path "playwright-report/report.pdf") {
           $credentials = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"))
@@ -263,7 +177,7 @@ jobs:
       run: |
         $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
         
-        Write-Host "🔗 Ajout du lien vers GitHub Actions..."
+        Write-Host "ðŸ”— Ajout du lien vers GitHub Actions..."
         
         $credentials = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"))
         
@@ -281,7 +195,7 @@ jobs:
           -Body $body
 
   # ============================================================================
-  # 🌐 BROWSERSTACK - Windows 11 Firefox (latest)
+  # ðŸŒ BROWSERSTACK - Windows 11 Firefox (latest)
   # ============================================================================
   test-browserstack-win11-firefox:
     if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'win11-firefox' }}
@@ -382,7 +296,7 @@ jobs:
           }'
 
   # ============================================================================
-  # 🌐 BROWSERSTACK - Windows 10 Firefox (latest)
+  # ðŸŒ BROWSERSTACK - Windows 10 Firefox (latest)
   # ============================================================================
   test-browserstack-win10-firefox:
     if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'win10-firefox' }}
@@ -445,13 +359,13 @@ jobs:
       if: always()
       id: xray-upload
       run: |
-        echo "🔐 Authentification Xray..."
+        echo "ðŸ” Authentification Xray..."
         TOKEN=$(curl -s -H "Content-Type: application/json" \
           -X POST \
           --data '{"client_id": "${{ secrets.XRAY_CLIENT_ID }}", "client_secret": "${{ secrets.XRAY_CLIENT_SECRET }}"}' \
           "https://${{ env.XRAY_ENDPOINT }}/api/v2/authenticate" | tr -d '"')
         
-        echo "📤 Import des résultats JUnit..."
+        echo "ðŸ“¤ Import des rÃ©sultats JUnit..."
         RESPONSE=$(curl -s -H "Content-Type: text/xml" \
           -H "Authorization: Bearer $TOKEN" \
           -X POST \
@@ -477,7 +391,7 @@ jobs:
           --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
           --header "Accept: application/json" \
           --header "Content-Type: application/json" \
-          --data '{"fields": {"summary": "Test exécution - device : ${{ env.DEVICE_NAME }}"}}'
+          --data '{"fields": {"summary": "Test exÃ©cution - device : ${{ env.DEVICE_NAME }}"}}'
 
     - name: Attach reports to Test Execution
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
@@ -517,7 +431,7 @@ jobs:
           }'
 
   # ============================================================================
-  # 🌐 BROWSERSTACK - iPhone 15 Pro Max
+  # ðŸŒ BROWSERSTACK - iPhone 15 Pro Max
   # ============================================================================
   test-browserstack-iphone15promax:
     if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'iphone15promax' }}
@@ -581,13 +495,13 @@ jobs:
       if: always()
       id: xray-upload
       run: |
-        echo "🔐 Authentification Xray..."
+        echo "ðŸ” Authentification Xray..."
         TOKEN=$(curl -s -H "Content-Type: application/json" \
           -X POST \
           --data '{"client_id": "${{ secrets.XRAY_CLIENT_ID }}", "client_secret": "${{ secrets.XRAY_CLIENT_SECRET }}"}' \
           "https://${{ env.XRAY_ENDPOINT }}/api/v2/authenticate" | tr -d '"')
         
-        echo "📤 Import des résultats JUnit..."
+        echo "ðŸ“¤ Import des rÃ©sultats JUnit..."
         RESPONSE=$(curl -s -H "Content-Type: text/xml" \
           -H "Authorization: Bearer $TOKEN" \
           -X POST \
@@ -613,7 +527,7 @@ jobs:
           --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
           --header "Accept: application/json" \
           --header "Content-Type: application/json" \
-          --data '{"fields": {"summary": "Test exécution - device : ${{ env.DEVICE_NAME }}"}}'
+          --data '{"fields": {"summary": "Test exÃ©cution - device : ${{ env.DEVICE_NAME }}"}}'
 
     - name: Attach reports to Test Execution
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
@@ -653,7 +567,7 @@ jobs:
           }'
 
   # ============================================================================
-  # 🧪 JOBS POUR PUSH/PR (exécution parallèle sur GitHub runners)
+  # ðŸ§ª JOBS POUR PUSH/PR (exÃ©cution parallÃ¨le sur GitHub runners)
   # ============================================================================
   test-push-pr-local:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}

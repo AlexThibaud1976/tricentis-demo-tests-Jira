@@ -1,11 +1,25 @@
-param(
+﻿param(
   [Parameter(Mandatory = $true)][string]$IssueKey,
   [string]$DeviceName     = $env:DEVICE_NAME,
   [string]$XrayEndpoint   = $env:XRAY_ENDPOINT,
   [string]$JiraProjectKey = $env:JIRA_PROJECT_KEY
 )
 
-Write-Host "🔐 Authentification Xray..."
+Write-Host "[Xray] Authentication..."
+
+try {
+  $currentProtocols = [Net.ServicePointManager]::SecurityProtocol
+  $tls12 = [Net.SecurityProtocolType]::Tls12
+  $tls13 = $null
+  try { $tls13 = [Enum]::Parse([Net.SecurityProtocolType], "Tls13") } catch {}
+  if ($tls13) {
+    [Net.ServicePointManager]::SecurityProtocol = $currentProtocols -bor $tls12 -bor $tls13
+  } else {
+    [Net.ServicePointManager]::SecurityProtocol = $currentProtocols -bor $tls12
+  }
+} catch {
+  Write-Host "Warning: unable to force TLS1.2/1.3 ($($_.Exception.Message))"
+}
 
 $clientId     = $env:XRAY_CLIENT_ID
 $clientSecret = $env:XRAY_CLIENT_SECRET
@@ -16,16 +30,15 @@ if (-not $clientId -or -not $clientSecret) {
 
 $authBodyObj = @{ client_id = $clientId; client_secret = $clientSecret }
 $authBody    = $authBodyObj | ConvertTo-Json -Compress
+$authUri     = "https://$XrayEndpoint/api/v2/authenticate"
 
 function Get-XrayToken {
-  param([string]$Endpoint, [string]$BodyJson)
+  param([string]$Uri, [string]$BodyJson)
 
   try {
-    $resp = Invoke-RestMethod -Uri "https://$Endpoint/api/v2/authenticate" `
-      -Method POST -ContentType "application/json" -Body $BodyJson -ErrorAction Stop
-    return $resp
+    return Invoke-RestMethod -Uri $Uri -Method POST -ContentType "application/json" -Body $BodyJson -ErrorAction Stop
   } catch {
-    Write-Host "Authentication request failed: $($_.Exception.Message)"
+    Write-Host "Authentication request failed (Invoke-RestMethod): $($_.Exception.Message)"
     if ($_.Exception.Response) {
       try {
         $s = $_.Exception.Response.GetResponseStream()
@@ -36,38 +49,58 @@ function Get-XrayToken {
   }
 }
 
-$authResponse = Get-XrayToken -Endpoint $XrayEndpoint -BodyJson $authBody
+function Extract-XrayToken {
+  param([object]$Response)
 
-if ($authResponse) {
-  try { $typeName = $authResponse.GetType().FullName } catch { $typeName = "unknown" }
-  Write-Host "AuthResponse type: $typeName"
-  try { $authJson = $authResponse | ConvertTo-Json -Compress; Write-Host "AuthResponse JSON: $authJson" } catch { Write-Host "AuthResponse could not be converted to JSON" }
+  if (-not $Response) { return $null }
+  if ($Response -is [string]) { return $Response.Trim([char]34).Trim() }
+  if ($Response -is [System.Management.Automation.PSCustomObject]) {
+    if ($Response.token) { return "$($Response.token)".Trim() }
+    if ($Response.jwt) { return "$($Response.jwt)".Trim() }
+    return ($Response | ConvertTo-Json -Compress).Trim([char]34).Trim()
+  }
+  return $Response.ToString().Trim([char]34).Trim()
 }
 
-if (-not $authResponse) {
-  Write-Host "Auth response empty, retrying with Invoke-WebRequest to capture raw body..."
+$authResponse = Get-XrayToken -Uri $authUri -BodyJson $authBody
+$token = Extract-XrayToken -Response $authResponse
+
+if (-not $token) {
+  Write-Host "Auth response empty, retrying with Invoke-WebRequest..."
   try {
-    $web = Invoke-WebRequest -Uri "https://$XrayEndpoint/api/v2/authenticate" -Method POST -ContentType "application/json" -Body $authBody -UseBasicParsing -ErrorAction Stop
+    $web = Invoke-WebRequest -Uri $authUri -Method POST -ContentType "application/json" -Body $authBody -UseBasicParsing -ErrorAction Stop
     $raw = $web.Content
+    if ($null -eq $raw) { $raw = "" }
     Write-Host "Auth raw content length: $($raw.Length)"
-    Write-Host "Auth raw content: $raw"
-    $token = $raw.Trim([char]34)
+    $token = $raw.Trim([char]34).Trim()
   } catch {
-    Write-Host "Retry authentication failed: $($_.Exception.Message)"
+    Write-Host "Retry authentication failed (Invoke-WebRequest): $($_.Exception.Message)"
     if ($_.Exception.Response) {
       try { $s = $_.Exception.Response.GetResponseStream(); if ($s) { $sr = New-Object IO.StreamReader($s); $b = $sr.ReadToEnd(); Write-Host "Authentication retry response body: $b" } } catch { Write-Host "Unable to read retry response body: $($_.Exception.Message)" }
     }
-    exit 1
   }
-} else {
-  if ($authResponse -is [string]) {
-    $token = $authResponse.Trim([char]34)
-  } elseif ($authResponse -is [System.Management.Automation.PSCustomObject]) {
-    if ($authResponse.token) { $token = $authResponse.token }
-    elseif ($authResponse.jwt) { $token = $authResponse.jwt }
-    else { $token = ($authResponse | ConvertTo-Json -Compress).Trim([char]34) }
+}
+
+if (-not $token) {
+  $curlCommand = $null
+  foreach ($cmdName in @("curl.exe", "curl")) {
+    $cmd = Get-Command $cmdName -ErrorAction SilentlyContinue
+    if ($cmd) { $curlCommand = $cmd.Source; break }
+  }
+
+  if ($curlCommand) {
+    Write-Host "Auth still empty, retrying with $curlCommand..."
+    try {
+      $curlOutput = & $curlCommand -s -H "Content-Type: application/json" -X POST -d $authBody $authUri 2>$null
+      $curlExit = $LASTEXITCODE
+      if ($null -eq $curlOutput) { $curlOutput = "" }
+      Write-Host "curl auth exit code: $curlExit; content length: $($curlOutput.Length)"
+      $token = $curlOutput.Trim([char]34).Trim()
+    } catch {
+      Write-Host "curl authentication failed: $($_.Exception.Message)"
+    }
   } else {
-    $token = $authResponse.ToString().Trim([char]34)
+    Write-Host "curl command not found; skipping curl fallback"
   }
 }
 
@@ -78,7 +111,7 @@ if (-not $token) {
 
 Write-Host "Token length: $($token.Length) characters"
 
-Write-Host "📤 Import des résultats JUnit..."
+Write-Host "[Xray] Importing JUnit results..."
 
 if (-not (Test-Path "results.xml")) {
   Write-Host "ERROR: results.xml not found in workspace"
