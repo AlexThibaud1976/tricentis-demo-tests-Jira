@@ -39,7 +39,7 @@ function Get-XrayToken {
 $authResponse = Get-XrayToken -Endpoint $XrayEndpoint -BodyJson $authBody
 
 if ($authResponse) {
-  try { $typeName = $authResponse.GetType().FullName } catch { $typeName = "(unknown)" }
+  try { $typeName = $authResponse.GetType().FullName } catch { $typeName = "unknown" }
   Write-Host "AuthResponse type: $typeName"
   try { $authJson = $authResponse | ConvertTo-Json -Compress; Write-Host "AuthResponse JSON: $authJson" } catch { Write-Host "AuthResponse could not be converted to JSON" }
 }
