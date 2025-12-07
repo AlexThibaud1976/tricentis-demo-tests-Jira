@@ -93,21 +93,69 @@ jobs:
           client_secret = "${{ secrets.XRAY_CLIENT_SECRET }}"
         } | ConvertTo-Json
 
-        # Appel d'authentification
-        $authResponse = Invoke-RestMethod -Uri "https://${{ env.XRAY_ENDPOINT }}/api/v2/authenticate" `
-          -Method POST `
-          -ContentType "application/json" `
-          -Body $authBody
+        # Appel d'authentification avec gestion des erreurs
+        try {
+          $authResponse = Invoke-RestMethod -Uri "https://${{ env.XRAY_ENDPOINT }}/api/v2/authenticate" `
+            -Method POST `
+            -ContentType "application/json" `
+            -Body $authBody -ErrorAction Stop
+        } catch {
+          Write-Host "Authentication request failed: $($_.Exception.Message)"
+          if ($_.Exception.Response) {
+            try {
+              $stream = $_.Exception.Response.GetResponseStream()
+              if ($stream) {
+                $sr = New-Object System.IO.StreamReader($stream)
+                $body = $sr.ReadToEnd()
+                Write-Host "Authentication response body: $body"
+              }
+            } catch {
+              Write-Host "Unable to read response body: $($_.Exception.Message)"
+            }
+          }
+          throw
+        }
 
-        # Extraire le token de façon robuste (la réponse peut être une string brute ou un objet JSON)
-        if ($authResponse -is [string]) {
-          $token = $authResponse.Trim([char]34)
-        } elseif ($authResponse -is [System.Management.Automation.PSCustomObject]) {
-          if ($authResponse.token) { $token = $authResponse.token }
-          elseif ($authResponse.jwt) { $token = $authResponse.jwt }
-          else { $token = ($authResponse | ConvertTo-Json -Compress).Trim([char]34) }
+        # Si la réponse est vide, tenter Invoke-WebRequest pour récupérer le contenu brut
+        if (-not $authResponse -or $authResponse -eq "") {
+          Write-Host "Auth response empty, retrying with Invoke-WebRequest to capture raw body..."
+          try {
+            $web = Invoke-WebRequest -Uri "https://${{ env.XRAY_ENDPOINT }}/api/v2/authenticate" -Method POST -ContentType "application/json" -Body $authBody -UseBasicParsing -ErrorAction Stop
+            $raw = $web.Content
+            Write-Host "Auth raw content length: $($raw.Length)"
+            $token = $raw.Trim([char]34)
+          } catch {
+            Write-Host "Retry authentication failed: $($_.Exception.Message)"
+            if ($_.Exception.Response) {
+              try {
+                $stream = $_.Exception.Response.GetResponseStream()
+                if ($stream) {
+                  $sr = New-Object System.IO.StreamReader($stream)
+                  $body = $sr.ReadToEnd()
+                  Write-Host "Authentication retry response body: $body"
+                }
+              } catch {
+                Write-Host "Unable to read retry response body: $($_.Exception.Message)"
+              }
+            }
+            throw
+          }
         } else {
-          $token = $authResponse.ToString().Trim([char]34)
+          # Extraire le token de façon robuste (la réponse peut être une string brute ou un objet JSON)
+          if ($authResponse -is [string]) {
+            $token = $authResponse.Trim([char]34)
+          } elseif ($authResponse -is [System.Management.Automation.PSCustomObject]) {
+            if ($authResponse.token) { $token = $authResponse.token }
+            elseif ($authResponse.jwt) { $token = $authResponse.jwt }
+            else { $token = ($authResponse | ConvertTo-Json -Compress).Trim([char]34) }
+          } else {
+            $token = $authResponse.ToString().Trim([char]34)
+          }
+        }
+
+        if (-not $token) {
+          Write-Host "ERROR: token is empty after authentication. Aborting upload to Xray."
+          throw "Empty token returned from Xray authenticate endpoint"
         }
 
         Write-Host "Token length: $($token.Length) characters"
@@ -295,49 +343,15 @@ jobs:
     - name: Upload results to Xray
       if: always()
       id: xray-upload
+      shell: powershell
+      env:
+        XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+        XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+        JIRA_USER: ${{ secrets.JIRA_USER }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        JIRA_URL: ${{ secrets.JIRA_URL }}
       run: |
-        echo "🔐 Authentification Xray..."
-        TOKEN=$(curl -s -H "Content-Type: application/json" \
-          -X POST \
-          --data '{"client_id": "${{ secrets.XRAY_CLIENT_ID }}", "client_secret": "${{ secrets.XRAY_CLIENT_SECRET }}"}' \
-          "https://${{ env.XRAY_ENDPOINT }}/api/v2/authenticate" | tr -d '"')
-        
-        echo "📤 Import des résultats JUnit..."
-        RESPONSE=$(curl -s -H "Content-Type: text/xml" \
-          -H "Authorization: Bearer $TOKEN" \
-          -X POST \
-          --data @results.xml \
-          "https://${{ env.XRAY_ENDPOINT }}/api/v2/import/execution/junit?projectKey=${{ env.JIRA_PROJECT_KEY }}&testPlanKey=${{ github.event.inputs.issueKey }}&testEnvironments=${{ env.DEVICE_NAME }}")
-        
-        echo "Response: $RESPONSE"
-        
-        EXEC_KEY=$(echo $RESPONSE | jq -r '.key // empty')
-        if [ -z "$EXEC_KEY" ]; then
-          EXEC_KEY=$(echo $RESPONSE | grep -o '"key":"[^"]*"' | head -1 | cut -d'"' -f4)
-        fi
-        
-        echo "Test Execution Key: $EXEC_KEY"
-        echo "exec_key=$EXEC_KEY" >> $GITHUB_OUTPUT
-
-    - name: Update Test Execution title
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        curl -s --request PUT \
-          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY" \
-          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-          --header "Accept: application/json" \
-          --header "Content-Type: application/json" \
-          --data '{"fields": {"summary": "Test exécution - device : ${{ env.DEVICE_NAME }}"}}'
-
-    - name: Attach reports to Test Execution
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        
-        if [ -f "playwright-report/index.html" ]; then
-          curl -s --request POST \
-            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/attachments" \
+        .\scripts\upload-xray.ps1 -IssueKey "${{ github.event.inputs.issueKey }}"
             --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
             --header "X-Atlassian-Token: no-check" \
             --form file=@"playwright-report/index.html"
