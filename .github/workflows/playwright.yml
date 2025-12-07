@@ -18,11 +18,10 @@ on:
         required: true
         type: choice
         options:
-          - local
-          - win11-ff136
-          - win10-ff136
+          - win11-firefox
+          - win10-firefox
           - iphone15promax
-          - Firefox
+          - Firefox-latest
 
 env:
   XRAY_ENDPOINT: xray.cloud.getxray.app
@@ -30,12 +29,15 @@ env:
 
 jobs:
   # ============================================================================
-  # 🧪 EXÉCUTION LOCALE (headed + Xvfb)
+  # 🦊 FIREFOX LOCAL - Runner Self-Hosted (votre PC)
   # ============================================================================
-  test-local:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'local' }}
+  test-firefox-local:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'Firefox-latest' }}
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Windows]
+
+    env:
+      DEVICE_NAME: "Firefox-latest"
 
     steps:
     - name: Checkout code
@@ -49,45 +51,42 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+    - name: Install Playwright Firefox
+      run: npx playwright install firefox
 
-    - name: Run Playwright tests (headed mode with Xvfb)
-      run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npx playwright test --headed --reporter=list,html,junit
+    - name: Run Playwright tests (Firefox headless)
+      run: npx playwright test --project=firefox --reporter=list,html,junit
       env:
         CI: true
         PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
 
     - name: Generate PDF report from HTML
       if: always()
+      shell: powershell
       run: |
-        sudo apt-get update
-        sudo apt-get install -y wkhtmltopdf
-        if [ -f "playwright-report/index.html" ]; then
-          wkhtmltopdf --enable-local-file-access playwright-report/index.html playwright-report/report.pdf || true
-        fi
+        # Tentative de génération PDF avec Chrome en mode print-to-pdf
+        if (Test-Path "playwright-report/index.html") {
+          $chromePath = "C:\Program Files\Google\Chrome\Application\chrome.exe"
+          if (Test-Path $chromePath) {
+            $htmlPath = (Resolve-Path "playwright-report/index.html").Path
+            & $chromePath --headless --disable-gpu --print-to-pdf="playwright-report/report.pdf" $htmlPath 2>$null
+          }
+        }
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-report-local
+        name: playwright-report-firefox-local
         path: |
           playwright-report/
           results.xml
         retention-days: 30
 
-    - name: Upload test screenshots
-      uses: actions/upload-artifact@v4
-      if: failure()
-      with:
-        name: test-failures-local
-        path: test-results/
-        retention-days: 7
-
     - name: Upload results to Xray
       if: always()
       id: xray-upload
+      shell: bash
       run: |
         echo "🔐 Authentification Xray..."
         TOKEN=$(curl -s -H "Content-Type: application/json" \
@@ -100,7 +99,7 @@ jobs:
           -H "Authorization: Bearer $TOKEN" \
           -X POST \
           --data @results.xml \
-          "https://${{ env.XRAY_ENDPOINT }}/api/v2/import/execution/junit?projectKey=${{ env.JIRA_PROJECT_KEY }}&testPlanKey=${{ github.event.inputs.issueKey }}&testEnvironments=local")
+          "https://${{ env.XRAY_ENDPOINT }}/api/v2/import/execution/junit?projectKey=${{ env.JIRA_PROJECT_KEY }}&testPlanKey=${{ github.event.inputs.issueKey }}&testEnvironments=${{ env.DEVICE_NAME }}")
         
         echo "Response: $RESPONSE"
         
@@ -114,6 +113,7 @@ jobs:
 
     - name: Update Test Execution title
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
+      shell: bash
       run: |
         EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
         curl -s --request PUT \
@@ -121,10 +121,11 @@ jobs:
           --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
           --header "Accept: application/json" \
           --header "Content-Type: application/json" \
-          --data '{"fields": {"summary": "Test exécution - device : local"}}'
+          --data '{"fields": {"summary": "Test exécution - device : ${{ env.DEVICE_NAME }}"}}'
 
     - name: Attach reports to Test Execution
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
+      shell: bash
       run: |
         EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
         
@@ -146,6 +147,7 @@ jobs:
 
     - name: Add remote link to GitHub Actions
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
+      shell: bash
       run: |
         EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
         curl -s --request POST \
@@ -161,19 +163,19 @@ jobs:
           }'
 
   # ============================================================================
-  # 🌐 BROWSERSTACK - Windows 11 Firefox 136
+  # 🌐 BROWSERSTACK - Windows 11 Firefox (latest)
   # ============================================================================
-  test-browserstack-win11-ff136:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'win11-ff136' }}
+  test-browserstack-win11-firefox:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'win11-firefox' }}
     timeout-minutes: 90
     runs-on: ubuntu-latest
 
     env:
-      DEVICE_NAME: "win11-ff136"
+      DEVICE_NAME: "win11-firefox"
       BS_OS: "Windows"
       BS_OS_VERSION: "11"
       BS_BROWSER: "playwright-firefox"
-      BS_BROWSER_VERSION: "136.0"
+      BS_BROWSER_VERSION: "latest"
 
     steps:
     - name: Checkout code
@@ -296,19 +298,19 @@ jobs:
           }'
 
   # ============================================================================
-  # 🌐 BROWSERSTACK - Windows 10 Firefox 136
+  # 🌐 BROWSERSTACK - Windows 10 Firefox (latest)
   # ============================================================================
-  test-browserstack-win10-ff136:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'win10-ff136' }}
+  test-browserstack-win10-firefox:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'win10-firefox' }}
     timeout-minutes: 90
     runs-on: ubuntu-latest
 
     env:
-      DEVICE_NAME: "win10-ff136"
+      DEVICE_NAME: "win10-firefox"
       BS_OS: "Windows"
       BS_OS_VERSION: "10"
       BS_BROWSER: "playwright-firefox"
-      BS_BROWSER_VERSION: "136.0"
+      BS_BROWSER_VERSION: "latest"
 
     steps:
     - name: Checkout code
@@ -442,7 +444,7 @@ jobs:
       DEVICE_NAME: "iphone15promax"
       BS_OS: "ios"
       BS_OS_VERSION: "17"
-      BS_BROWSER: "safari"
+      BS_BROWSER: "playwright-webkit"
       BS_BROWSER_VERSION: "latest"
       BS_DEVICE: "iPhone 15 Pro Max"
 
@@ -458,8 +460,8 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Install Playwright (chromium driver)
-      run: npx playwright install chromium
+    - name: Install Playwright (webkit driver)
+      run: npx playwright install webkit
 
     - name: Run tests on BrowserStack
       run: npx playwright test --config=playwright.config.browserstack.js --reporter=list,html,junit
@@ -567,142 +569,7 @@ jobs:
           }'
 
   # ============================================================================
-  # 🌐 BROWSERSTACK - Firefox (latest)
-  # ============================================================================
-  test-browserstack-firefox:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'Firefox' }}
-    timeout-minutes: 90
-    runs-on: ubuntu-latest
-
-    env:
-      DEVICE_NAME: "Firefox"
-      BS_OS: "Windows"
-      BS_OS_VERSION: "11"
-      BS_BROWSER: "playwright-firefox"
-      BS_BROWSER_VERSION: "latest"
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Install Playwright (chromium driver)
-      run: npx playwright install chromium
-
-    - name: Run tests on BrowserStack
-      run: npx playwright test --config=playwright.config.browserstack.js --reporter=list,html,junit
-      env:
-        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-        BROWSERSTACK_BUILD_NAME: "GitHub Actions #${{ github.run_number }} - ${{ github.ref_name }} - ${{ env.DEVICE_NAME }}"
-        BS_WORKERS: "5"
-        CI: true
-        PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
-      continue-on-error: true
-
-    - name: Generate PDF report from HTML
-      if: always()
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wkhtmltopdf
-        if [ -f "playwright-report/index.html" ]; then
-          wkhtmltopdf --enable-local-file-access playwright-report/index.html playwright-report/report.pdf || true
-        fi
-
-    - name: Upload BrowserStack test results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: browserstack-report-${{ env.DEVICE_NAME }}
-        path: |
-          playwright-report/
-          results.xml
-        retention-days: 30
-
-    - name: Upload results to Xray
-      if: always()
-      id: xray-upload
-      run: |
-        echo "🔐 Authentification Xray..."
-        TOKEN=$(curl -s -H "Content-Type: application/json" \
-          -X POST \
-          --data '{"client_id": "${{ secrets.XRAY_CLIENT_ID }}", "client_secret": "${{ secrets.XRAY_CLIENT_SECRET }}"}' \
-          "https://${{ env.XRAY_ENDPOINT }}/api/v2/authenticate" | tr -d '"')
-        
-        echo "📤 Import des résultats JUnit..."
-        RESPONSE=$(curl -s -H "Content-Type: text/xml" \
-          -H "Authorization: Bearer $TOKEN" \
-          -X POST \
-          --data @results.xml \
-          "https://${{ env.XRAY_ENDPOINT }}/api/v2/import/execution/junit?projectKey=${{ env.JIRA_PROJECT_KEY }}&testPlanKey=${{ github.event.inputs.issueKey }}&testEnvironments=${{ env.DEVICE_NAME }}")
-        
-        echo "Response: $RESPONSE"
-        
-        EXEC_KEY=$(echo $RESPONSE | jq -r '.key // empty')
-        if [ -z "$EXEC_KEY" ]; then
-          EXEC_KEY=$(echo $RESPONSE | grep -o '"key":"[^"]*"' | head -1 | cut -d'"' -f4)
-        fi
-        
-        echo "Test Execution Key: $EXEC_KEY"
-        echo "exec_key=$EXEC_KEY" >> $GITHUB_OUTPUT
-
-    - name: Update Test Execution title
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        curl -s --request PUT \
-          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY" \
-          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-          --header "Accept: application/json" \
-          --header "Content-Type: application/json" \
-          --data '{"fields": {"summary": "Test exécution - device : ${{ env.DEVICE_NAME }}"}}'
-
-    - name: Attach reports to Test Execution
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        
-        if [ -f "playwright-report/index.html" ]; then
-          curl -s --request POST \
-            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/attachments" \
-            --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-            --header "X-Atlassian-Token: no-check" \
-            --form file=@"playwright-report/index.html"
-        fi
-        
-        if [ -f "playwright-report/report.pdf" ]; then
-          curl -s --request POST \
-            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/attachments" \
-            --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-            --header "X-Atlassian-Token: no-check" \
-            --form file=@"playwright-report/report.pdf"
-        fi
-
-    - name: Add remote link to GitHub Actions
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        curl -s --request POST \
-          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/remotelink" \
-          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-          --header "Accept: application/json" \
-          --header "Content-Type: application/json" \
-          --data '{
-            "object": {
-              "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-              "title": "GitHub Actions Run #${{ github.run_number }}"
-            }
-          }'
-
-  # ============================================================================
-  # 🧪 JOBS POUR PUSH/PR (inchangés - exécution parallèle)
+  # 🧪 JOBS POUR PUSH/PR (exécution parallèle sur GitHub runners)
   # ============================================================================
   test-push-pr-local:
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
