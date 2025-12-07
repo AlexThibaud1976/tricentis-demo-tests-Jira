@@ -1,4 +1,4 @@
-name: Playwright Tests
+﻿name: Playwright Tests
 
 on:
   push:
@@ -101,16 +101,19 @@ jobs:
         
         $credentials = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"))
         
-        $body = @{
+        $bodyObj = @{
           fields = @{
             summary = "Test exécution - device : ${{ env.DEVICE_NAME }}"
           }
-        } | ConvertTo-Json
+        }
+        $body = $bodyObj | ConvertTo-Json
+        
+        $headers = @{ "Authorization" = "Basic $credentials"; "Accept" = "application/json" }
         
         Invoke-RestMethod -Uri "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey" `
           -Method PUT `
           -ContentType "application/json" `
-          -Headers @{ "Authorization" = "Basic $credentials"; "Accept" = "application/json" } `
+          -Headers $headers `
           -Body $body
 
     - name: Attach HTML report to Test Execution
@@ -140,13 +143,15 @@ jobs:
             "--$boundary--"
           ) -join $LF
           
+          $headers = @{ 
+              "Authorization" = "Basic $credentials"
+              "X-Atlassian-Token" = "no-check"
+          }
+          
           Invoke-RestMethod -Uri "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/attachments" `
             -Method POST `
             -ContentType "multipart/form-data; boundary=$boundary" `
-            -Headers @{ 
-              "Authorization" = "Basic $credentials"
-              "X-Atlassian-Token" = "no-check"
-            } `
+            -Headers $headers `
             -Body $bodyLines
         }
 
@@ -164,11 +169,14 @@ jobs:
           $filePath = (Resolve-Path "playwright-report/report.pdf").Path
           
           # Utiliser curl.exe qui est disponible sur Windows
-          & curl.exe --request POST `
-            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/attachments" `
-            --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" `
-            --header "X-Atlassian-Token: no-check" `
-            --form "file=@$filePath"
+          $curlArgs = @(
+            "--request", "POST",
+            "--url", "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/attachments",
+            "--user", "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}",
+            "--header", "X-Atlassian-Token: no-check",
+            "--form", "file=@$filePath"
+          )
+          & curl.exe $curlArgs
         }
 
     - name: Add remote link to GitHub Actions
@@ -181,17 +189,20 @@ jobs:
         
         $credentials = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"))
         
-        $body = @{
+        $bodyObj = @{
           object = @{
             url = "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             title = "GitHub Actions Run #${{ github.run_number }}"
           }
-        } | ConvertTo-Json
+        }
+        $body = $bodyObj | ConvertTo-Json
+        
+        $headers = @{ "Authorization" = "Basic $credentials"; "Accept" = "application/json" }
         
         Invoke-RestMethod -Uri "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/remotelink" `
           -Method POST `
           -ContentType "application/json" `
-          -Headers @{ "Authorization" = "Basic $credentials"; "Accept" = "application/json" } `
+          -Headers $headers `
           -Body $body
 
   # ============================================================================
