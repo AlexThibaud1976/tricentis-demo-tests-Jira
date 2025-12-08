@@ -92,51 +92,19 @@ jobs:
       run: |
         .\scripts\upload-xray.ps1 -IssueKey "${{ github.event.inputs.issueKey }}"
 
-    - name: Update Test Execution title
+    - name: Update Jira Test Execution
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
       shell: powershell
       run: |
-        $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
-        Write-Host "Mise a jour du titre de la Test Execution..."
-        $url = "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey"
-        $user = "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"
-        $json = '{"fields": {"summary": "Test execution - device : ${{ env.DEVICE_NAME }}"}}'
-        & curl.exe -s -X PUT $url -u $user -H "Accept: application/json" -H "Content-Type: application/json" -d $json
-
-    - name: Attach HTML report to Test Execution
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      shell: powershell
-      run: |
-        $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
-        Write-Host "Ajout du rapport HTML..."
-        if (Test-Path "playwright-report/index.html") {
-          $url = "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/attachments"
-          $user = "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"
-          & curl.exe -s -X POST $url -u $user -H "X-Atlassian-Token: no-check" -F "file=@playwright-report/index.html"
-        }
-
-    - name: Attach PDF report to Test Execution
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      shell: powershell
-      run: |
-        $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
-        Write-Host "Ajout du rapport PDF..."
-        if (Test-Path "playwright-report/report.pdf") {
-          $url = "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/attachments"
-          $user = "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"
-          & curl.exe -s -X POST $url -u $user -H "X-Atlassian-Token: no-check" -F "file=@playwright-report/report.pdf"
-        }
-
-    - name: Add remote link to GitHub Actions
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      shell: powershell
-      run: |
-        $execKey = "${{ steps.xray-upload.outputs.exec_key }}"
-        Write-Host "Ajout du lien vers GitHub Actions..."
-        $url = "${{ secrets.JIRA_URL }}/rest/api/3/issue/$execKey/remotelink"
-        $user = "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}"
-        $json = '{"object": {"url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}", "title": "GitHub Actions Run #${{ github.run_number }}"}}'
-        & curl.exe -s -X POST $url -u $user -H "Accept: application/json" -H "Content-Type: application/json" -d $json
+        .\scripts\jira-post-execution.ps1 `
+          -ExecKey "${{ steps.xray-upload.outputs.exec_key }}" `
+          -DeviceName "${{ env.DEVICE_NAME }}" `
+          -JiraUrl "${{ secrets.JIRA_URL }}" `
+          -JiraUser "${{ secrets.JIRA_USER }}" `
+          -JiraApiToken "${{ secrets.JIRA_API_TOKEN }}" `
+          -GitHubRepository "${{ github.repository }}" `
+          -GitHubRunId "${{ github.run_id }}" `
+          -GitHubRunNumber "${{ github.run_number }}"
 
   # ============================================================================
   # 🌐 BROWSERSTACK - Windows 11 Firefox (latest)
@@ -211,21 +179,19 @@ jobs:
       run: |
         ./scripts/upload-xray.ps1 -IssueKey "${{ github.event.inputs.issueKey }}"
 
-    - name: Add remote link to GitHub Actions
+    - name: Update Jira Test Execution
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
+      shell: pwsh
       run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        curl -s --request POST \
-          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/remotelink" \
-          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-          --header "Accept: application/json" \
-          --header "Content-Type: application/json" \
-          --data '{
-            "object": {
-              "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-              "title": "GitHub Actions Run #${{ github.run_number }}"
-            }
-          }'
+        ./scripts/jira-post-execution.ps1 `
+          -ExecKey "${{ steps.xray-upload.outputs.exec_key }}" `
+          -DeviceName "${{ env.DEVICE_NAME }}" `
+          -JiraUrl "${{ secrets.JIRA_URL }}" `
+          -JiraUser "${{ secrets.JIRA_USER }}" `
+          -JiraApiToken "${{ secrets.JIRA_API_TOKEN }}" `
+          -GitHubRepository "${{ github.repository }}" `
+          -GitHubRunId "${{ github.run_id }}" `
+          -GitHubRunNumber "${{ github.run_number }}"
 
   # ============================================================================
   # 🌐 BROWSERSTACK - Windows 10 Firefox (latest)
@@ -300,53 +266,19 @@ jobs:
       run: |
         ./scripts/upload-xray.ps1 -IssueKey "${{ github.event.inputs.issueKey }}"
 
-    - name: Update Test Execution title
+    - name: Update Jira Test Execution
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
+      shell: pwsh
       run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        curl -s --request PUT \
-          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY" \
-          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-          --header "Accept: application/json" \
-          --header "Content-Type: application/json" \
-          --data '{"fields": {"summary": "Test exécution - device : ${{ env.DEVICE_NAME }}"}}'
-
-    - name: Attach reports to Test Execution
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        
-        if [ -f "playwright-report/index.html" ]; then
-          curl -s --request POST \
-            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/attachments" \
-            --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-            --header "X-Atlassian-Token: no-check" \
-            --form file=@"playwright-report/index.html"
-        fi
-        
-        if [ -f "playwright-report/report.pdf" ]; then
-          curl -s --request POST \
-            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/attachments" \
-            --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-            --header "X-Atlassian-Token: no-check" \
-            --form file=@"playwright-report/report.pdf"
-        fi
-
-    - name: Add remote link to GitHub Actions
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        curl -s --request POST \
-          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/remotelink" \
-          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-          --header "Accept: application/json" \
-          --header "Content-Type: application/json" \
-          --data '{
-            "object": {
-              "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-              "title": "GitHub Actions Run #${{ github.run_number }}"
-            }
-          }'
+        ./scripts/jira-post-execution.ps1 `
+          -ExecKey "${{ steps.xray-upload.outputs.exec_key }}" `
+          -DeviceName "${{ env.DEVICE_NAME }}" `
+          -JiraUrl "${{ secrets.JIRA_URL }}" `
+          -JiraUser "${{ secrets.JIRA_USER }}" `
+          -JiraApiToken "${{ secrets.JIRA_API_TOKEN }}" `
+          -GitHubRepository "${{ github.repository }}" `
+          -GitHubRunId "${{ github.run_id }}" `
+          -GitHubRunNumber "${{ github.run_number }}"
 
   # ============================================================================
   # 🌐 BROWSERSTACK - iPhone 15 Pro Max
@@ -422,53 +354,19 @@ jobs:
       run: |
         ./scripts/upload-xray.ps1 -IssueKey "${{ github.event.inputs.issueKey }}"
 
-    - name: Update Test Execution title
+    - name: Update Jira Test Execution
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
+      shell: pwsh
       run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        curl -s --request PUT \
-          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY" \
-          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-          --header "Accept: application/json" \
-          --header "Content-Type: application/json" \
-          --data '{"fields": {"summary": "Test exécution - device : ${{ env.DEVICE_NAME }}"}}'
-
-    - name: Attach reports to Test Execution
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        
-        if [ -f "playwright-report/index.html" ]; then
-          curl -s --request POST \
-            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/attachments" \
-            --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-            --header "X-Atlassian-Token: no-check" \
-            --form file=@"playwright-report/index.html"
-        fi
-        
-        if [ -f "playwright-report/report.pdf" ]; then
-          curl -s --request POST \
-            --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/attachments" \
-            --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-            --header "X-Atlassian-Token: no-check" \
-            --form file=@"playwright-report/report.pdf"
-        fi
-
-    - name: Add remote link to GitHub Actions
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      run: |
-        EXEC_KEY="${{ steps.xray-upload.outputs.exec_key }}"
-        curl -s --request POST \
-          --url "${{ secrets.JIRA_URL }}/rest/api/3/issue/$EXEC_KEY/remotelink" \
-          --user "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_API_TOKEN }}" \
-          --header "Accept: application/json" \
-          --header "Content-Type: application/json" \
-          --data '{
-            "object": {
-              "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-              "title": "GitHub Actions Run #${{ github.run_number }}"
-            }
-          }'
+        ./scripts/jira-post-execution.ps1 `
+          -ExecKey "${{ steps.xray-upload.outputs.exec_key }}" `
+          -DeviceName "${{ env.DEVICE_NAME }}" `
+          -JiraUrl "${{ secrets.JIRA_URL }}" `
+          -JiraUser "${{ secrets.JIRA_USER }}" `
+          -JiraApiToken "${{ secrets.JIRA_API_TOKEN }}" `
+          -GitHubRepository "${{ github.repository }}" `
+          -GitHubRunId "${{ github.run_id }}" `
+          -GitHubRunNumber "${{ github.run_number }}"
 
   # ============================================================================
   # 🧪 JOBS POUR PUSH/PR (exécution parallèle sur GitHub runners)
