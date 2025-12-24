@@ -125,7 +125,7 @@ jobs:
       DEVICE_NAME: "iphone15promax"
       BS_OS: "ios"
       BS_OS_VERSION: "17"
-      BS_BROWSER: "playwright-webkit"
+      BS_BROWSER: "safari"
       BS_BROWSER_VERSION: "latest"
       BS_DEVICE: "iPhone 15 Pro Max"
 
