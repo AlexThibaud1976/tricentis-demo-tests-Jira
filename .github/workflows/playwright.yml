@@ -140,8 +140,8 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Install Playwright (webkit driver)
-      run: npx playwright install webkit
+    - name: Install Playwright (chromium driver)
+      run: npx playwright install chromium
 
     - name: Run tests on BrowserStack
       run: npx playwright test --config=playwright.config.browserstack.js --reporter=list,html,junit
