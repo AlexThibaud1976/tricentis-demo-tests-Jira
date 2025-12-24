@@ -160,6 +160,60 @@ Le rapport s'ouvre dans votre navigateur et affiche :
 - Vidéos des tests échoués
 - Traces d'exécution
 
+## 🧩 Intégration Jira (Post-Execution)
+
+Ce projet inclut un script d'intégration Jira pour publier automatiquement des artefacts d'exécution sur une issue de type "Test Execution".
+
+- Met à jour le titre de l'exécution avec le nom du device
+- Attache le rapport HTML (playwright-report/index.html) et optionnellement un PDF
+- Ajoute un lien "Remote link" vers le run GitHub Actions
+
+### Script
+
+Voir [scripts/jira-post-execution.ps1](scripts/jira-post-execution.ps1)
+
+### Prérequis
+
+- Accès Jira Cloud et un token API (compte utilisateur Jira)
+- JiraUrl (ex. https://votre-domaine.atlassian.net)
+- ExecKey (clé de l'issue Test Execution, ex. DEMO-131)
+- PowerShell 7+ (fonctionne sur Windows, Linux et macOS)
+- Rapport Playwright généré dans playwright-report (HTML requis, PDF optionnel)
+
+### Utilisation
+
+Windows / Linux / macOS (pwsh):
+
+```powershell
+pwsh -File ./scripts/jira-post-execution.ps1 \
+   -ExecKey "DEMO-131" \
+   -DeviceName "win10-firefox" \
+   -JiraUrl "https://votre-domaine.atlassian.net" \
+   -JiraUser "email@domaine.com" \
+   -JiraApiToken "<token>" \
+   -GitHubRepository "AlexThibaud1976/tricentis-demo-tests-Jira" \
+   -GitHubRunId "20488622510" \
+   -GitHubRunNumber "42"
+```
+
+Paramètres:
+
+- -ExecKey: Clé de l'issue Test Execution
+- -DeviceName: Libellé du device (affiché dans le titre)
+- -JiraUrl: URL Jira Cloud
+- -JiraUser: Email du compte Jira
+- -JiraApiToken: Token API Jira
+- -GitHubRepository: owner/repo du projet
+- -GitHubRunId: ID du run GitHub Actions
+- -GitHubRunNumber: Numéro du run GitHub Actions
+- -ReportPath (optionnel): Chemin du rapport (playwright-report par défaut)
+
+### Dépannage
+
+- Erreur "curl.exe non reconnu": le script utilise désormais des cmdlets PowerShell (Invoke-RestMethod, Invoke-WebRequest) compatibles multiplateforme. Assurez-vous d'utiliser PowerShell 7+.
+- Pièces jointes non trouvées: vérifiez que playwright-report/index.html (et report.pdf si utilisé) existent avant d'exécuter le script.
+- 401/403 Jira: confirmez JiraUser et JiraApiToken, et l'URL JiraUrl.
+
 ## ⚙️ Configuration
 
 ### Playwright Config
