@@ -9,22 +9,37 @@ const runInOrder = process.env.BS_RUN_IN_ORDER !== 'false';
 const requestedWorkers = parseInt(process.env.BS_WORKERS || '5', 10);
 const now = new Date();
 
-// Définition des capacités pour les sessions desktop (Windows, Chrome, etc.)
-const capabilities = {
-  // Système d'exploitation desktop
-  os: process.env.BS_OS || 'Windows',
-  osVersion: process.env.BS_OS_VERSION || '11',
+const isMobile = Boolean(process.env.BS_DEVICE);
 
-  // Navigateur desktop
-  browser: process.env.BS_BROWSER || 'chrome',
-  browserVersion: process.env.BS_BROWSER_VERSION || 'latest',
+// Définition des capacités (desktop par défaut, mobile si BS_DEVICE est défini)
+const capabilities = isMobile
+  ? {
+      // Mobile (ex. iPhone 15 Pro Max)
+      device: process.env.BS_DEVICE,
+      osVersion: process.env.BS_OS_VERSION || '17',
+      browser: process.env.BS_BROWSER || 'safari',
 
-  // Options communes BrowserStack pour Playwright
-  'browserstack.console': 'info',
-  'browserstack.networkLogs': 'true',
-  'browserstack.debug': 'true',
-  'browserstack.video': 'true',
-};
+      // Options communes BrowserStack pour Playwright
+      'browserstack.console': 'info',
+      'browserstack.networkLogs': 'true',
+      'browserstack.debug': 'true',
+      'browserstack.video': 'true',
+    }
+  : {
+      // Système d'exploitation desktop
+      os: process.env.BS_OS || 'Windows',
+      osVersion: process.env.BS_OS_VERSION || '11',
+
+      // Navigateur desktop
+      browser: process.env.BS_BROWSER || 'chrome',
+      browserVersion: process.env.BS_BROWSER_VERSION || 'latest',
+
+      // Options communes BrowserStack pour Playwright
+      'browserstack.console': 'info',
+      'browserstack.networkLogs': 'true',
+      'browserstack.debug': 'true',
+      'browserstack.video': 'true',
+    };
 
 module.exports = {
   // Identifiants d'authentification BrowserStack (injectés par GitHub Actions ou .env)

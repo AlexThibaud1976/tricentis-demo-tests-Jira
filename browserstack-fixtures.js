@@ -80,7 +80,7 @@ const test = base.test.extend({
     const sessionId = `S${++sessionCounter}`;
     const testName = formatTestName(testInfo, sessionId);
 
-    // Base des capabilities communes aux sessions desktop
+    // Base des capabilities communes (desktop ou mobile)
     const baseCaps = {
       project: bsConfig.projectName,
       build: bsConfig.buildName,
@@ -98,13 +98,22 @@ const test = base.test.extend({
       'client.playwrightVersion': clientPlaywrightVersion,
     };
 
-    const caps = {
-      ...baseCaps,
-      os: bsConfig.capabilities.os,
-      os_version: bsConfig.capabilities.osVersion,
-      browser: bsConfig.capabilities.browser,
-      browser_version: bsConfig.capabilities.browserVersion,
-    };
+    const isMobile = Boolean(bsConfig.capabilities.device);
+
+    const caps = isMobile
+      ? {
+          ...baseCaps,
+          device: bsConfig.capabilities.device,
+          os_version: bsConfig.capabilities.osVersion,
+          browser: bsConfig.capabilities.browser,
+        }
+      : {
+          ...baseCaps,
+          os: bsConfig.capabilities.os,
+          os_version: bsConfig.capabilities.osVersion,
+          browser: bsConfig.capabilities.browser,
+          browser_version: bsConfig.capabilities.browserVersion,
+        };
 
     // Construction de l'URL WebSocket pour se connecter à BrowserStack
     const wsEndpoint = `wss://cdp.browserstack.com/playwright?caps=${encodeURIComponent(
