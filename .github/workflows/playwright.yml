@@ -19,7 +19,7 @@ on:
         type: choice
         options:
           - win10-firefox
-          - iphone15promax
+          - win11-chrome
 
 env:
   XRAY_ENDPOINT: xray.cloud.getxray.app
@@ -114,19 +114,19 @@ jobs:
           -GitHubRunNumber "${{ github.run_number }}"
 
   # ============================================================================
-  # 🌐 BROWSERSTACK - iPhone 15 Pro Max
+  # 🌐 BROWSERSTACK - Windows 11 Chrome 141
   # ============================================================================
-  test-browserstack-iphone15promax:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'iphone15promax' }}
+  test-browserstack-win11-chrome:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'win11-chrome' }}
     timeout-minutes: 90
     runs-on: ubuntu-latest
 
     env:
-      DEVICE_NAME: "iphone15promax"
-      BS_OS_VERSION: "17.5"
-      BS_BROWSER: "safari"
-      BS_BROWSER_VERSION: "latest"
-      BS_DEVICE: "iPhone 15 Pro Max"
+      DEVICE_NAME: "win11-chrome"
+      BS_OS: "Windows"
+      BS_OS_VERSION: "11"
+      BS_BROWSER: "chrome"
+      BS_BROWSER_VERSION: "141"
 
     steps:
     - name: Checkout code
