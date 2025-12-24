@@ -114,16 +114,19 @@ async function getCartItemCount(page) {
 }
 
 /**
- * Assertion URL compatible desktop et mobile BrowserStack
+ * Assertion URL compatible desktop et mobile BrowserStack.
+ * Utilise page.waitForURL (supporté) plutôt que expect(page).toHaveURL (non supporté mobile).
  */
-async function assertUrl(page, expected) {
-  await page.waitForLoadState('domcontentloaded');
-  const current = page.url();
+async function assertUrl(page, expected, timeoutMs = 10000) {
+  const waitOptions = { timeout: timeoutMs, waitUntil: 'networkidle' };
 
-  if (expected instanceof RegExp) {
-    await expect(current).toMatch(expected);
-  } else {
-    await expect(current).toBe(expected);
+  try {
+    await page.waitForURL(expected, waitOptions);
+  } catch (err) {
+    const current = page.url();
+    throw new Error(
+      `URL mismatch. Expected ${expected} but got ${current}. Original: ${err.message}`
+    );
   }
 }
 
