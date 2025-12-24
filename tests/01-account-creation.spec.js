@@ -1,4 +1,5 @@
 const { test, expect } = require('../test-fixtures');
+const { assertUrl } = require('../utils/helpers');
 const { generateUserData } = require('../utils/helpers');
 
 test.describe('Tests de création de compte', () => {
@@ -24,7 +25,7 @@ test.describe('Tests de création de compte', () => {
     await page.locator('a.ico-register').click();
     
     // Vérifier que nous sommes sur la page d'inscription
-    await expect(page).toHaveURL(/.*register/);
+    await assertUrl(page, /.*register/);
     await expect(page.locator('.page-title h1')).toContainText('Register');
     
     // Remplir le formulaire
@@ -45,7 +46,7 @@ test.describe('Tests de création de compte', () => {
     await page.locator('.button-1.register-continue-button').click();
     
     // Vérifier que nous sommes de retour sur la page d'accueil
-    await expect(page).toHaveURL('/');
+    await assertUrl(page, '/');
     
 
     
@@ -72,7 +73,7 @@ test.describe('Tests de création de compte', () => {
     await expect(page.locator('.field-validation-error')).toContainText('Wrong email');
     
     // Vérifier que nous sommes toujours sur la page d'inscription
-    await expect(page).toHaveURL(/.*register/);
+    await assertUrl(page, /.*register/);
     
     console.log('✅ Le système a correctement rejeté l\'email invalide');
   });
@@ -95,7 +96,7 @@ test.describe('Tests de création de compte', () => {
     await expect(page.locator('.field-validation-error')).toBeVisible();
     await expect(page.locator('.field-validation-error')).toContainText(/password/i);
     
-    await expect(page).toHaveURL(/.*register/);
+    await assertUrl(page, /.*register/);
     
     console.log('✅ Le système a correctement détecté les mots de passe différents');
   });

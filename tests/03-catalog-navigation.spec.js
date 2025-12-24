@@ -1,4 +1,5 @@
 const { test, expect } = require('../test-fixtures');
+const { assertUrl } = require('../utils/helpers');
 
 test.describe('Tests de parcours du catalogue', () => {
 
@@ -16,7 +17,7 @@ test.describe('Tests de parcours du catalogue', () => {
     await page.locator('ul.top-menu a[href="/books"]').first().click();
     
     // Vérifier que nous sommes sur la page Books
-    await expect(page).toHaveURL(/.*books/);
+    await assertUrl(page, /.*books/);
     await expect(page.locator('.page-title h1')).toContainText('Books');
     
     // Vérifier qu'il y a des produits affichés
@@ -56,13 +57,13 @@ test.describe('Tests de parcours du catalogue', () => {
     
     // Tester la catégorie Computers
     await page.locator('ul.top-menu a[href="/computers"]').first().click();
-    await expect(page).toHaveURL(/.*computers/);
+    await assertUrl(page, /.*computers/);
     await expect(page.locator('.page-title h1')).toContainText('Computers');
     
     // Aller dans la sous-catégorie Desktops
     //await page.locator('ul.top-menu a[href="/desktops"]').click();
     await page.getByRole('link', { name: 'Desktops' }).nth(1).click();
-    await expect(page).toHaveURL(/.*desktops/);
+    await assertUrl(page, /.*desktops/);
     
     const desktopProducts = await page.locator('.product-item').count();
     expect(desktopProducts).toBeGreaterThan(0);
@@ -71,7 +72,7 @@ test.describe('Tests de parcours du catalogue', () => {
     // Tester la catégorie Electronics
     await page.goto('/');
     await page.locator('ul.top-menu a[href="/electronics"]').first().click();
-    await expect(page).toHaveURL(/.*electronics/);
+    await assertUrl(page, /.*electronics/);
     await expect(page.locator('.page-title h1')).toContainText('Electronics');
     
     // Attendre la présence d'un conteneur de produits (plusieurs variantes possibles)

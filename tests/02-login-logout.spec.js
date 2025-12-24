@@ -1,4 +1,5 @@
 const { test, expect } = require('../test-fixtures');
+const { assertUrl } = require('../utils/helpers');
 const { generateUserData, login, logout } = require('../utils/helpers');
 
 test.describe('Tests de connexion et déconnexion', () => {
@@ -20,7 +21,7 @@ test.describe('Tests de connexion et déconnexion', () => {
     
     await page.goto('/');
     await page.locator('a.ico-register').click();
-    await expect(page).toHaveURL(/.*register/);
+    await assertUrl(page, /.*register/);
     
     await page.locator('input#gender-male').check();
     await page.locator('input#FirstName').fill(testUser.firstName);
@@ -32,7 +33,7 @@ test.describe('Tests de connexion et déconnexion', () => {
     
     await expect(page.locator('.result')).toContainText('Your registration completed');
     await page.locator('.button-1.register-continue-button').click();
-    await expect(page).toHaveURL('/');
+    await assertUrl(page, '/');
     
     console.log(`✅ Compte créé avec succès: ${testUser.email}`);
     
@@ -43,14 +44,14 @@ test.describe('Tests de connexion et déconnexion', () => {
     // Maintenant tester la connexion avec ce compte
     await page.goto('/');
     await page.locator('a.ico-login').click();
-    await expect(page).toHaveURL(/.*login/);
+    await assertUrl(page, /.*login/);
     
     await page.locator('input#Email').fill(testUser.email);
     await page.locator('input#Password').fill(testUser.password);
     await page.locator('.button-1.login-button').click();
     await page.waitForLoadState('networkidle');
     
-    await expect(page).toHaveURL('/');
+    await assertUrl(page, '/');
     await expect(page.locator('a.ico-logout')).toBeVisible();
     await expect(page.locator('.account').first()).toContainText(testUser.email);
     await expect(page.locator('a.ico-login')).not.toBeVisible();
@@ -88,7 +89,7 @@ test.describe('Tests de connexion et déconnexion', () => {
     await expect(page.locator('.validation-summary-errors')).toContainText('Login was unsuccessful');
     
     // Vérifier que nous sommes toujours sur la page de connexion
-    await expect(page).toHaveURL(/.*login/);
+    await assertUrl(page, /.*login/);
     
     // Vérifier que nous ne sommes pas connectés
     await expect(page.locator('a.ico-login')).toBeVisible();
@@ -135,7 +136,7 @@ test.describe('Tests de connexion et déconnexion', () => {
     await page.waitForLoadState('networkidle');
     
     // Vérifier que nous sommes déconnectés
-    await expect(page).toHaveURL('/');
+    await assertUrl(page, '/');
     await expect(page.locator('a.ico-login')).toBeVisible();
     await expect(page.locator('a.ico-register')).toBeVisible();
     await expect(page.locator('a.ico-logout')).not.toBeVisible();

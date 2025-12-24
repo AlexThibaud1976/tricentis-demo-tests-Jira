@@ -2,6 +2,8 @@
  * Fonctions utilitaires pour les tests Playwright
  */
 
+const { expect } = require('@playwright/test');
+
 /**
  * Génère un timestamp unique
  */
@@ -111,6 +113,20 @@ async function getCartItemCount(page) {
   return match ? parseInt(match[1]) : 0;
 }
 
+/**
+ * Assertion URL compatible desktop et mobile BrowserStack
+ */
+async function assertUrl(page, expected) {
+  await page.waitForLoadState('domcontentloaded');
+  const current = page.url();
+
+  if (expected instanceof RegExp) {
+    await expect(current).toMatch(expected);
+  } else {
+    await expect(current).toBe(expected);
+  }
+}
+
 module.exports = {
   getTimestamp,
   generateUserData,
@@ -120,5 +136,6 @@ module.exports = {
   login,
   logout,
   addProductToCart,
-  getCartItemCount
+  getCartItemCount,
+  assertUrl
 };

@@ -1,4 +1,5 @@
 const { test, expect } = require('../test-fixtures');
+const { assertUrl } = require('../utils/helpers');
 const { createAccount, login, clearCart, wait, addProductToCart } = require('../utils/helpers');
 
 test.describe('Tests de passage de commande', () => {
@@ -136,7 +137,7 @@ test.describe('Tests de passage de commande', () => {
     // Si aucun dialog, s'assurer qu'on reste sur la page panier
     if (!dialogHandled) {
       await wait(500);
-      await expect(page).toHaveURL(/.*cart/);
+      await assertUrl(page, /.*cart/);
       console.log('✅ Pas de dialog, reste sur la page panier comme attendu');
     }
 
