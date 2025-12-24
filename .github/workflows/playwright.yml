@@ -123,9 +123,8 @@ jobs:
 
     env:
       DEVICE_NAME: "iphone15promax"
-      BS_OS: "ios"
-      BS_OS_VERSION: "17"
-      BS_BROWSER: "chrome"
+      BS_OS_VERSION: "17.5"
+      BS_BROWSER: "safari"
       BS_BROWSER_VERSION: "latest"
       BS_DEVICE: "iPhone 15 Pro Max"
 
