@@ -17,15 +17,26 @@ Write-Host "=============================================="
 $basicAuth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${JiraUser}:${JiraApiToken}"))
 $jsonHeaders = @{ Authorization = "Basic $basicAuth"; Accept = "application/json" }
 
-# 1. Update Test Execution title
-Write-Host "`n[1/4] Updating Test Execution title..."
+# 1. Add label for device/environment
+Write-Host "`n[1/5] Adding device label..."
+$labelUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
+$labelJson = "{`"fields`": {`"labels`": [`"$DeviceName`"]}}"
+try {
+  Invoke-RestMethod -Method Put -Uri $labelUrl -Headers $jsonHeaders -ContentType "application/json" -Body $labelJson | Out-Null
+  Write-Host "Label '$DeviceName' added to $ExecKey"
+} catch {
+  Write-Host "Warning: Could not add label - $($_.Exception.Message)"
+}
+
+# 2. Update Test Execution title
+Write-Host "`n[2/5] Updating Test Execution title..."
 $titleUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
 $titleJson = "{`"fields`": {`"summary`": `"Test execution - device : $DeviceName`"}}"
 Invoke-RestMethod -Method Put -Uri $titleUrl -Headers $jsonHeaders -ContentType "application/json" -Body $titleJson | Out-Null
 Write-Host "Title updated for $ExecKey"
 
-# 2. Attach HTML report
-Write-Host "`n[2/4] Attaching HTML report..."
+# 3. Attach HTML report
+Write-Host "`n[3/5] Attaching HTML report..."
 $htmlPath = "$ReportPath/index.html"
 if (Test-Path $htmlPath) {
   $attachUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/attachments"
@@ -36,8 +47,8 @@ if (Test-Path $htmlPath) {
   Write-Host "HTML report not found at $htmlPath"
 }
 
-# 3. Attach PDF report
-Write-Host "`n[3/4] Attaching PDF report..."
+# 4. Attach PDF report
+Write-Host "`n[4/5] Attaching PDF report..."
 $pdfPath = "$ReportPath/report.pdf"
 if (Test-Path $pdfPath) {
   $attachUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/attachments"
@@ -48,8 +59,8 @@ if (Test-Path $pdfPath) {
   Write-Host "PDF report not found at $pdfPath"
 }
 
-# 4. Add remote link to GitHub Actions
-Write-Host "`n[4/4] Adding remote link to GitHub Actions..."
+# 5. Add remote link to GitHub Actions
+Write-Host "`n[5/5] Adding remote link to GitHub Actions..."
 $linkUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/remotelink"
 $linkJson = "{`"object`": {`"url`": `"https://github.com/$GitHubRepository/actions/runs/$GitHubRunId`", `"title`": `"GitHub Actions Run #$GitHubRunNumber`"}}"
 Invoke-RestMethod -Method Post -Uri $linkUrl -Headers $jsonHeaders -ContentType "application/json" -Body $linkJson | Out-Null
