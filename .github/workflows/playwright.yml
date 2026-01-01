@@ -42,7 +42,7 @@ on:
         type: choice
         options:
           - chrome
-          - chrome
+          - chromium
           - firefox
           - safari
           - edge
@@ -96,6 +96,8 @@ jobs:
           --osVersion "${{ github.event.inputs.osVersion }}" \
           --browser "${{ github.event.inputs.browser }}" \
           --browserVersion "${{ github.event.inputs.browserVersion }}"
+
+    - name: Install dependencies
       run: npm ci
 
     - name: Install Playwright (chromium driver)
