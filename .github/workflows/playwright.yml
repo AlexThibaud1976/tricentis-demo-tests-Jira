@@ -13,13 +13,58 @@ on:
       summary:
         description: "Jira issue summary"
         required: false
-      browser:
-        description: "Browser/Device pour l'exécution"
+      os:
+        description: "Système d'exploitation"
         required: true
         type: choice
         options:
-          - win10-firefox
-          - win11-chrome
+          - Windows
+          - Mac
+      osVersion:
+        description: "Version du système d'exploitation"
+        required: true
+        type: choice
+        options:
+          - "7"
+          - "8"
+          - "8.1"
+          - "10"
+          - "11"
+          - "Catalina"
+          - "Big Sur"
+          - "Monterey"
+          - "Ventura"
+          - "Sonoma"
+          - "Sequoia"
+      browser:
+        description: "Navigateur"
+        required: true
+        type: choice
+        options:
+          - chrome
+          - chrome
+          - firefox
+          - safari
+          - edge
+      browserVersion:
+        description: "Version du navigateur"
+        required: true
+        type: choice
+        options:
+          - latest
+          - "144"
+          - "143"
+          - "142"
+          - "141"
+          - "140"
+          - "131"
+          - "130"
+          - "129"
+          - "128"
+          - "18"
+          - "17"
+          - "16"
+          - "15"
 
 env:
   XRAY_ENDPOINT: xray.cloud.getxray.app
@@ -27,19 +72,12 @@ env:
 
 jobs:
   # ============================================================================
-  # 🌐 BROWSERSTACK - Windows 10 Firefox (latest)
+  # 🌐 BROWSERSTACK - Exécution dynamique avec paramètres personnalisés
   # ============================================================================
-  test-browserstack-win10-firefox:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'win10-firefox' }}
+  test-browserstack-dynamic:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     timeout-minutes: 90
     runs-on: ubuntu-latest
-
-    env:
-      DEVICE_NAME: "win10-firefox"
-      BS_OS: "Windows"
-      BS_OS_VERSION: "10"
-      BS_BROWSER: "playwright-firefox"
-      BS_BROWSER_VERSION: "latest"
 
     steps:
     - name: Checkout code
@@ -50,94 +88,14 @@ jobs:
       with:
         node-version: 18
 
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Install Playwright (chromium driver)
-      run: npx playwright install chromium
-
-    - name: Run tests on BrowserStack
-      run: npx playwright test --config=playwright.config.browserstack.js --reporter=list,html,junit
-      env:
-        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-        BROWSERSTACK_BUILD_NAME: "GitHub Actions #${{ github.run_number }} - ${{ github.ref_name }} - ${{ env.DEVICE_NAME }}"
-        BS_WORKERS: "5"
-        CI: true
-        PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
-      continue-on-error: true
-
-    - name: Generate PDF report from HTML
-      if: always()
+    - name: Valider et résoudre la configuration BrowserStack
+      shell: bash
       run: |
-        sudo apt-get update
-        sudo apt-get install -y wkhtmltopdf
-        if [ -f "playwright-report/index.html" ]; then
-          wkhtmltopdf --enable-local-file-access playwright-report/index.html playwright-report/report.pdf || true
-        fi
-
-    - name: Upload BrowserStack test results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: browserstack-report-${{ env.DEVICE_NAME }}
-        path: |
-          playwright-report/
-          results.xml
-        retention-days: 30
-
-    - name: Upload results to Xray
-      if: always()
-      id: xray-upload
-      shell: pwsh
-      env:
-        XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
-        XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
-        JIRA_USER: ${{ secrets.JIRA_USER }}
-        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-        JIRA_URL: ${{ secrets.JIRA_URL }}
-      run: |
-        ./scripts/upload-xray.ps1 -IssueKey "${{ github.event.inputs.issueKey }}"
-
-    - name: Update Jira Test Execution
-      if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
-      shell: pwsh
-      run: |
-        ./scripts/jira-post-execution.ps1 `
-          -ExecKey "${{ steps.xray-upload.outputs.exec_key }}" `
-          -DeviceName "${{ env.DEVICE_NAME }}" `
-          -JiraUrl "${{ secrets.JIRA_URL }}" `
-          -JiraUser "${{ secrets.JIRA_USER }}" `
-          -JiraApiToken "${{ secrets.JIRA_API_TOKEN }}" `
-          -GitHubRepository "${{ github.repository }}" `
-          -GitHubRunId "${{ github.run_id }}" `
-          -GitHubRunNumber "${{ github.run_number }}"
-
-  # ============================================================================
-  # 🌐 BROWSERSTACK - Windows 11 Chrome 141
-  # ============================================================================
-  test-browserstack-win11-chrome:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser == 'win11-chrome' }}
-    timeout-minutes: 90
-    runs-on: ubuntu-latest
-
-    env:
-      DEVICE_NAME: "win11-chrome"
-      BS_OS: "Windows"
-      BS_OS_VERSION: "11"
-      BS_BROWSER: "chrome"
-      BS_BROWSER_VERSION: "141"
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
-
-    - name: Install dependencies
+        node scripts/resolve-browserstack-config.js \
+          --os "${{ github.event.inputs.os }}" \
+          --osVersion "${{ github.event.inputs.osVersion }}" \
+          --browser "${{ github.event.inputs.browser }}" \
+          --browserVersion "${{ github.event.inputs.browserVersion }}"
       run: npm ci
 
     - name: Install Playwright (chromium driver)
