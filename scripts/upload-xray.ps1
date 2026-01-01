@@ -128,7 +128,7 @@ if ($junitContent.Length -gt 0) {
     exit 1
 }
 
-$importUri = "https://$XrayEndpoint/api/v2/import/execution/junit?projectKey=$JiraProjectKey&testPlanKey=$IssueKey&testEnvironments=$DeviceName"
+$importUri = "https://$XrayEndpoint/api/v2/import/execution/junit?projectKey=$JiraProjectKey&testPlanKey=$IssueKey&labels=$DeviceName"
 Write-Host "Import URI: $importUri"
 
 try {

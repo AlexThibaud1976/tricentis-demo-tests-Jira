@@ -100,15 +100,6 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    - name: Ensure test environment exists in Jira
-      shell: pwsh
-      env:
-        JIRA_URL: ${{ secrets.JIRA_URL }}
-        JIRA_USER: ${{ secrets.JIRA_USER }}
-        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-      run: |
-        ./scripts/ensure-test-environment.ps1 -EnvironmentName "${{ env.DEVICE_NAME }}"
-
     - name: Install Playwright (chromium driver)
       run: npx playwright install chromium
 
