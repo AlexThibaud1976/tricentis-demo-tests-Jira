@@ -27,15 +27,15 @@ try {
   $response = Invoke-RestMethod -Uri "$JiraUrl/rest/api/3/field" -Method GET -Headers $headers -ErrorAction Stop
   
   Write-Host ""
-  Write-Host "Custom fields related to OS and Browser:" -ForegroundColor Green
+  Write-Host "Custom fields related to OS, Browser and Test Scope:" -ForegroundColor Green
   Write-Host ""
   
   $filteredFields = $response | Where-Object { 
-    $_.name -match "OS|Browser" -and $_.custom -eq $true
+    $_.name -match "OS|Browser|Périmètre|Test Scope|Scope" -and $_.custom -eq $true
   }
   
   if ($filteredFields.Count -eq 0) {
-    Write-Host "[!] No custom fields found with 'OS' or 'Browser' in the name"
+    Write-Host "[!] No custom fields found with 'OS', 'Browser' or 'Périmètre' in the name"
     Write-Host ""
     Write-Host "Available custom fields:" -ForegroundColor Yellow
     $response | Where-Object { $_.custom -eq $true } | ForEach-Object {
@@ -58,6 +58,7 @@ try {
   Write-Host "   - JIRA_CUSTOM_FIELD_OS_VERSION = [ID]"
   Write-Host "   - JIRA_CUSTOM_FIELD_BROWSER = [ID]"
   Write-Host "   - JIRA_CUSTOM_FIELD_BROWSER_VERSION = [ID]"
+  Write-Host "   - JIRA_CUSTOM_FIELD_TEST_SCOPE = [ID]"
   Write-Host ""
   Write-Host "2. Go to:" -ForegroundColor Yellow
   Write-Host "   GitHub Repo - Settings - Secrets and variables - Actions"

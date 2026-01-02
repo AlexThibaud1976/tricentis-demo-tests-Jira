@@ -18,7 +18,7 @@ Write-Host "=============================================="
 $basicAuth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${JiraUser}:${JiraApiToken}"))
 $jsonHeaders = @{ Authorization = "Basic $basicAuth"; Accept = "application/json" }
 
-# 1. Add custom fields (OS, OS Version, Browser, Browser Version)
+# 1. Add custom fields (OS, OS Version, Browser, Browser Version, Test Scope)
 Write-Host "`n[1/6] Updating custom fields..."
 $customFieldsUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
 
@@ -36,6 +36,9 @@ if ($env:JIRA_CUSTOM_FIELD_BROWSER -and $env:BS_BROWSER) {
 }
 if ($env:JIRA_CUSTOM_FIELD_BROWSER_VERSION -and $env:BS_BROWSER_VERSION) {
   $customFieldsObj.fields[$env:JIRA_CUSTOM_FIELD_BROWSER_VERSION] = $env:BS_BROWSER_VERSION
+}
+if ($env:JIRA_CUSTOM_FIELD_TEST_SCOPE -and $TestScope) {
+  $customFieldsObj.fields[$env:JIRA_CUSTOM_FIELD_TEST_SCOPE] = $TestScope
 }
 
 if ($customFieldsObj.fields.Count -gt 0) {
