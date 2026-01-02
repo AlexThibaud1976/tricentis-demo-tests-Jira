@@ -149,6 +149,11 @@ jobs:
     - name: Update Jira Test Execution
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
       shell: pwsh
+      env:
+        JIRA_CUSTOM_FIELD_OS: ${{ secrets.JIRA_CUSTOM_FIELD_OS }}
+        JIRA_CUSTOM_FIELD_OS_VERSION: ${{ secrets.JIRA_CUSTOM_FIELD_OS_VERSION }}
+        JIRA_CUSTOM_FIELD_BROWSER: ${{ secrets.JIRA_CUSTOM_FIELD_BROWSER }}
+        JIRA_CUSTOM_FIELD_BROWSER_VERSION: ${{ secrets.JIRA_CUSTOM_FIELD_BROWSER_VERSION }}
       run: |
         ./scripts/jira-post-execution.ps1 `
           -ExecKey "${{ steps.xray-upload.outputs.exec_key }}" `

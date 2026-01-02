@@ -17,8 +17,41 @@ Write-Host "=============================================="
 $basicAuth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${JiraUser}:${JiraApiToken}"))
 $jsonHeaders = @{ Authorization = "Basic $basicAuth"; Accept = "application/json" }
 
-# 1. Add label for device/environment
-Write-Host "`n[1/5] Adding device label..."
+# 1. Add custom fields (OS, OS Version, Browser, Browser Version)
+Write-Host "`n[1/6] Updating custom fields..."
+$customFieldsUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
+
+$customFieldsObj = @{ fields = @{} }
+
+# Add custom fields if environment variables are set
+if ($env:JIRA_CUSTOM_FIELD_OS -and $env:BS_OS) {
+  $customFieldsObj.fields[$env:JIRA_CUSTOM_FIELD_OS] = $env:BS_OS
+}
+if ($env:JIRA_CUSTOM_FIELD_OS_VERSION -and $env:BS_OS_VERSION) {
+  $customFieldsObj.fields[$env:JIRA_CUSTOM_FIELD_OS_VERSION] = $env:BS_OS_VERSION
+}
+if ($env:JIRA_CUSTOM_FIELD_BROWSER -and $env:BS_BROWSER) {
+  $customFieldsObj.fields[$env:JIRA_CUSTOM_FIELD_BROWSER] = $env:BS_BROWSER
+}
+if ($env:JIRA_CUSTOM_FIELD_BROWSER_VERSION -and $env:BS_BROWSER_VERSION) {
+  $customFieldsObj.fields[$env:JIRA_CUSTOM_FIELD_BROWSER_VERSION] = $env:BS_BROWSER_VERSION
+}
+
+if ($customFieldsObj.fields.Count -gt 0) {
+  $customFieldsJson = $customFieldsObj | ConvertTo-Json
+  try {
+    Invoke-RestMethod -Method Put -Uri $customFieldsUrl -Headers $jsonHeaders `
+      -ContentType "application/json" -Body $customFieldsJson | Out-Null
+    Write-Host "Custom fields updated successfully"
+  } catch {
+    Write-Host "Warning: Could not update custom fields - $($_.Exception.Message)"
+  }
+} else {
+  Write-Host "Custom field environment variables not set (optional)"
+}
+
+# 2. Add label for device/environment
+Write-Host "`n[2/6] Adding device label..."
 $labelUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
 $labelJson = "{`"fields`": {`"labels`": [`"$DeviceName`"]}}"
 try {
@@ -28,15 +61,15 @@ try {
   Write-Host "Warning: Could not add label - $($_.Exception.Message)"
 }
 
-# 2. Update Test Execution title
-Write-Host "`n[2/5] Updating Test Execution title..."
+# 3. Update Test Execution title
+Write-Host "`n[3/6] Updating Test Execution title..."
 $titleUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
 $titleJson = "{`"fields`": {`"summary`": `"Test execution - device : $DeviceName`"}}"
 Invoke-RestMethod -Method Put -Uri $titleUrl -Headers $jsonHeaders -ContentType "application/json" -Body $titleJson | Out-Null
 Write-Host "Title updated for $ExecKey"
 
-# 3. Attach HTML report
-Write-Host "`n[3/5] Attaching HTML report..."
+# 4. Attach HTML report
+Write-Host "`n[4/6] Attaching HTML report..."
 $htmlPath = "$ReportPath/index.html"
 if (Test-Path $htmlPath) {
   $attachUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/attachments"
@@ -47,8 +80,8 @@ if (Test-Path $htmlPath) {
   Write-Host "HTML report not found at $htmlPath"
 }
 
-# 4. Attach PDF report
-Write-Host "`n[4/5] Attaching PDF report..."
+# 5. Attach PDF report
+Write-Host "`n[5/6] Attaching PDF report..."
 $pdfPath = "$ReportPath/report.pdf"
 if (Test-Path $pdfPath) {
   $attachUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/attachments"
@@ -59,8 +92,8 @@ if (Test-Path $pdfPath) {
   Write-Host "PDF report not found at $pdfPath"
 }
 
-# 5. Add remote link to GitHub Actions
-Write-Host "`n[5/5] Adding remote link to GitHub Actions..."
+# 6. Add remote link to GitHub Actions
+Write-Host "`n[6/6] Adding remote link to GitHub Actions..."
 $linkUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/remotelink"
 $linkJson = "{`"object`": {`"url`": `"https://github.com/$GitHubRepository/actions/runs/$GitHubRunId`", `"title`": `"GitHub Actions Run #$GitHubRunNumber`"}}"
 Invoke-RestMethod -Method Post -Uri $linkUrl -Headers $jsonHeaders -ContentType "application/json" -Body $linkJson | Out-Null
