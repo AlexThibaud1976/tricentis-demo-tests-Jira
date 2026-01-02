@@ -65,6 +65,18 @@ on:
           - "17"
           - "16"
           - "15"
+      testScope:
+        description: "Périmètre de test"
+        required: true
+        type: choice
+        options:
+          - all
+          - sanity
+          - account-creation
+          - login-logout
+          - catalog-navigation
+          - cart-management
+          - order-checkout
 
 env:
   XRAY_ENDPOINT: xray.cloud.getxray.app
@@ -103,8 +115,48 @@ jobs:
     - name: Install Playwright (chromium driver)
       run: npx playwright install chromium
 
+    - name: Determine test pattern
+      id: test-pattern
+      shell: bash
+      run: |
+        SCOPE="${{ github.event.inputs.testScope }}"
+        case "$SCOPE" in
+          "all")
+            echo "pattern=tests/" >> $GITHUB_OUTPUT
+            echo "description=All Tests" >> $GITHUB_OUTPUT
+            ;;
+          "sanity")
+            echo "pattern=tests/99-sanity.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Sanity Tests" >> $GITHUB_OUTPUT
+            ;;
+          "account-creation")
+            echo "pattern=tests/01-account-creation.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Account Creation Tests" >> $GITHUB_OUTPUT
+            ;;
+          "login-logout")
+            echo "pattern=tests/02-login-logout.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Login/Logout Tests" >> $GITHUB_OUTPUT
+            ;;
+          "catalog-navigation")
+            echo "pattern=tests/03-catalog-navigation.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Catalog Navigation Tests" >> $GITHUB_OUTPUT
+            ;;
+          "cart-management")
+            echo "pattern=tests/04-cart-management.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Cart Management Tests" >> $GITHUB_OUTPUT
+            ;;
+          "order-checkout")
+            echo "pattern=tests/05-order-checkout.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Order Checkout Tests" >> $GITHUB_OUTPUT
+            ;;
+          *)
+            echo "pattern=tests/" >> $GITHUB_OUTPUT
+            echo "description=All Tests" >> $GITHUB_OUTPUT
+            ;;
+        esac
+
     - name: Run tests on BrowserStack
-      run: npx playwright test --config=playwright.config.browserstack.js --reporter=list,html,junit
+      run: npx playwright test ${{ steps.test-pattern.outputs.pattern }} --config=playwright.config.browserstack.js --reporter=list,html,junit
       env:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
