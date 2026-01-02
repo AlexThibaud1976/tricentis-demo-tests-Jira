@@ -7,6 +7,7 @@ param(
   [Parameter(Mandatory = $true)][string]$GitHubRepository,
   [Parameter(Mandatory = $true)][string]$GitHubRunId,
   [Parameter(Mandatory = $true)][string]$GitHubRunNumber,
+  [string]$BrowserStackBuildUrl = "",
   [string]$TestScope = "All Tests",
   [string]$ReportPath = "playwright-report"
 )
@@ -97,11 +98,22 @@ if (Test-Path $pdfPath) {
 }
 
 # 6. Add remote link to GitHub Actions
-Write-Host "`n[6/6] Adding remote link to GitHub Actions..."
+Write-Host "`n[6/7] Adding remote link to GitHub Actions..."
 $linkUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/remotelink"
 $linkJson = "{`"object`": {`"url`": `"https://github.com/$GitHubRepository/actions/runs/$GitHubRunId`", `"title`": `"GitHub Actions Run #$GitHubRunNumber`"}}"
 Invoke-RestMethod -Method Post -Uri $linkUrl -Headers $jsonHeaders -ContentType "application/json" -Body $linkJson | Out-Null
 Write-Host "Remote link added"
+
+# 7. Add remote link to BrowserStack build (optional)
+if ($BrowserStackBuildUrl) {
+  Write-Host "`n[7/7] Adding remote link to BrowserStack build..."
+  $bsLinkUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/remotelink"
+  $bsLinkJson = "{`"object`": {`"url`": `"$BrowserStackBuildUrl`", `"title`": `"BrowserStack Build`"}}"
+  Invoke-RestMethod -Method Post -Uri $bsLinkUrl -Headers $jsonHeaders -ContentType "application/json" -Body $bsLinkJson | Out-Null
+  Write-Host "BrowserStack build link added"
+} else {
+  Write-Host "BrowserStack build URL not provided, skipping"
+}
 
 Write-Host "`n=============================================="
 Write-Host "[Jira Post-Execution] Completed for $ExecKey"
