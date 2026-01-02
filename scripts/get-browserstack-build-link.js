@@ -57,17 +57,29 @@ async function main() {
   console.log('Fetching BrowserStack builds to locate link...');
   const builds = await fetchBuilds();
 
-  const match = builds.find(item => {
-    const name = item?.automation_build?.name;
-    return name === BROWSERSTACK_BUILD_NAME;
-  });
+  const normalize = (s) => (s || '').trim().toLowerCase();
+  const target = normalize(BROWSERSTACK_BUILD_NAME);
 
-  if (!match) {
-    console.log(`No build found with name: ${BROWSERSTACK_BUILD_NAME}`);
+  // Try exact match, then startsWith, then contains
+  const match = builds.find(item => normalize(item?.automation_build?.name) === target)
+    || builds.find(item => normalize(item?.automation_build?.name).startsWith(target))
+    || builds.find(item => normalize(item?.automation_build?.name).includes(target));
+
+  let buildItem = match;
+
+  if (!buildItem) {
+    console.log(`No build found with name (or partial match): ${BROWSERSTACK_BUILD_NAME}`);
+    console.log('Falling back to the most recent build. Available build names (latest 5):');
+    builds.slice(0, 5).forEach(b => console.log('- ', b?.automation_build?.name));
+    buildItem = builds[0];
+  }
+
+  if (!buildItem) {
+    console.log('No builds returned by BrowserStack API.');
     return;
   }
 
-  const build = match.automation_build;
+  const build = buildItem.automation_build;
   const hashedId = build.hashed_id;
 
   const buildUrl = hashedId

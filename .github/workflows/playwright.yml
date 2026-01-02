@@ -219,7 +219,6 @@ jobs:
         JIRA_CUSTOM_FIELD_BROWSER: ${{ secrets.JIRA_CUSTOM_FIELD_BROWSER }}
         JIRA_CUSTOM_FIELD_BROWSER_VERSION: ${{ secrets.JIRA_CUSTOM_FIELD_BROWSER_VERSION }}
         JIRA_CUSTOM_FIELD_TEST_SCOPE: ${{ secrets.JIRA_CUSTOM_FIELD_TEST_SCOPE }}
-        BROWSERSTACK_BUILD_URL: ${{ steps.bs-link.outputs.build_url }}
       run: |
         ./scripts/jira-post-execution.ps1 `
           -ExecKey "${{ steps.xray-upload.outputs.exec_key }}" `
@@ -230,6 +229,5 @@ jobs:
           -JiraApiToken "${{ secrets.JIRA_API_TOKEN }}" `
           -GitHubRepository "${{ github.repository }}" `
           -GitHubRunId "${{ github.run_id }}" `
-          -GitHubRunNumber "${{ github.run_number }}"
-
-  
+          -GitHubRunNumber "${{ github.run_number }}" `
+          -BrowserStackBuildUrl "${{ steps.bs-link.outputs.build_url }}"

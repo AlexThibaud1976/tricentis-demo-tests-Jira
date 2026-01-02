@@ -20,7 +20,7 @@ $basicAuth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${JiraUs
 $jsonHeaders = @{ Authorization = "Basic $basicAuth"; Accept = "application/json" }
 
 # 1. Add custom fields (OS, OS Version, Browser, Browser Version, Test Scope)
-Write-Host "`n[1/6] Updating custom fields..."
+Write-Host "`n[1/7] Updating custom fields..."
 $customFieldsUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
 
 $customFieldsObj = @{ fields = @{} }
@@ -56,7 +56,7 @@ if ($customFieldsObj.fields.Count -gt 0) {
 }
 
 # 2. Add label for device/environment
-Write-Host "`n[2/6] Adding device label..."
+Write-Host "`n[2/7] Adding device label..."
 $labelUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
 $labelJson = "{`"fields`": {`"labels`": [`"$DeviceName`"]}}"
 try {
@@ -67,14 +67,14 @@ try {
 }
 
 # 3. Update Test Execution title
-Write-Host "`n[3/6] Updating Test Execution title..."
+Write-Host "`n[3/7] Updating Test Execution title..."
 $titleUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
 $titleJson = "{`"fields`": {`"summary`": `"Test execution - $TestScope - device : $DeviceName`"}}"
 Invoke-RestMethod -Method Put -Uri $titleUrl -Headers $jsonHeaders -ContentType "application/json" -Body $titleJson | Out-Null
 Write-Host "Title updated for $ExecKey"
 
 # 4. Attach HTML report
-Write-Host "`n[4/6] Attaching HTML report..."
+Write-Host "`n[4/7] Attaching HTML report..."
 $htmlPath = "$ReportPath/index.html"
 if (Test-Path $htmlPath) {
   $attachUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/attachments"
@@ -86,7 +86,7 @@ if (Test-Path $htmlPath) {
 }
 
 # 5. Attach PDF report
-Write-Host "`n[5/6] Attaching PDF report..."
+Write-Host "`n[5/7] Attaching PDF report..."
 $pdfPath = "$ReportPath/report.pdf"
 if (Test-Path $pdfPath) {
   $attachUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/attachments"
