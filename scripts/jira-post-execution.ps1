@@ -7,6 +7,7 @@ param(
   [Parameter(Mandatory = $true)][string]$GitHubRepository,
   [Parameter(Mandatory = $true)][string]$GitHubRunId,
   [Parameter(Mandatory = $true)][string]$GitHubRunNumber,
+  [string]$TestScope = "All Tests",
   [string]$ReportPath = "playwright-report"
 )
 
@@ -64,7 +65,7 @@ try {
 # 3. Update Test Execution title
 Write-Host "`n[3/6] Updating Test Execution title..."
 $titleUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
-$titleJson = "{`"fields`": {`"summary`": `"Test execution - device : $DeviceName`"}}"
+$titleJson = "{`"fields`": {`"summary`": `"Test execution - $TestScope - device : $DeviceName`"}}"
 Invoke-RestMethod -Method Put -Uri $titleUrl -Headers $jsonHeaders -ContentType "application/json" -Body $titleJson | Out-Null
 Write-Host "Title updated for $ExecKey"
 
