@@ -1,3 +1,25 @@
+<#
+.SYNOPSIS
+    Récupère les IDs des champs personnalisés Jira pour OS, Browser et Test Scope
+
+.DESCRIPTION
+    Script utilitaire pour identifier les IDs des custom fields Jira nécessaires
+    au projet. Ces IDs doivent être configurés dans GitHub Secrets pour que
+    les workflows puissent enrichir les Test Executions.
+
+.PARAMETER JiraUrl
+    URL de base Jira (ex: https://votredomaine.atlassian.net)
+
+.PARAMETER JiraUser
+    Email de l'utilisateur Jira
+
+.PARAMETER JiraApiToken
+    Token API Jira pour l'authentification
+
+.EXAMPLE
+    .\get-custom-field-ids.ps1 -JiraUrl "https://example.atlassian.net" -JiraUser "user@example.com" -JiraApiToken "token"
+#>
+
 param(
   [Parameter(Mandatory = $true)][string]$JiraUrl,
   [Parameter(Mandatory = $true)][string]$JiraUser,

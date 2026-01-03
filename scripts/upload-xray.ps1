@@ -1,4 +1,32 @@
-﻿param(
+﻿<#
+.SYNOPSIS
+    Upload des résultats de tests au format JUnit vers Xray Cloud
+
+.DESCRIPTION
+    Ce script authentifie avec l'API Xray, puis upload un fichier JUnit XML
+    pour créer une Test Execution dans Jira. Le script gère:
+    - Authentification avec Xray Cloud via client_id/client_secret
+    - Multipart upload du fichier results.xml
+    - Association avec un Test Plan existant
+    - Export de la clé de Test Execution créée
+
+.PARAMETER IssueKey
+    Clé du Test Plan Jira auquel associer les résultats (ex: DEMO-100)
+
+.PARAMETER DeviceName
+    Nom du device testé (optionnel, récupéré de $env:DEVICE_NAME)
+
+.PARAMETER XrayEndpoint
+    Point d'entrée de l'API Xray (par défaut: xray.cloud.getxray.app)
+
+.PARAMETER JiraProjectKey
+    Clé du projet Jira (ex: DEMO)
+
+.OUTPUTS
+    Exporte la variable exec_key contenant la clé de la Test Execution créée
+#>
+
+param(
   [Parameter(Mandatory = $true)][string]$IssueKey,
   [string]$DeviceName     = $env:DEVICE_NAME,
   [string]$XrayEndpoint   = $env:XRAY_ENDPOINT,
@@ -7,6 +35,8 @@
 
 Write-Host "[Xray] Authentication..."
 
+# Configuration des protocoles TLS pour assurer la compatibilité avec l'API Xray
+# Force l'utilisation de TLS 1.2 ou 1.3 pour sécuriser les communications
 try {
   $currentProtocols = [Net.ServicePointManager]::SecurityProtocol
   $tls12 = [Net.SecurityProtocolType]::Tls12
@@ -28,10 +58,12 @@ if (-not $clientId -or -not $clientSecret) {
   exit 1
 }
 
+# Préparation des credentials pour l'authentification Xray
 $authBodyObj = @{ client_id = $clientId; client_secret = $clientSecret }
 $authBody    = $authBodyObj | ConvertTo-Json -Compress
 $authUri     = "https://$XrayEndpoint/api/v2/authenticate"
 
+# Fonction pour obtenir le token d'authentification Xray
 function Get-XrayToken {
   param([string]$Uri, [string]$BodyJson)
 

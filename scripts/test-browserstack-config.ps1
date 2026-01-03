@@ -1,3 +1,28 @@
+<#
+.SYNOPSIS
+    Script de test pour valider la configuration BrowserStack
+
+.DESCRIPTION
+    Permet de tester localement le script resolve-browserstack-config.js
+    avec différentes combinaisons d'OS et de navigateurs avant de lancer
+    un workflow GitHub Actions complet.
+
+.PARAMETER OS
+    Système d'exploitation (Windows ou Mac, par défaut: Windows)
+
+.PARAMETER OSVersion
+    Version du système d'exploitation (par défaut: 11)
+
+.PARAMETER Browser
+    Navigateur à tester (chrome, firefox, safari, edge, par défaut: chrome)
+
+.PARAMETER BrowserVersion
+    Version du navigateur (par défaut: latest)
+
+.EXAMPLE
+    .\test-browserstack-config.ps1 -OS "Mac" -OSVersion "Monterey" -Browser "safari" -BrowserVersion "latest"
+#>
+
 param(
     [Parameter(Mandatory=$false)]
     [string]$OS = "Windows",

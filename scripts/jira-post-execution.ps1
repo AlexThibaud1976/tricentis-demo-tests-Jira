@@ -1,3 +1,49 @@
+<#
+.SYNOPSIS
+    Post-traitement Jira après exécution des tests Playwright
+
+.DESCRIPTION
+    Ce script enrichit une Test Execution Jira avec:
+    - Champs personnalisés (OS, Browser, Version, Test Scope)
+    - Label du device testé
+    - Titre descriptif de l'exécution
+    - Rapport HTML en pièce jointe
+    - Liens vers GitHub Actions et BrowserStack
+
+.PARAMETER ExecKey
+    Clé Jira de la Test Execution (ex: DEMO-123)
+
+.PARAMETER DeviceName
+    Nom du device/configuration testée (ex: win-11-chrome-latest)
+
+.PARAMETER JiraUrl
+    URL de base Jira (ex: https://votredomaine.atlassian.net)
+
+.PARAMETER JiraUser
+    Email de l'utilisateur Jira
+
+.PARAMETER JiraApiToken
+    Token API Jira pour l'authentification
+
+.PARAMETER GitHubRepository
+    Nom du repository GitHub (format: owner/repo)
+
+.PARAMETER GitHubRunId
+    ID de l'exécution GitHub Actions
+
+.PARAMETER GitHubRunNumber
+    Numéro de l'exécution GitHub Actions
+
+.PARAMETER BrowserStackBuildUrl
+    (Optionnel) URL du build BrowserStack
+
+.PARAMETER TestScope
+    Périmètre de test exécuté (par défaut: All Tests)
+
+.PARAMETER ReportPath
+    Chemin du dossier contenant les rapports (par défaut: playwright-report)
+#>
+
 param(
   [Parameter(Mandatory = $true)][string]$ExecKey,
   [Parameter(Mandatory = $true)][string]$DeviceName,
@@ -16,11 +62,12 @@ Write-Host "=============================================="
 Write-Host "[Jira Post-Execution] Starting for $ExecKey"
 Write-Host "=============================================="
 
+# Préparation de l'authentification Basic Auth pour l'API Jira
 $basicAuth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${JiraUser}:${JiraApiToken}"))
 $jsonHeaders = @{ Authorization = "Basic $basicAuth"; Accept = "application/json" }
 
 # 1. Add custom fields (OS, OS Version, Browser, Browser Version, Test Scope)
-Write-Host "`n[1/7] Updating custom fields..."
+Write-Host "`n[1/6] Updating custom fields..."
 $customFieldsUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
 
 $customFieldsObj = @{ fields = @{} }
@@ -55,8 +102,9 @@ if ($customFieldsObj.fields.Count -gt 0) {
   Write-Host "Custom field environment variables not set (optional)"
 }
 
-# 2. Add label for device/environment
-Write-Host "`n[2/7] Adding device label..."
+# 2. Ajout d'un label pour identifier la configuration testée
+# Permet de filtrer les Test Executions par device dans Jira
+Write-Host "`n[2/6] Adding device label..."
 $labelUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
 $labelJson = "{`"fields`": {`"labels`": [`"$DeviceName`"]}}"
 try {
@@ -67,7 +115,7 @@ try {
 }
 
 # 3. Update Test Execution title
-Write-Host "`n[3/7] Updating Test Execution title..."
+Write-Host "`n[3/6] Updating Test Execution title..."
 $titleUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
 $titleJson = "{`"fields`": {`"summary`": `"Test execution - $TestScope - device : $DeviceName`"}}"
 Invoke-RestMethod -Method Put -Uri $titleUrl -Headers $jsonHeaders -ContentType "application/json" -Body $titleJson | Out-Null
@@ -86,7 +134,7 @@ if (Test-Path $htmlPath) {
 }
 
 # 5. Add remote link to GitHub Actions
-Write-Host "`n[6/7] Adding remote link to GitHub Actions..."
+Write-Host "`n[5/6] Adding remote link to GitHub Actions..."
 $linkUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/remotelink"
 $linkJson = "{`"object`": {`"url`": `"https://github.com/$GitHubRepository/actions/runs/$GitHubRunId`", `"title`": `"GitHub Actions Run #$GitHubRunNumber`"}}"
 Invoke-RestMethod -Method Post -Uri $linkUrl -Headers $jsonHeaders -ContentType "application/json" -Body $linkJson | Out-Null

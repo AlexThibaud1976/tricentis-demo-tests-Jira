@@ -136,7 +136,11 @@ function validateParams(params) {
   return errors;
 }
 
-// Résout la configuration
+/**
+ * Résout et construit la configuration BrowserStack à partir des paramètres validés
+ * @param {Object} params - Paramètres de configuration (os, osVersion, browser, browserVersion)
+ * @returns {Object} Configuration résolue avec variables d'environnement
+ */
 function resolveConfig(params) {
   const osKey = params.os.toLowerCase();
   const browserKey = params.browser.toLowerCase();
@@ -158,12 +162,18 @@ function resolveConfig(params) {
   return config;
 }
 
-// Exporte la configuration en tant que variables d'environnement pour GitHub Actions
+/**
+ * Exporte la configuration en tant que variables d'environnement
+ * En mode GitHub Actions: écrit dans GITHUB_ENV
+ * En mode local: affiche les variables dans la console
+ * @param {Object} config - Configuration à exporter
+ * @returns {Object} Configuration exportée
+ */
 function exportForGitHub(config) {
   const gitHubEnv = process.env.GITHUB_ENV;
 
   if (gitHubEnv) {
-    // GitHub Actions: écrire dans GITHUB_ENV
+    // Mode GitHub Actions: écrire dans GITHUB_ENV pour persistance entre les steps
     const envContent = Object.entries(config)
       .map(([key, value]) => `${key}=${value}`)
       .join('\n');

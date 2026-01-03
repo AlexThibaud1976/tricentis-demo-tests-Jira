@@ -23,6 +23,10 @@ if (!BROWSERSTACK_USERNAME || !BROWSERSTACK_ACCESS_KEY || !BROWSERSTACK_BUILD_NA
   fail('Missing required env vars: BROWSERSTACK_USERNAME, BROWSERSTACK_ACCESS_KEY, BROWSERSTACK_BUILD_NAME');
 }
 
+/**
+ * Récupère la liste des builds BrowserStack via l'API
+ * @returns {Promise} Liste des builds au format JSON
+ */
 function fetchBuilds() {
   return new Promise((resolve, reject) => {
     const options = {
@@ -53,6 +57,10 @@ function fetchBuilds() {
   });
 }
 
+/**
+ * Fonction principale: recherche le build BrowserStack correspondant au nom donné
+ * et exporte son URL pour GitHub Actions
+ */
 async function main() {
   console.log('Fetching BrowserStack builds to locate link...');
   const builds = await fetchBuilds();
@@ -60,7 +68,7 @@ async function main() {
   const normalize = (s) => (s || '').trim().toLowerCase();
   const target = normalize(BROWSERSTACK_BUILD_NAME);
 
-  // Try exact match, then startsWith, then contains
+  // Stratégie de recherche: correspondance exacte > commence par > contient
   const match = builds.find(item => normalize(item?.automation_build?.name) === target)
     || builds.find(item => normalize(item?.automation_build?.name).startsWith(target))
     || builds.find(item => normalize(item?.automation_build?.name).includes(target));
