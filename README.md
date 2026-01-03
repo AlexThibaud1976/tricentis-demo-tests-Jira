@@ -165,7 +165,7 @@ Le rapport s'ouvre dans votre navigateur et affiche :
 Ce projet inclut un script d'intégration Jira pour publier automatiquement des artefacts d'exécution sur une issue de type "Test Execution".
 
 - Met à jour le titre de l'exécution avec le nom du device
-- Attache le rapport HTML (playwright-report/index.html) et optionnellement un PDF
+- Attache le rapport HTML (playwright-report/index.html)
 - Ajoute un lien "Remote link" vers le run GitHub Actions
 
 ### Script
@@ -178,7 +178,7 @@ Voir [scripts/jira-post-execution.ps1](scripts/jira-post-execution.ps1)
 - JiraUrl (ex. https://votre-domaine.atlassian.net)
 - ExecKey (clé de l'issue Test Execution, ex. DEMO-131)
 - PowerShell 7+ (fonctionne sur Windows, Linux et macOS)
-- Rapport Playwright généré dans playwright-report (HTML requis, PDF optionnel)
+- Rapport Playwright généré dans playwright-report (HTML requis)
 
 ### Utilisation
 
@@ -211,7 +211,7 @@ Paramètres:
 ### Dépannage
 
 - Erreur "curl.exe non reconnu": le script utilise désormais des cmdlets PowerShell (Invoke-RestMethod, Invoke-WebRequest) compatibles multiplateforme. Assurez-vous d'utiliser PowerShell 7+.
-- Pièces jointes non trouvées: vérifiez que playwright-report/index.html (et report.pdf si utilisé) existent avant d'exécuter le script.
+- Pièces jointes non trouvées: vérifiez que playwright-report/index.html existe avant d'exécuter le script.
 - 401/403 Jira: confirmez JiraUser et JiraApiToken, et l'URL JiraUrl.
 
 ## ⚙️ Configuration

@@ -119,7 +119,6 @@ tricentis-demo-tests-Jira/
 │                     Résultats & Reports                          │
 │  - playwright-report/ (HTML)                                    │
 │  - results.xml (JUnit)                                          │
-│  - report.pdf (PDF généré)                                      │
 └─────────────────────────────────────────────────────────────────┘
                              ↓
 ┌─────────────────────────────────────────────────────────────────┐

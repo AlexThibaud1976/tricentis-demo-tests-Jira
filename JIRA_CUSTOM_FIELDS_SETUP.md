@@ -169,8 +169,7 @@ jira-post-execution.ps1
     ├─ [2/6] Ajouter label
     ├─ [3/6] Mettre à jour titre
     ├─ [4/6] Attacher HTML report
-    ├─ [5/6] Attacher PDF report
-    └─ [6/6] Ajouter lien GitHub Actions
+    └─ [5/6] Ajouter lien GitHub Actions
 ```
 
 ## Avantages
@@ -194,7 +193,7 @@ Détails:
 - Browser Version: 143
 - Labels: windows11-chromium-143
 - Title: Test execution - device : windows11-chromium-143
-- Attachments: [HTML Report] [PDF Report]
+- Attachments: [HTML Report]
 - Remote Links: [GitHub Actions Run #456]
 ```
 

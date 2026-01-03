@@ -74,7 +74,7 @@ Invoke-RestMethod -Method Put -Uri $titleUrl -Headers $jsonHeaders -ContentType 
 Write-Host "Title updated for $ExecKey"
 
 # 4. Attach HTML report
-Write-Host "`n[4/7] Attaching HTML report..."
+Write-Host "`n[4/6] Attaching HTML report..."
 $htmlPath = "$ReportPath/index.html"
 if (Test-Path $htmlPath) {
   $attachUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/attachments"
@@ -85,28 +85,16 @@ if (Test-Path $htmlPath) {
   Write-Host "HTML report not found at $htmlPath"
 }
 
-# 5. Attach PDF report
-Write-Host "`n[5/7] Attaching PDF report..."
-$pdfPath = "$ReportPath/report.pdf"
-if (Test-Path $pdfPath) {
-  $attachUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/attachments"
-  $attachHeaders = @{ Authorization = "Basic $basicAuth"; "X-Atlassian-Token" = "no-check" }
-  Invoke-WebRequest -Method Post -Uri $attachUrl -Headers $attachHeaders -Form @{ file = (Get-Item $pdfPath) } | Out-Null
-  Write-Host "PDF report attached"
-} else {
-  Write-Host "PDF report not found at $pdfPath"
-}
-
-# 6. Add remote link to GitHub Actions
+# 5. Add remote link to GitHub Actions
 Write-Host "`n[6/7] Adding remote link to GitHub Actions..."
 $linkUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/remotelink"
 $linkJson = "{`"object`": {`"url`": `"https://github.com/$GitHubRepository/actions/runs/$GitHubRunId`", `"title`": `"GitHub Actions Run #$GitHubRunNumber`"}}"
 Invoke-RestMethod -Method Post -Uri $linkUrl -Headers $jsonHeaders -ContentType "application/json" -Body $linkJson | Out-Null
 Write-Host "Remote link added"
 
-# 7. Add remote link to BrowserStack build (optional)
+# 6. Add remote link to BrowserStack build (optional)
 if ($BrowserStackBuildUrl) {
-  Write-Host "`n[7/7] Adding remote link to BrowserStack build..."
+  Write-Host "`n[6/6] Adding remote link to BrowserStack build..."
   $bsLinkUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/remotelink"
   $bsLinkJson = "{`"object`": {`"url`": `"$BrowserStackBuildUrl`", `"title`": `"BrowserStack Build`"}}"
   Invoke-RestMethod -Method Post -Uri $bsLinkUrl -Headers $jsonHeaders -ContentType "application/json" -Body $bsLinkJson | Out-Null
