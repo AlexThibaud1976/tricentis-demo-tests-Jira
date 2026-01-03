@@ -152,7 +152,7 @@ function resolveConfig(params) {
     BS_OS_VERSION: params.osVersion,
     BS_BROWSER: browserName,
     BS_BROWSER_VERSION: params.browserVersion,
-    DEVICE_NAME: `${osKey}${params.osVersion.replace(/\s+/g, '')}-${browserKey}-${params.browserVersion}`.toLowerCase(),
+    DEVICE_NAME: `${osKey}-${params.osVersion.replace(/\s+/g, '')}-${browserKey}-${params.browserVersion}`.toLowerCase(),
   };
 
   return config;
