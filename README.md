@@ -286,7 +286,7 @@ MIT License - Libre d'utilisation et de modification
 
 ## 👤 Auteur
 
-**Alexandre** - Expert en test de logiciels et automatisation
+**Alexandre** - Software QA Expert @Itecor Geneva
 
 ## 🔗 Liens utiles
 
