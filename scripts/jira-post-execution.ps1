@@ -114,18 +114,6 @@ if ($customFieldsObj.fields.Count -gt 0) {
   Write-Host "Custom field environment variables not set (optional)"
 }
 
-# 2. Ajout des labels : device name + résultat (PASS/FAIL)
-Write-Host "`n[2/7] Adding labels (device + result)..."
-$labelUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
-$labelsArray = @($DeviceName, $TestResult)
-$labelsJson = $labelsArray | ConvertTo-Json
-$labelBodyJson = "{`"fields`": {`"labels`": $labelsJson}}"
-try {
-  Invoke-RestMethod -Method Put -Uri $labelUrl -Headers $jsonHeaders -ContentType "application/json" -Body $labelBodyJson | Out-Null
-  Write-Host "Labels added: $DeviceName, $TestResult"
-} catch {
-  Write-Host "Warning: Could not add labels - $($_.Exception.Message)"
-}
 
 
 
@@ -183,6 +171,22 @@ try {
 } catch {
   Write-Host "Warning: Could not add GitHub link - $($_.Exception.Message)"
 }
+
+# 2. Ajout des labels : device name + résultat (PASS/FAIL)
+Write-Host "`n[2/7] Adding labels (device + result)..."
+$labelUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
+$labelsArray = @($DeviceName, $TestResult)
+$labelsJson = $labelsArray | ConvertTo-Json
+$labelBodyJson = "{`"fields`": {`"labels`": $labelsJson}}"
+try {
+  Invoke-RestMethod -Method Put -Uri $labelUrl -Headers $jsonHeaders -ContentType "application/json" -Body $labelBodyJson | Out-Null
+  Write-Host "Labels added: $DeviceName, $TestResult"
+} catch {
+  Write-Host "Warning: Could not add labels - $($_.Exception.Message)"
+}
+
+
+
 
 # 6. Add remote link to BrowserStack build (optional)
 if ($BrowserStackBuildUrl -and $BrowserStackBuildUrl -ne "") {
