@@ -172,19 +172,6 @@ try {
   Write-Host "Warning: Could not add GitHub link - $($_.Exception.Message)"
 }
 
-# 2. Ajout des labels : device name + résultat (PASS/FAIL)
-Write-Host "`n[2/7] Adding labels (device + result)..."
-$labelUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
-$labelsArray = @($DeviceName, $TestResult)
-$labelsJson = $labelsArray | ConvertTo-Json
-$labelBodyJson = "{`"fields`": {`"labels`": $labelsJson}}"
-try {
-  Invoke-RestMethod -Method Put -Uri $labelUrl -Headers $jsonHeaders -ContentType "application/json" -Body $labelBodyJson | Out-Null
-  Write-Host "Labels added: $DeviceName, $TestResult"
-} catch {
-  Write-Host "Warning: Could not add labels - $($_.Exception.Message)"
-}
-
 
 
 
@@ -210,6 +197,19 @@ if ($BrowserStackBuildUrl -and $BrowserStackBuildUrl -ne "") {
   }
 } else {
   Write-Host "`n[6/7] BrowserStack build URL not provided, skipping"
+}
+
+# 2. Ajout des labels : device name + résultat (PASS/FAIL)
+Write-Host "`n[2/7] Adding labels (device + result)..."
+$labelUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
+$labelsArray = @($DeviceName, $TestResult)
+$labelsJson = $labelsArray | ConvertTo-Json
+$labelBodyJson = "{`"fields`": {`"labels`": $labelsJson}}"
+try {
+  Invoke-RestMethod -Method Put -Uri $labelUrl -Headers $jsonHeaders -ContentType "application/json" -Body $labelBodyJson | Out-Null
+  Write-Host "Labels added: $DeviceName, $TestResult"
+} catch {
+  Write-Host "Warning: Could not add labels - $($_.Exception.Message)"
 }
 
 
