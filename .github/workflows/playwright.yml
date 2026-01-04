@@ -36,6 +36,7 @@ on:
           - "Ventura"
           - "Sonoma"
           - "Sequoia"
+          - "Tahoe"
       browser:
         description: "Navigateur"
         required: true
