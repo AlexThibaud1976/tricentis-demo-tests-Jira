@@ -38,7 +38,8 @@ const BROWSERSTACK_SUPPORT = {
         'Monterey': '12',
         'Ventura': '13',
         'Sonoma': '14',
-        'Sequoia': '15'
+        'Sequoia': '15',
+        'Tahoe': '16'
       }
     },
   },
