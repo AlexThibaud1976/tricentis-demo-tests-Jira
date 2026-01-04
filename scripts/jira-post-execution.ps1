@@ -145,21 +145,7 @@ try {
   Write-Host "Warning: Could not update title - $($_.Exception.Message)"
 }
 
-# 4. Attach HTML report
-Write-Host "`n[4/7] Attaching HTML report..."
-$htmlPath = "$ReportPath/index.html"
-if (Test-Path $htmlPath) {
-  $attachUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/attachments"
-  $attachHeaders = @{ Authorization = "Basic $basicAuth"; "X-Atlassian-Token" = "no-check" }
-  try {
-    Invoke-WebRequest -Method Post -Uri $attachUrl -Headers $attachHeaders -Form @{ file = (Get-Item $htmlPath) } | Out-Null
-    Write-Host "HTML report attached successfully"
-  } catch {
-    Write-Host "Warning: Could not attach HTML report - $($_.Exception.Message)"
-  }
-} else {
-  Write-Host "HTML report not found at $htmlPath"
-}
+
 
 # 5. Add remote link to GitHub Actions
 Write-Host "`n[5/7] Adding remote link to GitHub Actions..."
@@ -204,6 +190,22 @@ if ($BrowserStackBuildUrl -and $BrowserStackBuildUrl -ne "") {
   }
 } else {
   Write-Host "`n[6/7] BrowserStack build URL not provided, skipping"
+}
+
+# 4. Attach HTML report
+Write-Host "`n[4/7] Attaching HTML report..."
+$htmlPath = "$ReportPath/index.html"
+if (Test-Path $htmlPath) {
+  $attachUrl = "$JiraUrl/rest/api/3/issue/$ExecKey/attachments"
+  $attachHeaders = @{ Authorization = "Basic $basicAuth"; "X-Atlassian-Token" = "no-check" }
+  try {
+    Invoke-WebRequest -Method Post -Uri $attachUrl -Headers $attachHeaders -Form @{ file = (Get-Item $htmlPath) } | Out-Null
+    Write-Host "HTML report attached successfully"
+  } catch {
+    Write-Host "Warning: Could not attach HTML report - $($_.Exception.Message)"
+  }
+} else {
+  Write-Host "HTML report not found at $htmlPath"
 }
 
 # 7. Summary
