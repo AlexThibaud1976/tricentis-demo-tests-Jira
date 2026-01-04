@@ -30,7 +30,7 @@ const BROWSERSTACK_SUPPORT = {
     mac: {
       label: 'OS X',
       // BrowserStack utilise les noms de versions macOS, pas les numéros
-      versions: ['Catalina', 'Big Sur', 'Monterey', 'Ventura', 'Sonoma', 'Sequoia'],
+      versions: ['Catalina', 'Big Sur', 'Monterey', 'Ventura', 'Sonoma', 'Sequoia', 'Tahoe'],
       // Mapping pour l'affichage
       versionMapping: {
         'Catalina': '10.15',
