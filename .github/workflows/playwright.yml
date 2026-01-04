@@ -157,6 +157,7 @@ jobs:
         esac
 
     - name: Run tests on BrowserStack
+      id: run-tests
       run: npx playwright test ${{ steps.test-pattern.outputs.pattern }} --config=playwright.config.browserstack.js --reporter=list,html,junit
       env:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
@@ -222,3 +223,12 @@ jobs:
           -GitHubRunId "${{ github.run_id }}" `
           -GitHubRunNumber "${{ github.run_number }}" `
           -BrowserStackBuildUrl "${{ steps.bs-link.outputs.build_url }}"
+
+    - name: Check test results
+      if: always()
+      run: |
+        if [ "${{ steps.run-tests.outcome }}" == "failure" ]; then
+          echo "❌ Des tests ont échoué"
+          exit 1
+        fi
+      shell: bash
