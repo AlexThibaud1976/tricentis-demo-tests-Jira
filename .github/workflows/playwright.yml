@@ -212,9 +212,13 @@ jobs:
         JIRA_CUSTOM_FIELD_BROWSER_VERSION: ${{ secrets.JIRA_CUSTOM_FIELD_BROWSER_VERSION }}
         JIRA_CUSTOM_FIELD_TEST_SCOPE: ${{ secrets.JIRA_CUSTOM_FIELD_TEST_SCOPE }}
       run: |
+        $testResult = if ("${{ steps.run-tests.outcome }}" -eq "success") { "PASS" } else { "FAIL" }
+        Write-Host "Test outcome: ${{ steps.run-tests.outcome }} -> Result: $testResult"
+        
         ./scripts/jira-post-execution.ps1 `
           -ExecKey "${{ steps.xray-upload.outputs.exec_key }}" `
           -DeviceName "${{ env.DEVICE_NAME }}" `
+          -TestResult "$testResult" `
           -TestScope "${{ steps.test-pattern.outputs.description }}" `
           -JiraUrl "${{ secrets.JIRA_URL }}" `
           -JiraUser "${{ secrets.JIRA_USER }}" `
