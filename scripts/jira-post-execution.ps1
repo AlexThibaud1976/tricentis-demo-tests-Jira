@@ -201,15 +201,26 @@ if ($BrowserStackBuildUrl -and $BrowserStackBuildUrl -ne "") {
 
 # 2. Ajout des labels : device name + résultat (PASS/FAIL)
 Write-Host "`n[2/7] Adding labels (device + result)..."
-$labelUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
-$labelsArray = @($DeviceName, $TestResult)
-$labelsJson = $labelsArray | ConvertTo-Json
-$labelBodyJson = "{`"fields`": {`"labels`": $labelsJson}}"
+
+# D'abord, récupérer les labels existants
+$getIssueUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
 try {
+  $issue = Invoke-RestMethod -Method Get -Uri $getIssueUrl -Headers $jsonHeaders
+  $existingLabels = $issue.fields.labels
+  
+  # Supprimer les anciens labels PASS/FAIL pour éviter les doublons
+  $filteredLabels = $existingLabels | Where-Object { $_ -ne "PASS" -and $_ -ne "FAIL" }
+  
+  # Ajouter les nouveaux labels (device + résultat)
+  $labelsArray = @($filteredLabels) + @($DeviceName, $TestResult)
+  $labelsJson = $labelsArray | ConvertTo-Json
+  $labelBodyJson = "{`"fields`": {`"labels`": $labelsJson}}"
+  
+  $labelUrl = "$JiraUrl/rest/api/3/issue/$ExecKey"
   Invoke-RestMethod -Method Put -Uri $labelUrl -Headers $jsonHeaders -ContentType "application/json" -Body $labelBodyJson | Out-Null
-  Write-Host "Labels added: $DeviceName, $TestResult"
+  Write-Host "Labels updated: Device=$DeviceName, Result=$TestResult (removed old PASS/FAIL if present)"
 } catch {
-  Write-Host "Warning: Could not add labels - $($_.Exception.Message)"
+  Write-Host "Warning: Could not update labels - $($_.Exception.Message)"
 }
 
 
