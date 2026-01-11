@@ -1,0 +1,64 @@
+{
+  "name": "test-device",
+  "description": "Run tests on a specific BrowserStack device configuration",
+  "version": "1.0.0",
+  "author": "Tricentis Demo Tests Project",
+  "parameters": [
+    {
+      "name": "os",
+      "description": "Operating system (Windows, Mac)",
+      "required": true,
+      "type": "string",
+      "examples": ["Windows", "Mac"]
+    },
+    {
+      "name": "osVersion",
+      "description": "OS version (11, Sonoma, etc.)",
+      "required": true,
+      "type": "string",
+      "examples": ["11", "10", "Sonoma", "Ventura"]
+    },
+    {
+      "name": "browser",
+      "description": "Browser name (chrome, safari, edge, firefox)",
+      "required": true,
+      "type": "string",
+      "examples": ["chrome", "safari", "edge", "firefox"]
+    },
+    {
+      "name": "browserVersion",
+      "description": "Browser version (default: latest)",
+      "required": false,
+      "type": "string",
+      "default": "latest",
+      "examples": ["latest", "120.0", "119.0"]
+    },
+    {
+      "name": "testScope",
+      "description": "Test scope to run (default: all)",
+      "required": false,
+      "type": "string",
+      "default": "all",
+      "examples": ["all", "sanity", "cart-management"]
+    }
+  ],
+  "examples": [
+    {
+      "command": "/test-device Windows 11 chrome",
+      "description": "Run all tests on Windows 11 with Chrome (latest)"
+    },
+    {
+      "command": "/test-device Mac Sonoma safari latest sanity",
+      "description": "Run sanity tests on Mac Sonoma with Safari"
+    },
+    {
+      "command": "/test-device Windows 10 edge 120.0 cart-management",
+      "description": "Run cart tests on Windows 10 with Edge 120.0"
+    }
+  ],
+  "permissions": [
+    "bash",
+    "read"
+  ],
+  "tags": ["testing", "browserstack", "automation"]
+}
