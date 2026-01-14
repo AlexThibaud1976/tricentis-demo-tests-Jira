@@ -21,22 +21,10 @@ on:
           - Windows
           - Mac
       osVersion:
-        description: "Version du système d'exploitation"
+        description: "Version OS (ex: 11, Monterey, Sonoma)"
         required: true
-        type: choice
-        options:
-          - "7"
-          - "8"
-          - "8.1"
-          - "10"
-          - "11"
-          - "Catalina"
-          - "Big Sur"
-          - "Monterey"
-          - "Ventura"
-          - "Sonoma"
-          - "Sequoia"
-          - "Tahoe"
+        type: string
+        default: "11"
       browser:
         description: "Navigateur"
         required: true
@@ -48,24 +36,10 @@ on:
           - safari
           - edge
       browserVersion:
-        description: "Version du navigateur"
+        description: "Version navigateur (ex: latest, 131, 18)"
         required: true
-        type: choice
-        options:
-          - latest
-          - "144"
-          - "143"
-          - "142"
-          - "141"
-          - "140"
-          - "131"
-          - "130"
-          - "129"
-          - "128"
-          - "18"
-          - "17"
-          - "16"
-          - "15"
+        type: string
+        default: "latest"
       testScope:
         description: "Périmètre de test"
         required: true

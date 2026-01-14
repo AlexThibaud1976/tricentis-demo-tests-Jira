@@ -1,76 +1,146 @@
 #!/usr/bin/env node
 /**
  * Résout et valide la configuration BrowserStack à partir des paramètres d'entrée
- * 
+ * avec validation dynamique via l'API BrowserStack
+ *
  * Usage:
  *   node scripts/resolve-browserstack-config.js \
  *     --os Windows \
  *     --osVersion 11 \
  *     --browser chrome \
  *     --browserVersion latest
- * 
+ *
  * Variables d'environnement définies:
  *   - BS_OS (ex: Windows, OS X)
  *   - BS_OS_VERSION (ex: 10, 11, 14, 15)
  *   - BS_BROWSER (ex: chrome, firefox, safari, edge)
  *   - BS_BROWSER_VERSION (ex: latest, 120, 119, etc)
  *   - DEVICE_NAME (ex: win11-chrome-latest)
+ *
+ * Variables d'environnement requises pour la validation API:
+ *   - BROWSERSTACK_USERNAME
+ *   - BROWSERSTACK_ACCESS_KEY
  */
 
 const fs = require('fs');
-const path = require('path');
 
-// Configuration des OS et navigateurs supportés par BrowserStack
-const BROWSERSTACK_SUPPORT = {
+// Cache local de secours - utilisé si l'API BrowserStack est inaccessible
+const FALLBACK_VERSIONS = {
   os: {
-    windows: {
-      label: 'Windows',
-      versions: ['7', '8', '8.1', '10', '11'],
-    },
-    mac: {
-      label: 'OS X',
-      // BrowserStack utilise les noms de versions macOS, pas les numéros
-      versions: ['Catalina', 'Big Sur', 'Monterey', 'Ventura', 'Sonoma', 'Sequoia', 'Tahoe'],
-      // Mapping pour l'affichage
-      versionMapping: {
-        'Catalina': '10.15',
-        'Big Sur': '11',
-        'Monterey': '12',
-        'Ventura': '13',
-        'Sonoma': '14',
-        'Sequoia': '15',
-        'Tahoe': '16'
-      }
-    },
+    windows: ['7', '8', '8.1', '10', '11'],
+    mac: ['Catalina', 'Big Sur', 'Monterey', 'Ventura', 'Sonoma', 'Sequoia', 'Tahoe'],
+  },
+  browsers: {
+    chrome: ['latest', 'latest-1', 'latest-2', '131', '130', '129', '128'],
+    chromium: ['latest', 'latest-1', 'latest-2', '131', '130', '129', '128'],
+    firefox: ['latest', 'latest-1', 'latest-2', '133', '132', '131', '130'],
+    safari: ['latest', '18', '17', '16', '15'],
+    edge: ['latest', 'latest-1', 'latest-2', '131', '130', '129', '128'],
+  },
+};
+
+// Mappings statiques pour BrowserStack
+const BROWSERSTACK_MAPPINGS = {
+  os: {
+    windows: { label: 'Windows' },
+    mac: { label: 'OS X' },
   },
   browsers: {
     chrome: {
       displayName: 'Chrome',
       browserName: 'playwright-chromium',
-      versions: ['latest', '144', '143', '142', '141', '140'],
     },
     chromium: {
       displayName: 'Chromium',
       browserName: 'playwright-chromium',
-      versions: ['latest', '144', '143', '142', '141', '140'],
     },
     firefox: {
       displayName: 'Firefox',
       browserName: 'playwright-firefox',
-      versions: ['latest', '144', '143', '142', '141', '140'],
     },
     safari: {
       displayName: 'Safari',
       browserName: 'playwright-webkit',
-      versions: ['latest', '18', '17', '16', '15'],
     },
     edge: {
       displayName: 'Edge',
       browserName: 'playwright-chromium',
-      versions: ['latest', '131', '130', '129', '128'],
     },
   },
 };
+
+/**
+ * Récupère les capabilities disponibles depuis l'API BrowserStack
+ * @returns {Promise<Array|null>} Liste des capabilities ou null si erreur
+ */
+async function fetchBrowserStackCapabilities() {
+  const username = process.env.BROWSERSTACK_USERNAME;
+  const accessKey = process.env.BROWSERSTACK_ACCESS_KEY;
+
+  if (!username || !accessKey) {
+    console.warn('⚠️  Credentials BrowserStack non définis, utilisation du cache local');
+    return null;
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+
+  try {
+    const response = await fetch('https://api.browserstack.com/automate/browsers.json', {
+      headers: {
+        Authorization: 'Basic ' + Buffer.from(`${username}:${accessKey}`).toString('base64'),
+      },
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      console.warn(`⚠️  API BrowserStack: ${response.status} ${response.statusText}`);
+      return null;
+    }
+
+    return await response.json();
+  } catch (error) {
+    clearTimeout(timeout);
+    if (error.name === 'AbortError') {
+      console.warn('⚠️  API BrowserStack: timeout après 10 secondes');
+    } else {
+      console.warn(`⚠️  API BrowserStack inaccessible: ${error.message}`);
+    }
+    console.warn('   → Utilisation du cache local de secours');
+    return null;
+  }
+}
+
+/**
+ * Extrait les versions disponibles depuis la réponse API BrowserStack
+ * @param {Array} capabilities - Réponse de l'API BrowserStack
+ * @param {string} osKey - Clé de l'OS (windows, mac)
+ * @param {string} browserKey - Clé du navigateur (chrome, firefox, etc.)
+ * @returns {Object} Versions OS et navigateur disponibles
+ */
+function extractAvailableVersions(capabilities, osKey, browserKey) {
+  const osLabel = BROWSERSTACK_MAPPINGS.os[osKey].label;
+
+  // Filtrer les combinaisons desktop (device === null)
+  const osVersions = [
+    ...new Set(
+      capabilities
+        .filter((c) => c.os === osLabel && c.device === null)
+        .map((c) => c.os_version)
+    ),
+  ];
+
+  const browserVersions = [
+    ...new Set(
+      capabilities
+        .filter((c) => c.browser === browserKey && c.device === null)
+        .map((c) => c.browser_version)
+    ),
+  ];
+
+  return { osVersions, browserVersions };
+}
 
 // Parse les arguments de ligne de commande
 function parseArguments() {
@@ -94,44 +164,93 @@ function parseArguments() {
   return params;
 }
 
-// Valide les paramètres
-function validateParams(params) {
+/**
+ * Valide les paramètres avec support de l'API BrowserStack et fallback local
+ * @param {Object} params - Paramètres à valider
+ * @returns {Promise<Array>} Liste des erreurs (vide si tout est valide)
+ */
+async function validateParams(params) {
   const errors = [];
+  const osKey = params.os?.toLowerCase();
+  const browserKey = params.browser?.toLowerCase();
 
-  // Validation OS
+  // Validation OS (statique - liste fixe)
   if (!params.os) {
     errors.push('--os est requis (Windows ou Mac)');
-  } else {
-    const osKey = params.os.toLowerCase();
-    if (!BROWSERSTACK_SUPPORT.os[osKey]) {
-      errors.push(
-        `OS invalide: '${params.os}'. Valeurs acceptées: ${Object.keys(BROWSERSTACK_SUPPORT.os).join(', ')}`
-      );
-    } else if (!params.osVersion) {
-      errors.push(`--osVersion est requis pour ${params.os}`);
-    } else if (!BROWSERSTACK_SUPPORT.os[osKey].versions.includes(params.osVersion)) {
-      errors.push(
-        `Version OS invalide: '${params.osVersion}'. Valeurs acceptées pour ${params.os}: ${BROWSERSTACK_SUPPORT.os[osKey].versions.join(', ')}`
-      );
-    }
+    return errors;
   }
 
-  // Validation navigateur
+  if (!osKey || !BROWSERSTACK_MAPPINGS.os[osKey]) {
+    errors.push(
+      `OS invalide: '${params.os}'. Valeurs acceptées: ${Object.keys(BROWSERSTACK_MAPPINGS.os).join(', ')}`
+    );
+    return errors;
+  }
+
+  // Validation browser (statique - liste fixe)
   if (!params.browser) {
     errors.push('--browser est requis (chrome, firefox, safari, edge)');
+    return errors;
+  }
+
+  if (!browserKey || !BROWSERSTACK_MAPPINGS.browsers[browserKey]) {
+    errors.push(
+      `Navigateur invalide: '${params.browser}'. Valeurs acceptées: ${Object.keys(BROWSERSTACK_MAPPINGS.browsers).join(', ')}`
+    );
+    return errors;
+  }
+
+  // Validation osVersion requise
+  if (!params.osVersion) {
+    errors.push(`--osVersion est requis pour ${params.os}`);
+    return errors;
+  }
+
+  // Validation browserVersion requise
+  if (!params.browserVersion) {
+    errors.push(`--browserVersion est requis pour ${params.browser}`);
+    return errors;
+  }
+
+  // Accepter les patterns "latest", "latest-1", "latest-2", etc. sans validation API
+  const isLatestPattern = /^latest(-\d+)?$/.test(params.browserVersion);
+
+  // Récupérer les versions disponibles depuis l'API ou le cache
+  const capabilities = await fetchBrowserStackCapabilities();
+
+  let availableOsVersions, availableBrowserVersions;
+
+  if (capabilities) {
+    console.log('✅ Versions récupérées depuis l\'API BrowserStack');
+    const extracted = extractAvailableVersions(capabilities, osKey, browserKey);
+    availableOsVersions = extracted.osVersions;
+    availableBrowserVersions = extracted.browserVersions;
   } else {
-    const browserKey = params.browser.toLowerCase();
-    if (!BROWSERSTACK_SUPPORT.browsers[browserKey]) {
-      errors.push(
-        `Navigateur invalide: '${params.browser}'. Valeurs acceptées: ${Object.keys(BROWSERSTACK_SUPPORT.browsers).join(', ')}`
-      );
-    } else if (!params.browserVersion) {
-      errors.push(`--browserVersion est requis pour ${params.browser}`);
-    } else if (!BROWSERSTACK_SUPPORT.browsers[browserKey].versions.includes(params.browserVersion)) {
-      errors.push(
-        `Version navigateur invalide: '${params.browserVersion}'. Valeurs acceptées pour ${params.browser}: ${BROWSERSTACK_SUPPORT.browsers[browserKey].versions.join(', ')}`
-      );
-    }
+    // Fallback vers le cache local
+    availableOsVersions = FALLBACK_VERSIONS.os[osKey] || [];
+    availableBrowserVersions = FALLBACK_VERSIONS.browsers[browserKey] || [];
+  }
+
+  // Validation version OS
+  if (!availableOsVersions.includes(params.osVersion)) {
+    const versionsDisplay =
+      availableOsVersions.length > 10
+        ? availableOsVersions.slice(0, 10).join(', ') + '...'
+        : availableOsVersions.join(', ');
+    errors.push(
+      `Version OS '${params.osVersion}' non disponible pour ${params.os}.\n   Versions disponibles: ${versionsDisplay}`
+    );
+  }
+
+  // Validation version browser (sauf si pattern "latest")
+  if (!isLatestPattern && !availableBrowserVersions.includes(params.browserVersion)) {
+    const versionsDisplay =
+      availableBrowserVersions.length > 10
+        ? availableBrowserVersions.slice(0, 10).join(', ') + '...'
+        : availableBrowserVersions.join(', ');
+    errors.push(
+      `Version navigateur '${params.browserVersion}' non disponible pour ${params.browser}.\n   Versions disponibles: ${versionsDisplay}`
+    );
   }
 
   return errors;
@@ -146,8 +265,8 @@ function resolveConfig(params) {
   const osKey = params.os.toLowerCase();
   const browserKey = params.browser.toLowerCase();
 
-  const osLabel = BROWSERSTACK_SUPPORT.os[osKey].label;
-  const browserInfo = BROWSERSTACK_SUPPORT.browsers[browserKey];
+  const osLabel = BROWSERSTACK_MAPPINGS.os[osKey].label;
+  const browserInfo = BROWSERSTACK_MAPPINGS.browsers[browserKey];
 
   // Utiliser le nom de navigateur BrowserStack (ex: playwright-firefox)
   const browserName = browserInfo.browserName;
@@ -192,11 +311,11 @@ function exportForGitHub(config) {
   return config;
 }
 
-// Main
-function main() {
+// Main (async)
+async function main() {
   const params = parseArguments();
 
-  const errors = validateParams(params);
+  const errors = await validateParams(params);
   if (errors.length > 0) {
     console.error('❌ Erreur de validation:\n');
     errors.forEach((error) => console.error(`   • ${error}`));
@@ -207,8 +326,16 @@ function main() {
     console.error('     --browser <browser> \\');
     console.error('     --browserVersion <version>');
     console.error('\n💡 Exemples:');
-    console.error('   node scripts/resolve-browserstack-config.js --os Windows --osVersion 11 --browser chrome --browserVersion latest');
-    console.error('   node scripts/resolve-browserstack-config.js --os Mac --osVersion 14 --browser safari --browserVersion latest');
+    console.error(
+      '   node scripts/resolve-browserstack-config.js --os Windows --osVersion 11 --browser chrome --browserVersion latest'
+    );
+    console.error(
+      '   node scripts/resolve-browserstack-config.js --os Mac --osVersion Sonoma --browser safari --browserVersion 18'
+    );
+    console.error('\n📝 Notes:');
+    console.error('   • Les versions OS/navigateur sont validées dynamiquement via l\'API BrowserStack');
+    console.error('   • Utilisez "latest", "latest-1", "latest-2" pour les versions récentes');
+    console.error('   • Un cache local est utilisé si l\'API est inaccessible');
     process.exit(1);
   }
 

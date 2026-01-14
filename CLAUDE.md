@@ -120,11 +120,11 @@ Core helper functions for test reusability:
 **File**: `.github/workflows/playwright.yml`
 
 The workflow supports dynamic test execution with parameters:
-- **OS**: Windows, Mac
-- **OS Version**: 7, 8, 8.1, 10, 11 (Windows) | Catalina, Big Sur, Monterey, Ventura, Sonoma, Sequoia, Tahoe (Mac)
-- **Browser**: chrome, chromium, firefox, safari, edge
-- **Browser Version**: latest, specific versions
-- **Test Scope**: all, sanity, account-creation, login-logout, catalog-navigation, cart-management, order-checkout
+- **OS**: Windows, Mac (select list)
+- **OS Version**: Free text, validated dynamically via BrowserStack API
+- **Browser**: chrome, chromium, firefox, safari, edge (select list)
+- **Browser Version**: Free text, validated dynamically (use `latest`, `latest-1`, or specific version)
+- **Test Scope**: all, sanity, account-creation, login-logout, catalog-navigation, cart-management, order-checkout (select list)
 
 Triggered by:
 - Manual dispatch (GitHub UI)
@@ -184,7 +184,9 @@ Environment variables:
 ### Configuration Validation
 
 The `resolve-browserstack-config.js` script validates all BrowserStack parameters before test execution:
-- Prevents invalid OS/browser combinations
+- **Dynamic validation**: OS and browser versions are validated against the BrowserStack API
+- **Fallback cache**: If the API is unavailable, a local cache of known versions is used
+- **Latest patterns**: `latest`, `latest-1`, `latest-2` are always accepted without API validation
 - Exports environment variables (`BS_OS`, `BS_BROWSER`, etc.)
 - Creates standardized device name (`DEVICE_NAME`) for reporting
 
@@ -215,9 +217,21 @@ All PowerShell scripts (`.ps1`) require PowerShell 7+ for cross-platform compati
 
 ### Modifying BrowserStack Configuration
 
-1. Update `BROWSERSTACK_SUPPORT` in `resolve-browserstack-config.js`
-2. Add new OS/browser versions to workflow inputs in `playwright.yml`
-3. Test locally: `node scripts/resolve-browserstack-config.js --os <OS> --osVersion <VERSION> --browser <BROWSER> --browserVersion <VERSION>`
+OS and browser versions are now validated dynamically via the BrowserStack API. No manual updates needed for new versions.
+
+To test a configuration locally:
+```bash
+# Set credentials for API validation
+export BROWSERSTACK_USERNAME=xxx
+export BROWSERSTACK_ACCESS_KEY=xxx
+
+# Test configuration
+node scripts/resolve-browserstack-config.js \
+  --os Windows --osVersion 11 \
+  --browser chrome --browserVersion latest
+```
+
+To update the fallback cache (used when API is unavailable), edit `FALLBACK_VERSIONS` in `resolve-browserstack-config.js`.
 
 ### Adding Custom Jira Fields
 

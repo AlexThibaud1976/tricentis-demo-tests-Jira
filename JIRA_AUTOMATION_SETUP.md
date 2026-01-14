@@ -64,10 +64,10 @@ Si vous avez créé des champs personnalisés pour sélectionner OS, navigateur,
     "inputs": {
       "issueKey": "{{issue.key}}",
       "summary": "{{issue.summary}}",
-      "os": "{{issue.customfield_10000}}",
-      "osVersion": "{{issue.customfield_10001}}",
-      "browser": "{{issue.customfield_10002}}",
-      "browserVersion": "{{issue.customfield_10003}}"
+      "os": "{{issue.customfield_10048}}",
+      "osVersion": "{{issue.customfield_10049}",
+      "browser": "{{issue.customfield_10050}}",
+      "browserVersion": "{{issue.customfield_10051}}"
     }
   }
 }
@@ -86,21 +86,16 @@ Pour supporter la sélection dynamique, créez ces champs personnalisés :
 - **ID de champ :** `customfield_10000` (remplacez par votre ID réel)
 
 ### Custom Field 2: "Version OS"
-- **Type :** Select List (single choice)
-- **Options (Windows) :**
-  - 7
-  - 8
-  - 8.1
-  - 10
-  - 11
-- **Options (Mac) :**
-  - 10.15
-  - 12
-  - 13
-  - 14
-  - 15
+- **Type :** Text Field (single line)
+- **Description :** Version de l'OS (ex: 11, Monterey, Sonoma)
 - **Default :** 11
 - **ID de champ :** `customfield_10001`
+
+> 💡 **Note :** Ce champ est maintenant un champ texte libre. Les versions sont validées dynamiquement via l'API BrowserStack lors de l'exécution du workflow.
+>
+> **Exemples de valeurs valides :**
+> - Windows : `7`, `8`, `8.1`, `10`, `11`
+> - Mac : `Catalina`, `Big Sur`, `Monterey`, `Ventura`, `Sonoma`, `Sequoia`
 
 ### Custom Field 3: "Navigateur"
 - **Type :** Select List (single choice)
@@ -113,21 +108,17 @@ Pour supporter la sélection dynamique, créez ces champs personnalisés :
 - **ID de champ :** `customfield_10002`
 
 ### Custom Field 4: "Version Navigateur"
-- **Type :** Select List (single choice)
-- **Options :**
-  - latest
-  - 121
-  - 120
-  - 119
-  - 118
-  - 117
-  - 116
-  - 17
-  - 16
-  - 15
-  - 14
+- **Type :** Text Field (single line)
+- **Description :** Version du navigateur (ex: latest, 131, 18)
 - **Default :** latest
 - **ID de champ :** `customfield_10003`
+
+> 💡 **Note :** Ce champ est maintenant un champ texte libre. Les versions sont validées dynamiquement via l'API BrowserStack.
+>
+> **Valeurs recommandées :**
+> - `latest` : Dernière version stable (recommandé)
+> - `latest-1`, `latest-2` : Versions précédentes
+> - Version spécifique : `131`, `18`, etc.
 
 ## 📋 Exemples de payloads pour différents scénarios
 
