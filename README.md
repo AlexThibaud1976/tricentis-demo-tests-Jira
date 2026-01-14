@@ -167,10 +167,13 @@ Ce projet inclut un script d'intégration Jira pour publier automatiquement des 
 - Met à jour le titre de l'exécution avec le nom du device
 - Attache le rapport HTML (playwright-report/index.html)
 - Ajoute un lien "Remote link" vers le run GitHub Actions
+- Enrichit les Test Executions avec des champs personnalisés (OS, Browser, etc.)
 
-### Script
+### Scripts disponibles
 
-Voir [scripts/jira-post-execution.ps1](scripts/jira-post-execution.ps1)
+- [scripts/jira-post-execution.ps1](scripts/jira-post-execution.ps1) - Publication des résultats vers Jira
+- [scripts/get-custom-field-ids.ps1](scripts/get-custom-field-ids.ps1) - Récupération des IDs des champs personnalisés Jira
+- [scripts/upload-xray.ps1](scripts/upload-xray.ps1) - Upload des résultats au format JUnit vers Xray Cloud
 
 ### Prérequis
 
@@ -179,6 +182,40 @@ Voir [scripts/jira-post-execution.ps1](scripts/jira-post-execution.ps1)
 - ExecKey (clé de l'issue Test Execution, ex. DEMO-131)
 - PowerShell 7+ (fonctionne sur Windows, Linux et macOS)
 - Rapport Playwright généré dans playwright-report (HTML requis)
+
+### Configuration des champs personnalisés Jira
+
+Ce projet utilise des champs personnalisés Jira pour enrichir les Test Executions avec des informations sur l'environnement de test :
+
+| Champ | ID | Description |
+|-------|-----|-------------|
+| OS | `customfield_10048` | Système d'exploitation (Windows, Mac) |
+| OS Version | `customfield_10049` | Version de l'OS (10, 11, etc.) |
+| Browser | `customfield_10050` | Navigateur (Chrome, Firefox, Safari, Edge) |
+| Browser Version | `customfield_10051` | Version du navigateur |
+
+#### Récupérer les IDs de vos champs personnalisés
+
+Pour obtenir les IDs de vos propres champs Jira :
+
+```powershell
+.\scripts\get-custom-field-ids.ps1 `
+  -JiraUrl "https://votre-domaine.atlassian.net" `
+  -JiraUser "votre-email@example.com" `
+  -JiraApiToken "votre-token-api"
+```
+
+#### Configurer les GitHub Secrets
+
+Ajoutez ces secrets dans votre repository GitHub (Settings → Secrets and variables → Actions) :
+
+- `JIRA_CUSTOM_FIELD_OS` = `customfield_10048`
+- `JIRA_CUSTOM_FIELD_OS_VERSION` = `customfield_10049`
+- `JIRA_CUSTOM_FIELD_BROWSER` = `customfield_10050`
+- `JIRA_CUSTOM_FIELD_BROWSER_VERSION` = `customfield_10051`
+- `JIRA_USER` = votre email Jira
+- `JIRA_API_TOKEN` = votre token API Jira
+- `JIRA_BASE_URL` = https://votre-domaine.atlassian.net
 
 ### Utilisation
 
@@ -210,9 +247,17 @@ Paramètres:
 
 ### Dépannage
 
-- Erreur "curl.exe non reconnu": le script utilise désormais des cmdlets PowerShell (Invoke-RestMethod, Invoke-WebRequest) compatibles multiplateforme. Assurez-vous d'utiliser PowerShell 7+.
-- Pièces jointes non trouvées: vérifiez que playwright-report/index.html existe avant d'exécuter le script.
-- 401/403 Jira: confirmez JiraUser et JiraApiToken, et l'URL JiraUrl.
+- **Erreur "curl.exe non reconnu"**: le script utilise désormais des cmdlets PowerShell (Invoke-RestMethod, Invoke-WebRequest) compatibles multiplateforme. Assurez-vous d'utiliser PowerShell 7+.
+- **Pièces jointes non trouvées**: vérifiez que playwright-report/index.html existe avant d'exécuter le script.
+- **401/403 Jira**: confirmez JiraUser et JiraApiToken, et l'URL JiraUrl.
+- **Champs personnalisés non mis à jour**: vérifiez que les IDs des champs sont correctement configurés dans les GitHub Secrets et correspondent aux champs de votre instance Jira.
+
+### Ressources additionnelles
+
+Pour plus d'informations sur la configuration Jira, consultez :
+- [JIRA_CUSTOM_FIELDS_SETUP.md](JIRA_CUSTOM_FIELDS_SETUP.md) - Guide de configuration des champs personnalisés
+- [JIRA_TEST_SCOPE_FIELD.md](JIRA_TEST_SCOPE_FIELD.md) - Configuration du champ "Test Scope"
+- [LABELS_VIA_JIRA_IMPLEMENTATION.md](LABELS_VIA_JIRA_IMPLEMENTATION.md) - Utilisation des labels pour identifier les environnements
 
 ## ⚙️ Configuration
 
