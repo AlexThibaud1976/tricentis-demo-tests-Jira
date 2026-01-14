@@ -1,4 +1,13 @@
 ﻿[![Playwright Tests](https://github.com/AlexThibaud1976/tricentis-demo-tests/actions/workflows/playwright.yml/badge.svg)](https://github.com/AlexThibaud1976/tricentis-demo-tests/actions/workflows/playwright.yml)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Node.js](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen)
+![Playwright](https://img.shields.io/badge/Playwright-45ba4b?logo=Playwright&logoColor=white)
+![GitHub last commit](https://img.shields.io/github/last-commit/AlexThibaud1976/tricentis-demo-tests-Jira)
+![GitHub stars](https://img.shields.io/github/stars/AlexThibaud1976/tricentis-demo-tests-Jira?style=social)
+![Jira](https://img.shields.io/badge/jira-%230A0FFF.svg?logo=jira&logoColor=white)
+![Xray](https://img.shields.io/badge/Xray-Test%20Management-blue)
+![BrowserStack](https://img.shields.io/badge/BrowserStack-Enabled-orange?logo=browserstack&logoColor=white)
+![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 
 # 🧪 Suite de Tests Automatisés - Demo Web Shop Tricentis
 
