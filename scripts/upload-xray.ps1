@@ -145,18 +145,20 @@ Write-Host "Token length: $($token.Length) characters"
 
 Write-Host "[Xray] Importing JUnit results..."
 
-if (-not (Test-Path "results.xml")) {
-  Write-Host "ERROR: results.xml not found in workspace"
+# Vérifier l'existence du nouveau fichier généré par le reporter Xray
+if (-not (Test-Path "xray-report.xml")) {
+  Write-Host "ERROR: xray-report.xml not found in workspace"
+  Write-Host "Note: Ce fichier est généré par @xray-app/playwright-junit-reporter"
   exit 1
 }
 
-$junitContent = Get-Content -Path "results.xml" -Raw
-Write-Host "results.xml size: $($junitContent.Length) characters"
+$junitContent = Get-Content -Path "xray-report.xml" -Raw
+Write-Host "xray-report.xml size: $($junitContent.Length) characters"
 if ($junitContent.Length -gt 0) {
-    Write-Host "results.xml preview (first 200 chars):"
+    Write-Host "xray-report.xml preview (first 200 chars):"
     Write-Host $junitContent.Substring(0, [Math]::Min(200, $junitContent.Length))
 } else {
-    Write-Host "ERROR: results.xml is empty"
+    Write-Host "ERROR: xray-report.xml is empty"
     exit 1
 }
 
@@ -191,7 +193,7 @@ try {
   if ($curlCommand) {
     Write-Host "Retrying import with $curlCommand..."
     # Note: curl expects file path with @ for binary/file data in --data-binary or --data, but for raw body we can pipe or use file
-    # Using --data @results.xml is standard for curl
+    # Using --data @xray-report.xml is standard for curl
     try {
         # We need to pass the token. 
         # Note: Windows curl might be alias to Invoke-WebRequest in PS, but we found the exe above.
@@ -200,7 +202,7 @@ try {
             "-H", "Content-Type: text/xml",
             "-H", "Authorization: Bearer $token",
             "-X", "POST",
-            "--data", "@results.xml",
+            "--data", "@xray-report.xml",
             "$importUri"
         )
         $curlOutput = & $curlCommand $curlArgs

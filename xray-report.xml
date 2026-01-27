@@ -1,0 +1,61 @@
+<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="7.282744000002742">
+<testsuite name="01-account-creation.spec.js" timestamp="2026-01-27T14:54:20.773Z" hostname="chromium" tests="3" failures="0" skipped="0" time="6.189" errors="0">
+<testcase name="Tests de création de compte › Test 1: Création de compte utilisateur - Cas passant ✅" classname="01-account-creation.spec.js" time="3.428">
+<properties>
+<property name="test_key" value="DEMO-101">
+</property>
+<property name="requirements" value="DEMO-1">
+</property>
+<property name="tags" value="smoke,account-creation,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie la création d'un compte utilisateur avec des données valides.\\Le test génère des données utilisateur uniques et valide le message de succès.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Compte créé avec succès: testuser_1769525661830@test.com
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de création de compte › Test 2: Création de compte - Cas non passant (email invalide) ❌" classname="01-account-creation.spec.js" time="1.374">
+<properties>
+<property name="test_key" value="DEMO-102">
+</property>
+<property name="requirements" value="DEMO-1">
+</property>
+<property name="tags" value="account-creation,negative,validation">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie que le système rejette un email invalide lors de la création de compte.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Le système a correctement rejeté l'email invalide
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de création de compte › Test 2 bis: Création de compte - Cas non passant (mots de passe différents) ❌" classname="01-account-creation.spec.js" time="1.387">
+<properties>
+<property name="test_key" value="DEMO-103">
+</property>
+<property name="requirements" value="DEMO-1">
+</property>
+<property name="tags" value="account-creation,negative,validation">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie que le système détecte les mots de passe non identiques lors de la création de compte.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Le système a correctement détecté les mots de passe différents
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

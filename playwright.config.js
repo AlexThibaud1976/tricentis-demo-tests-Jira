@@ -9,7 +9,14 @@ module.exports = defineConfig({
   workers: 1, // Un seul worker pour éviter les conflits de données
   reporter: [
     ['html'],
-    ['list']
+    ['list'],
+    ['@xray-app/playwright-junit-reporter', {
+      outputFile: 'xray-report.xml',
+      embedAnnotationsAsProperties: true,
+      embedTestrunAnnotationsAsItemProperties: true,
+      embedAttachmentsAsProperty: 'testrun_evidence',
+      textContentAnnotations: ['test_description', 'testrun_comment']
+    }]
   ],
   use: {
     baseURL: 'https://demowebshop.tricentis.com',

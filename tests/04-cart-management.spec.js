@@ -14,7 +14,12 @@ test.describe('Tests de gestion du panier', () => {
     await clearCart(page);
   });
 
-  test('Test 7: Ajout d\'un produit au panier - Cas passant ✅', async ({ page }) => {
+  test('Test 7: Ajout d\'un produit au panier - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-97' });
+    testInfo.annotations.push({ type: 'tags', description: 'smoke,cart,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie l\'ajout d\'un produit au panier et la mise à jour du compteur.' });
+    
     // Naviguer vers la catégorie Books
     await page.goto('/books');
     
@@ -56,7 +61,12 @@ test.describe('Tests de gestion du panier', () => {
     console.log('✅ Produit ajouté avec succès au panier');
   });
 
-  test('Test 8: Ajout de plusieurs produits au panier - Cas passant ✅', async ({ page }) => {
+  test('Test 8: Ajout de plusieurs produits au panier - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-98' });
+    testInfo.annotations.push({ type: 'tags', description: 'cart,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie l\'ajout de plusieurs produits différents au panier.' });
+    
     // Ajouter un premier livre
     await page.goto('/books');
     await addProductToCart(page, '/books', 0);
@@ -93,7 +103,12 @@ test.describe('Tests de gestion du panier', () => {
     console.log('✅ Trois produits différents ajoutés avec succès');
   });
 
-  test('Test 9: Modification de la quantité dans le panier - Cas passant ✅', async ({ page }) => {
+  test('Test 9: Modification de la quantité dans le panier - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-99' });
+    testInfo.annotations.push({ type: 'tags', description: 'cart,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie la modification de la quantité d\'un produit dans le panier et le recalcul du total.' });
+    
     // Ajouter un produit au panier
     await page.goto('/books');
     
@@ -131,7 +146,12 @@ test.describe('Tests de gestion du panier', () => {
     console.log(`✅ Quantité mise à jour: 3, Sous-total: ${subtotal}`);
   });
 
-  test('Test 9 bis: Suppression d\'un produit du panier - Cas passant ✅', async ({ page }) => {
+  test('Test 9 bis: Suppression d\'un produit du panier - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-100' });
+    testInfo.annotations.push({ type: 'tags', description: 'cart,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie la suppression d\'un produit spécifique du panier.' });
+    
     // Ajouter deux produits
     await page.goto('/books');
     await addProductToCart(page, '/books', 0);
@@ -160,7 +180,12 @@ test.describe('Tests de gestion du panier', () => {
     console.log('✅ Produit supprimé avec succès du panier');
   });
 
-  test('Test 9 ter: Vider complètement le panier - Cas passant ✅', async ({ page }) => {
+  test('Test 9 ter: Vider complètement le panier - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-101' });
+    testInfo.annotations.push({ type: 'tags', description: 'cart,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie le vidage complet du panier et la réinitialisation du compteur.' });
+    
     // Ajouter un produit
     await page.goto('/books');
     await addProductToCart(page, '/books', 0);

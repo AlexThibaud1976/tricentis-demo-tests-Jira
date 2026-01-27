@@ -9,7 +9,12 @@ test.describe('Tests de parcours du catalogue', () => {
     }
   });
 
-  test('Test 6: Parcours du catalogue et visualisation de produit - Cas passant ✅', async ({ page }) => {
+  test('Test 6: Parcours du catalogue et visualisation de produit - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-94' });
+    testInfo.annotations.push({ type: 'tags', description: 'smoke,catalog,navigation,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie la navigation dans le catalogue et l\'affichage des détails d\'un produit.' });
+    
     // Naviguer vers la page d'accueil
     await page.goto('/');
     
@@ -52,7 +57,12 @@ test.describe('Tests de parcours du catalogue', () => {
     console.log('✅ Page de détails du produit affichée correctement');
   });
 
-  test('Test 6 bis: Navigation entre plusieurs catégories - Cas passant ✅', async ({ page }) => {
+  test('Test 6 bis: Navigation entre plusieurs catégories - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-95' });
+    testInfo.annotations.push({ type: 'tags', description: 'catalog,navigation,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie la navigation entre différentes catégories de produits (Computers, Electronics).' });
+    
     await page.goto('/');
     
     // Tester la catégorie Computers
@@ -107,7 +117,12 @@ test.describe('Tests de parcours du catalogue', () => {
     console.log(`✅ ${electronicsProducts} produits électroniques trouvés`);
   });
 
-  test('Test 6 ter: Recherche de produits - Cas passant ✅', async ({ page }) => {
+  test('Test 6 ter: Recherche de produits - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-96' });
+    testInfo.annotations.push({ type: 'tags', description: 'smoke,search,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie la fonctionnalité de recherche de produits dans le catalogue.' });
+    
     await page.goto('/');
     
     // Utiliser la barre de recherche

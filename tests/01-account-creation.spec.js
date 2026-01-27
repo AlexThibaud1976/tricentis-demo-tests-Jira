@@ -14,7 +14,12 @@ test.describe('Tests de création de compte', () => {
     }
   });
   
-  test('Test 1: Création de compte utilisateur - Cas passant ✅', async ({ page }) => {
+  test('Test 1: Création de compte utilisateur - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-87' });
+    testInfo.annotations.push({ type: 'tags', description: 'smoke,account-creation,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie la création d\'un compte utilisateur avec des données valides.\nLe test génère des données utilisateur uniques et valide le message de succès.' });
+    
     // Générer des données utilisateur uniques
     const userData = generateUserData();
     
@@ -53,7 +58,12 @@ test.describe('Tests de création de compte', () => {
     console.log(`✅ Compte créé avec succès: ${userData.email}`);
   });
 
-  test('Test 2: Création de compte - Cas non passant (email invalide) ❌', async ({ page }) => {
+  test('Test 2: Création de compte - Cas non passant (email invalide) ❌', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-88' });
+    testInfo.annotations.push({ type: 'tags', description: 'account-creation,negative,validation' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie que le système rejette un email invalide lors de la création de compte.' });
+    
     // Naviguer vers la page d'inscription
     await page.goto('/register');
     
@@ -78,7 +88,12 @@ test.describe('Tests de création de compte', () => {
     console.log('✅ Le système a correctement rejeté l\'email invalide');
   });
 
-  test('Test 2 bis: Création de compte - Cas non passant (mots de passe différents) ❌', async ({ page }) => {
+  test('Test 2 bis: Création de compte - Cas non passant (mots de passe différents) ❌', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-89' });
+    testInfo.annotations.push({ type: 'tags', description: 'account-creation,negative,validation' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie que le système détecte les mots de passe non identiques lors de la création de compte.' });
+    
     const userData = generateUserData();
     
     await page.goto('/register');

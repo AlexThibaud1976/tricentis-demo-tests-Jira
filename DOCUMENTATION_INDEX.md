@@ -2,6 +2,12 @@
 
 ## 🎯 Par cas d'usage
 
+### "Je veux comprendre le nouveau reporter Xray"
+→ Consultez [XRAY_REPORTER_GUIDE.md](./XRAY_REPORTER_GUIDE.md)
+
+### "Je veux voir ce qui a changé avec la migration"
+→ Consultez [MIGRATION_SUMMARY.md](./MIGRATION_SUMMARY.md)
+
 ### "Je veux tester rapidement une configuration"
 → Consultez [COPY_PASTE_EXAMPLES.md](./COPY_PASTE_EXAMPLES.md)
 
@@ -17,12 +23,16 @@
 ### "Je dois mettre en place tout le système"
 → Suivez [IMPLEMENTATION_CHECKLIST.md](./IMPLEMENTATION_CHECKLIST.md)
 
-### "Je veux voir ce qui a changé"
-→ Consultez [CHANGES_SUMMARY.md](./CHANGES_SUMMARY.md)
-
 ---
 
 ## 📚 Guide de navigation complet
+
+### Documentation Xray (Nouveau !)
+
+| Document | Public cible | Durée de lecture |
+|----------|-------------|------------------|
+| [XRAY_REPORTER_GUIDE.md](./XRAY_REPORTER_GUIDE.md) | Testeurs, Développeurs | 15 min |
+| [MIGRATION_SUMMARY.md](./MIGRATION_SUMMARY.md) | Tous | 5 min |
 
 ### Documentation utilisateur
 

@@ -15,7 +15,12 @@ test.describe('Tests de connexion et déconnexion', () => {
       }
   });
 
-  test('Test 3: Connexion utilisateur - Cas passant ✅', async ({ page }) => {
+  test('Test 3: Connexion utilisateur - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-90' });
+    testInfo.annotations.push({ type: 'tags', description: 'smoke,login,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie la connexion d\'un utilisateur avec des identifiants valides.\nCrée d\'abord un compte puis teste la connexion.' });
+    
     // Créer un compte (comme dans Test 1 de 01-account-creation.spec.js)
     testUser = generateUserData();
     
@@ -59,7 +64,12 @@ test.describe('Tests de connexion et déconnexion', () => {
     console.log(`✅ Connexion réussie avec: ${testUser.email}`);
   });
 
-  test('Test 4: Connexion utilisateur - Cas non passant (mot de passe incorrect) ❌', async ({ page }) => {
+  test('Test 4: Connexion utilisateur - Cas non passant (mot de passe incorrect) ❌', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-91' });
+    testInfo.annotations.push({ type: 'tags', description: 'login,negative,security' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie que le système rejette une connexion avec un mot de passe incorrect.' });
+    
     // Créer un compte pour ce test
     const userData = generateUserData();
     
@@ -97,7 +107,12 @@ test.describe('Tests de connexion et déconnexion', () => {
     console.log('✅ Le système a correctement rejeté le mot de passe incorrect');
   });
 
-  test('Test 4 bis: Connexion - Cas non passant (email inexistant) ❌', async ({ page }) => {
+  test('Test 4 bis: Connexion - Cas non passant (email inexistant) ❌', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-92' });
+    testInfo.annotations.push({ type: 'tags', description: 'login,negative,security' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie que le système rejette une connexion avec un email inexistant.' });
+    
     await page.goto('/login');
     
     await page.locator('input#Email').fill('emailinexistant@test.com');
@@ -111,7 +126,12 @@ test.describe('Tests de connexion et déconnexion', () => {
     console.log('✅ Le système a correctement rejeté l\'email inexistant');
   });
 
-  test('Test 5: Déconnexion utilisateur - Cas passant ✅', async ({ page }) => {
+  test('Test 5: Déconnexion utilisateur - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-93' });
+    testInfo.annotations.push({ type: 'tags', description: 'smoke,logout,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie la déconnexion d\'un utilisateur et la réinitialisation de la session.' });
+    
     // Créer un compte pour ce test
     const userData = generateUserData();
     

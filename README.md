@@ -155,7 +155,17 @@ Le fichier `utils/helpers.js` contient des fonctions réutilisables :
 - `addProductToCart(page, categoryUrl, index)` - Ajout au panier
 - `getCartItemCount(page)` - Récupère le nombre d'articles
 
+### Reporters configurés
+
+- **HTML Reporter** : Rapport visuel interactif
+- **List Reporter** : Sortie console
+- **@xray-app/playwright-junit-reporter** : Génère xray-report.xml avec annotations Xray
+
 ## 📈 Rapports de tests
+
+Ce projet génère plusieurs types de rapports après l'exécution des tests :
+
+### Rapport HTML Playwright
 
 Après l'exécution, un rapport HTML est automatiquement généré :
 
@@ -168,6 +178,35 @@ Le rapport s'ouvre dans votre navigateur et affiche :
 - Captures d'écran en cas d'échec
 - Vidéos des tests échoués
 - Traces d'exécution
+
+### Rapport XML Xray (JUnit enrichi)
+
+Le projet utilise le reporter officiel **@xray-app/playwright-junit-reporter** qui génère un fichier `xray-report.xml` compatible avec Xray Cloud. Ce rapport inclut automatiquement :
+
+- **test_key** : Clé du test dans Jira (ex: DEMO-101)
+- **requirements** : Lien vers les stories/requirements Jira
+- **tags** : Labels pour catégoriser les tests (smoke, regression, etc.)
+- **test_description** : Description multilignes du test
+- **testrun_evidence** : Attachments embed (screenshots, fichiers)
+
+#### Exemple d'annotations dans les tests
+
+```javascript
+test('Test de connexion', async ({ page }, testInfo) => {
+  // Annotations Xray pour l'intégration Jira
+  testInfo.annotations.push({ type: 'test_key', description: 'DEMO-201' });
+  testInfo.annotations.push({ type: 'requirements', description: 'DEMO-2' });
+  testInfo.annotations.push({ type: 'tags', description: 'smoke,login,positive' });
+  testInfo.annotations.push({ 
+    type: 'test_description', 
+    description: 'Vérifie la connexion avec des identifiants valides' 
+  });
+  
+  // Votre test...
+});
+```
+
+Le fichier `xray-report.xml` est automatiquement créé lors de l'exécution des tests et peut être uploadé vers Xray Cloud via le script `upload-xray.ps1`.
 
 ## 🧩 Intégration Jira (Post-Execution)
 
@@ -182,7 +221,7 @@ Ce projet inclut un script d'intégration Jira pour publier automatiquement des 
 
 - [scripts/jira-post-execution.ps1](scripts/jira-post-execution.ps1) - Publication des résultats vers Jira
 - [scripts/get-custom-field-ids.ps1](scripts/get-custom-field-ids.ps1) - Récupération des IDs des champs personnalisés Jira
-- [scripts/upload-xray.ps1](scripts/upload-xray.ps1) - Upload des résultats au format JUnit vers Xray Cloud
+- [scripts/upload-xray.ps1](scripts/upload-xray.ps1) - Upload du rapport xray-report.xml vers Xray Cloud (format JUnit enrichi)
 
 ### Prérequis
 

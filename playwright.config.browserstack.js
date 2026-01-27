@@ -19,6 +19,13 @@ module.exports = defineConfig({
     ['html', { open: 'never' }],
     ['json', { outputFile: 'test-results.json' }],
     ['./browserstack-reporter.js'],
+    ['@xray-app/playwright-junit-reporter', {
+      outputFile: 'xray-report.xml',
+      embedAnnotationsAsProperties: true,
+      embedTestrunAnnotationsAsItemProperties: true,
+      embedAttachmentsAsProperty: 'testrun_evidence',
+      textContentAnnotations: ['test_description', 'testrun_comment']
+    }]
   ],
 
   // Options communes à tous les tests

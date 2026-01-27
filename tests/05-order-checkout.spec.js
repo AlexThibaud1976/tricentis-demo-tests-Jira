@@ -26,7 +26,12 @@ test.describe('Tests de passage de commande', () => {
     await clearCart(page);
   });
 
-  test('Test 10: Passage de commande complet - Cas passant ✅', async ({ page }) => {
+  test('Test 10: Passage de commande complet - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-102' });
+    testInfo.annotations.push({ type: 'tags', description: 'smoke,checkout,order,positive,critical' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie le processus complet de passage de commande avec toutes les étapes de checkout.' });
+    
     // Aller dans la catégorie Books
     await page.goto('/books');
     await page.waitForSelector('.product-grid .product-item', { state: 'visible', timeout: 10000 });
@@ -107,7 +112,12 @@ test.describe('Tests de passage de commande', () => {
     console.log('✅ Commande complète réussie - Panier vidé');
   });
 
-  test('Test 10 bis: Tentative de checkout sans accepter les conditions - Cas non passant ❌', async ({ page }) => {
+  test('Test 10 bis: Tentative de checkout sans accepter les conditions - Cas non passant ❌', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-103' });
+    testInfo.annotations.push({ type: 'tags', description: 'checkout,negative,validation' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie que le système empêche le checkout sans acceptation des conditions de service.' });
+    
     // Ajouter un produit au panier (premier livre disponible)
     await page.goto('/books');
     await page.waitForSelector('.product-grid .product-item', { state: 'visible', timeout: 10000 });
@@ -144,7 +154,12 @@ test.describe('Tests de passage de commande', () => {
     console.log('✅ Le système empêche le checkout sans accepter les conditions');
   });
 
-  test('Test 10 ter: Commande avec plusieurs produits - Cas passant ✅', async ({ page }) => {
+  test('Test 10 ter: Commande avec plusieurs produits - Cas passant ✅', async ({ page }, testInfo) => {
+    // Annotations Xray pour l'intégration Jira
+    testInfo.annotations.push({ type: 'test_key', description: 'DEMO-104' });
+    testInfo.annotations.push({ type: 'tags', description: 'checkout,order,positive' });
+    testInfo.annotations.push({ type: 'test_description', description: 'Vérifie le passage de commande avec plusieurs produits dans le panier.' });
+    
     // Ajouter deux livres (les deux premiers disponibles)
     await page.goto('/books');
     await page.waitForSelector('.product-grid .product-item', { state: 'visible', timeout: 10000 });
