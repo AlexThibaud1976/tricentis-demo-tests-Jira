@@ -181,6 +181,27 @@ jobs:
       run: |
         ./scripts/upload-xray.ps1 -IssueKey "${{ github.event.inputs.issueKey }}"
 
+    - name: Determine test result from XML report
+      if: always()
+      id: test-result
+      shell: bash
+      run: |
+        # Read failures from the XML report (more reliable than step outcome)
+        if [ -f "xray-report.xml" ]; then
+          FAILURES=$(grep -oP 'failures="\K[0-9]+' xray-report.xml | head -1)
+          ERRORS=$(grep -oP 'errors="\K[0-9]+' xray-report.xml | head -1)
+          if [ "$FAILURES" = "0" ] && [ "$ERRORS" = "0" ]; then
+            echo "result=PASS" >> $GITHUB_OUTPUT
+            echo "✅ All tests passed (0 failures, 0 errors)"
+          else
+            echo "result=FAIL" >> $GITHUB_OUTPUT
+            echo "❌ Tests failed ($FAILURES failures, $ERRORS errors)"
+          fi
+        else
+          echo "result=UNKNOWN" >> $GITHUB_OUTPUT
+          echo "⚠️ XML report not found"
+        fi
+
     - name: Update Jira Test Execution
       if: ${{ always() && steps.xray-upload.outputs.exec_key != '' }}
       shell: pwsh
@@ -191,8 +212,8 @@ jobs:
         JIRA_CUSTOM_FIELD_BROWSER_VERSION: ${{ secrets.JIRA_CUSTOM_FIELD_BROWSER_VERSION }}
         JIRA_CUSTOM_FIELD_TEST_SCOPE: ${{ secrets.JIRA_CUSTOM_FIELD_TEST_SCOPE }}
       run: |
-        $testResult = if ("${{ steps.run-tests.outcome }}" -eq "success") { "PASS" } else { "FAIL" }
-        Write-Host "Test outcome: ${{ steps.run-tests.outcome }} -> Result: $testResult"
+        $testResult = "${{ steps.test-result.outputs.result }}"
+        Write-Host "Test result from XML report: $testResult"
         
         ./scripts/jira-post-execution.ps1 `
           -ExecKey "${{ steps.xray-upload.outputs.exec_key }}" `
