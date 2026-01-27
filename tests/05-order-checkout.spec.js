@@ -1,5 +1,5 @@
 const { test, expect } = require('../test-fixtures');
-const { assertUrl } = require('../utils/helpers');
+const { assertUrl, captureEvidence } = require('../utils/helpers');
 const { createAccount, login, clearCart, wait, addProductToCart } = require('../utils/helpers');
 
 test.describe('Tests de passage de commande', () => {
@@ -100,6 +100,7 @@ test.describe('Tests de passage de commande', () => {
     // Attendre la page de confirmation
     await page.waitForURL(/.*checkout\/completed/, { timeout: 15000 });
     await expect(page.locator('.title')).toContainText('Your order has been successfully processed!');
+    await captureEvidence(page, testInfo, 'order_confirmed');
     
     const orderNumberText = await page.locator('.details li').first().textContent();
     console.log(`✅ ${orderNumberText.trim()}`);
@@ -150,6 +151,7 @@ test.describe('Tests de passage de commande', () => {
       await assertUrl(page, /.*cart/);
       console.log('✅ Pas de dialog, reste sur la page panier comme attendu');
     }
+    await captureEvidence(page, testInfo, 'checkout_blocked_no_terms');
 
     console.log('✅ Le système empêche le checkout sans accepter les conditions');
   });
@@ -215,6 +217,7 @@ test.describe('Tests de passage de commande', () => {
     await page.locator('#confirm-order-buttons-container input[value="Confirm"]').click();
     await page.waitForURL(/.*checkout\/completed/, { timeout: 15000 });
     await expect(page.locator('.title')).toContainText('Your order has been successfully processed!');
+    await captureEvidence(page, testInfo, 'multi_product_order_confirmed');
 
     console.log('✅ Commande avec plusieurs produits réussie');
   });

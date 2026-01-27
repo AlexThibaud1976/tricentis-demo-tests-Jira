@@ -1,5 +1,5 @@
 const { test, expect } = require('../test-fixtures');
-const { assertUrl } = require('../utils/helpers');
+const { assertUrl, captureEvidence } = require('../utils/helpers');
 const { generateUserData, login, logout } = require('../utils/helpers');
 
 test.describe('Tests de connexion et déconnexion', () => {
@@ -60,6 +60,7 @@ test.describe('Tests de connexion et déconnexion', () => {
     await expect(page.locator('a.ico-logout')).toBeVisible();
     await expect(page.locator('.account').first()).toContainText(testUser.email);
     await expect(page.locator('a.ico-login')).not.toBeVisible();
+    await captureEvidence(page, testInfo, 'login_success');
     
     console.log(`✅ Connexion réussie avec: ${testUser.email}`);
   });
@@ -97,6 +98,7 @@ test.describe('Tests de connexion et déconnexion', () => {
     // Vérifier le message d'erreur
     await expect(page.locator('.validation-summary-errors')).toBeVisible();
     await expect(page.locator('.validation-summary-errors')).toContainText('Login was unsuccessful');
+    await captureEvidence(page, testInfo, 'wrong_password_error');
     
     // Vérifier que nous sommes toujours sur la page de connexion
     await assertUrl(page, /.*login/);
@@ -122,6 +124,7 @@ test.describe('Tests de connexion et déconnexion', () => {
     
     await expect(page.locator('.validation-summary-errors')).toBeVisible();
     await expect(page.locator('.validation-summary-errors')).toContainText('Login was unsuccessful');
+    await captureEvidence(page, testInfo, 'nonexistent_email_error');
     
     console.log('✅ Le système a correctement rejeté l\'email inexistant');
   });
@@ -160,6 +163,7 @@ test.describe('Tests de connexion et déconnexion', () => {
     await expect(page.locator('a.ico-login')).toBeVisible();
     await expect(page.locator('a.ico-register')).toBeVisible();
     await expect(page.locator('a.ico-logout')).not.toBeVisible();
+    await captureEvidence(page, testInfo, 'logout_success');
     
     console.log('✅ Déconnexion réussie');
   });

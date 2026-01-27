@@ -1,5 +1,5 @@
 const { test, expect } = require('../test-fixtures');
-const { assertUrl } = require('../utils/helpers');
+const { assertUrl, captureEvidence } = require('../utils/helpers');
 const { generateUserData } = require('../utils/helpers');
 
 test.describe('Tests de création de compte', () => {
@@ -32,6 +32,7 @@ test.describe('Tests de création de compte', () => {
     // Vérifier que nous sommes sur la page d'inscription
     await assertUrl(page, /.*register/);
     await expect(page.locator('.page-title h1')).toContainText('Register');
+    await captureEvidence(page, testInfo, 'register_page_loaded');
     
     // Remplir le formulaire
     await page.locator('input#gender-male').check();
@@ -40,18 +41,21 @@ test.describe('Tests de création de compte', () => {
     await page.locator('input#Email').fill(userData.email);
     await page.locator('input#Password').fill(userData.password);
     await page.locator('input#ConfirmPassword').fill(userData.password);
+    await captureEvidence(page, testInfo, 'form_filled');
     
     // Soumettre le formulaire
     await page.locator('input#register-button').click();
     
     // Vérifier le message de succès
     await expect(page.locator('.result')).toContainText('Your registration completed');
+    await captureEvidence(page, testInfo, 'registration_success');
     
     // Cliquer sur Continue
     await page.locator('.button-1.register-continue-button').click();
     
     // Vérifier que nous sommes de retour sur la page d'accueil
     await assertUrl(page, '/');
+    await captureEvidence(page, testInfo, 'homepage_after_registration');
     
 
     
@@ -81,6 +85,7 @@ test.describe('Tests de création de compte', () => {
     // Vérifier qu'un message d'erreur s'affiche
     await expect(page.locator('.field-validation-error')).toBeVisible();
     await expect(page.locator('.field-validation-error')).toContainText('Wrong email');
+    await captureEvidence(page, testInfo, 'email_validation_error');
     
     // Vérifier que nous sommes toujours sur la page d'inscription
     await assertUrl(page, /.*register/);
@@ -110,6 +115,7 @@ test.describe('Tests de création de compte', () => {
     // Vérifier le message d'erreur
     await expect(page.locator('.field-validation-error')).toBeVisible();
     await expect(page.locator('.field-validation-error')).toContainText(/password/i);
+    await captureEvidence(page, testInfo, 'password_mismatch_error');
     
     await assertUrl(page, /.*register/);
     

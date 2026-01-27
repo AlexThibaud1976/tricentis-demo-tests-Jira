@@ -1,5 +1,5 @@
 const { test, expect } = require('../test-fixtures');
-const { wait, clearCart, getCartItemCount, addProductToCart } = require('../utils/helpers');
+const { wait, clearCart, getCartItemCount, addProductToCart, captureEvidence } = require('../utils/helpers');
 
 test.describe('Tests de gestion du panier', () => {
 
@@ -57,6 +57,7 @@ test.describe('Tests de gestion du panier', () => {
     
     // Vérifier que le prix est affiché
     await expect(page.locator('.product-unit-price')).toBeVisible();
+    await captureEvidence(page, testInfo, 'product_added_to_cart');
     
     console.log('✅ Produit ajouté avec succès au panier');
   });
@@ -99,6 +100,7 @@ test.describe('Tests de gestion du panier', () => {
     
     // Vérifier que le total est calculé
     await expect(page.locator('.product-price').first()).toBeVisible();
+    await captureEvidence(page, testInfo, 'multiple_products_in_cart');
     
     console.log('✅ Trois produits différents ajoutés avec succès');
   });
@@ -142,6 +144,7 @@ test.describe('Tests de gestion du panier', () => {
     
     const expectedSubtotal = unitPrice * 3;
     expect(Math.abs(subtotal - expectedSubtotal)).toBeLessThan(0.01); // Tolérance pour les arrondis
+    await captureEvidence(page, testInfo, 'quantity_updated');
     
     console.log(`✅ Quantité mise à jour: 3, Sous-total: ${subtotal}`);
   });
@@ -176,6 +179,7 @@ test.describe('Tests de gestion du panier', () => {
     // Vérifier qu'il ne reste qu'un produit
     cartItems = await page.locator('.cart-item-row').count();
     expect(cartItems).toBe(1);
+    await captureEvidence(page, testInfo, 'product_removed');
     
     console.log('✅ Produit supprimé avec succès du panier');
   });
@@ -201,6 +205,7 @@ test.describe('Tests de gestion du panier', () => {
     // Vérifier que le compteur est à 0
     const cartCount = await getCartItemCount(page);
     expect(cartCount).toBe(0);
+    await captureEvidence(page, testInfo, 'cart_emptied');
     
     console.log('✅ Panier vidé complètement');
   });

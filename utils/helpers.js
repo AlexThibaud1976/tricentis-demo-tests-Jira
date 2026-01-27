@@ -3,6 +3,57 @@
  */
 
 const { expect } = require('@playwright/test');
+const fs = require('fs');
+const path = require('path');
+
+// Dossier pour stocker les screenshots d'evidence
+const EVIDENCE_DIR = 'test-results/evidence';
+
+/**
+ * Prend une capture d'écran et l'attache comme evidence pour Xray
+ * @param {Page} page - Page Playwright
+ * @param {TestInfo} testInfo - Info du test en cours
+ * @param {string} name - Nom descriptif de la capture
+ * @returns {Promise<string>} - Chemin du fichier screenshot
+ */
+async function captureEvidence(page, testInfo, name) {
+  // Créer le dossier evidence si nécessaire
+  if (!fs.existsSync(EVIDENCE_DIR)) {
+    fs.mkdirSync(EVIDENCE_DIR, { recursive: true });
+  }
+  
+  // Générer un nom de fichier unique
+  const timestamp = Date.now();
+  const sanitizedName = name.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
+  const testKey = testInfo.annotations.find(a => a.type === 'test_key')?.description || 'unknown';
+  const filename = `${testKey}_${sanitizedName}_${timestamp}.png`;
+  const filepath = path.join(EVIDENCE_DIR, filename);
+  
+  // Prendre la capture d'écran
+  await page.screenshot({ path: filepath, fullPage: false });
+  
+  // Attacher au rapport Playwright
+  await testInfo.attach(name, { path: filepath, contentType: 'image/png' });
+  
+  console.log(`📸 Evidence captured: ${name}`);
+  
+  return filepath;
+}
+
+/**
+ * Effectue une vérification avec capture d'écran automatique
+ * @param {Page} page - Page Playwright
+ * @param {TestInfo} testInfo - Info du test en cours
+ * @param {Function} assertion - Fonction d'assertion à exécuter
+ * @param {string} evidenceName - Nom de l'evidence
+ */
+async function verifyWithEvidence(page, testInfo, assertion, evidenceName) {
+  // Exécuter l'assertion
+  await assertion();
+  
+  // Capturer l'evidence après la vérification réussie
+  await captureEvidence(page, testInfo, evidenceName);
+}
 
 /**
  * Génère un timestamp unique
@@ -140,5 +191,8 @@ module.exports = {
   logout,
   addProductToCart,
   getCartItemCount,
-  assertUrl
+  assertUrl,
+  captureEvidence,
+  verifyWithEvidence,
+  EVIDENCE_DIR
 };

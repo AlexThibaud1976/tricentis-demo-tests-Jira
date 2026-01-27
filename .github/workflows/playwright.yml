@@ -153,6 +153,10 @@ jobs:
       run: |
         node scripts/get-browserstack-build-link.js
 
+    - name: Add timestamps to Xray report
+      if: always()
+      run: node scripts/add-timestamps-to-xray-report.js xray-report.xml
+
     - name: Upload BrowserStack test results
       uses: actions/upload-artifact@v4
       if: always()
@@ -161,6 +165,7 @@ jobs:
         path: |
           playwright-report/
           results.xml
+          xray-report.xml
         retention-days: 30
 
     - name: Upload results to Xray

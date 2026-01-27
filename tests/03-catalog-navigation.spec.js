@@ -1,5 +1,5 @@
 const { test, expect } = require('../test-fixtures');
-const { assertUrl } = require('../utils/helpers');
+const { assertUrl, captureEvidence } = require('../utils/helpers');
 
 test.describe('Tests de parcours du catalogue', () => {
 
@@ -53,6 +53,7 @@ test.describe('Tests de parcours du catalogue', () => {
     // Vérifier qu'il y a une description
     const descriptionExists = await page.locator('.full-description, .short-description').count();
     expect(descriptionExists).toBeGreaterThan(0);
+    await captureEvidence(page, testInfo, 'product_details_page');
     
     console.log('✅ Page de détails du produit affichée correctement');
   });
@@ -114,6 +115,7 @@ test.describe('Tests de parcours du catalogue', () => {
     }
 
     expect(electronicsProducts).toBeGreaterThan(0);
+    await captureEvidence(page, testInfo, 'electronics_category');
     console.log(`✅ ${electronicsProducts} produits électroniques trouvés`);
   });
 
@@ -136,6 +138,7 @@ test.describe('Tests de parcours du catalogue', () => {
     expect(searchResults).toBeGreaterThan(0);
 
     console.log(`✅ Recherche "computer" a retourné ${searchResults} résultats`);
+    await captureEvidence(page, testInfo, 'search_results');
 
     // Vérifier que les résultats contiennent le terme recherché
     const firstResult = await page.locator('.product-grid .product-item').first().locator('.product-title a').textContent();
