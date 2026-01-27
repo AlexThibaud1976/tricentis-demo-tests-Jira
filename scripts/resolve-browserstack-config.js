@@ -25,6 +25,7 @@
 const fs = require('fs');
 
 // Cache local de secours - utilisé si l'API BrowserStack est inaccessible
+// Mis à jour le 27 janvier 2026 - versions Playwright disponibles sur BrowserStack
 const FALLBACK_VERSIONS = {
   os: {
     windows: ['7', '8', '8.1', '10', '11'],

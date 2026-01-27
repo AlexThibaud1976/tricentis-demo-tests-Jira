@@ -1,10 +1,8 @@
-<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="7.282744000002742">
-<testsuite name="01-account-creation.spec.js" timestamp="2026-01-27T14:54:20.773Z" hostname="chromium" tests="3" failures="0" skipped="0" time="6.189" errors="0">
-<testcase name="Tests de création de compte › Test 1: Création de compte utilisateur - Cas passant ✅" classname="01-account-creation.spec.js" time="3.428">
+<testsuites id="" name="" tests="19" failures="0" skipped="0" errors="0" time="114.01823399999738">
+<testsuite name="01-account-creation.spec.js" timestamp="2026-01-27T17:14:56.673Z" hostname="" tests="3" failures="0" skipped="0" time="10.267" errors="0">
+<testcase name="Tests de création de compte › Test 1: Création de compte utilisateur - Cas passant ✅" classname="01-account-creation.spec.js" time="7.676">
 <properties>
-<property name="test_key" value="DEMO-101">
-</property>
-<property name="requirements" value="DEMO-1">
+<property name="test_key" value="DEMO-87">
 </property>
 <property name="tags" value="smoke,account-creation,positive">
 </property>
@@ -15,15 +13,13 @@
 </property>
 </properties>
 <system-out>
-<![CDATA[✅ Compte créé avec succès: testuser_1769525661830@test.com
+<![CDATA[✅ Compte créé avec succès: testuser_1769534097983@test.com
 ]]>
 </system-out>
 </testcase>
-<testcase name="Tests de création de compte › Test 2: Création de compte - Cas non passant (email invalide) ❌" classname="01-account-creation.spec.js" time="1.374">
+<testcase name="Tests de création de compte › Test 2: Création de compte - Cas non passant (email invalide) ❌" classname="01-account-creation.spec.js" time="1.241">
 <properties>
-<property name="test_key" value="DEMO-102">
-</property>
-<property name="requirements" value="DEMO-1">
+<property name="test_key" value="DEMO-88">
 </property>
 <property name="tags" value="account-creation,negative,validation">
 </property>
@@ -38,11 +34,9 @@
 ]]>
 </system-out>
 </testcase>
-<testcase name="Tests de création de compte › Test 2 bis: Création de compte - Cas non passant (mots de passe différents) ❌" classname="01-account-creation.spec.js" time="1.387">
+<testcase name="Tests de création de compte › Test 2 bis: Création de compte - Cas non passant (mots de passe différents) ❌" classname="01-account-creation.spec.js" time="1.35">
 <properties>
-<property name="test_key" value="DEMO-103">
-</property>
-<property name="requirements" value="DEMO-1">
+<property name="test_key" value="DEMO-89">
 </property>
 <property name="tags" value="account-creation,negative,validation">
 </property>
@@ -56,6 +50,310 @@
 <![CDATA[✅ Le système a correctement détecté les mots de passe différents
 ]]>
 </system-out>
+</testcase>
+</testsuite>
+<testsuite name="02-login-logout.spec.js" timestamp="2026-01-27T17:14:56.673Z" hostname="" tests="4" failures="0" skipped="0" time="15.334" errors="0">
+<testcase name="Tests de connexion et déconnexion › Test 3: Connexion utilisateur - Cas passant ✅" classname="02-login-logout.spec.js" time="6.167">
+<properties>
+<property name="test_key" value="DEMO-90">
+</property>
+<property name="tags" value="smoke,login,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie la connexion d'un utilisateur avec des identifiants valides.\\Crée d'abord un compte puis teste la connexion.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Compte créé avec succès: testuser_1769534108071@test.com
+✅ Connexion réussie avec: testuser_1769534108071@test.com
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de connexion et déconnexion › Test 4: Connexion utilisateur - Cas non passant (mot de passe incorrect) ❌" classname="02-login-logout.spec.js" time="4.385">
+<properties>
+<property name="test_key" value="DEMO-91">
+</property>
+<property name="tags" value="login,negative,security">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie que le système rejette une connexion avec un mot de passe incorrect.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Le système a correctement rejeté le mot de passe incorrect
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de connexion et déconnexion › Test 4 bis: Connexion - Cas non passant (email inexistant) ❌" classname="02-login-logout.spec.js" time="0.968">
+<properties>
+<property name="test_key" value="DEMO-92">
+</property>
+<property name="tags" value="login,negative,security">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie que le système rejette une connexion avec un email inexistant.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Le système a correctement rejeté l'email inexistant
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de connexion et déconnexion › Test 5: Déconnexion utilisateur - Cas passant ✅" classname="02-login-logout.spec.js" time="3.814">
+<properties>
+<property name="test_key" value="DEMO-93">
+</property>
+<property name="tags" value="smoke,logout,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie la déconnexion d'un utilisateur et la réinitialisation de la session.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Déconnexion réussie
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="03-catalog-navigation.spec.js" timestamp="2026-01-27T17:14:56.673Z" hostname="" tests="3" failures="0" skipped="0" time="9.73" errors="0">
+<testcase name="Tests de parcours du catalogue › Test 6: Parcours du catalogue et visualisation de produit - Cas passant ✅" classname="03-catalog-navigation.spec.js" time="3.223">
+<properties>
+<property name="test_key" value="DEMO-94">
+</property>
+<property name="tags" value="smoke,catalog,navigation,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie la navigation dans le catalogue et l'affichage des détails d'un produit.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Nombre de produits trouvés dans Books: 6
+Premier produit: Computing and Internet
+✅ Page de détails du produit affichée correctement
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de parcours du catalogue › Test 6 bis: Navigation entre plusieurs catégories - Cas passant ✅" classname="03-catalog-navigation.spec.js" time="3.694">
+<properties>
+<property name="test_key" value="DEMO-95">
+</property>
+<property name="tags" value="catalog,navigation,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie la navigation entre différentes catégories de produits (Computers, Electronics).]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ 6 ordinateurs de bureau trouvés
+✅ 2 produits électroniques trouvés
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de parcours du catalogue › Test 6 ter: Recherche de produits - Cas passant ✅" classname="03-catalog-navigation.spec.js" time="2.813">
+<properties>
+<property name="test_key" value="DEMO-96">
+</property>
+<property name="tags" value="smoke,search,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie la fonctionnalité de recherche de produits dans le catalogue.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Recherche "computer" a retourné 4 résultats
+Premier résultat: Build your own cheap computer
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="04-cart-management.spec.js" timestamp="2026-01-27T17:14:56.673Z" hostname="" tests="5" failures="0" skipped="0" time="33.184" errors="0">
+<testcase name="Tests de gestion du panier › Test 7: Ajout d&apos;un produit au panier - Cas passant ✅" classname="04-cart-management.spec.js" time="3.84">
+<properties>
+<property name="test_key" value="DEMO-97">
+</property>
+<property name="tags" value="smoke,cart,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie l'ajout d'un produit au panier et la mise à jour du compteur.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[Compteur panier initial: 0
+Ajout du produit: Computing and Internet
+✅ Compteur panier mis à jour: 1
+✅ Produit ajouté avec succès au panier
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de gestion du panier › Test 8: Ajout de plusieurs produits au panier - Cas passant ✅" classname="04-cart-management.spec.js" time="10.26">
+<properties>
+<property name="test_key" value="DEMO-98">
+</property>
+<property name="tags" value="cart,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie l'ajout de plusieurs produits différents au panier.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Compteur panier: 3
+✅ Trois produits différents ajoutés avec succès
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de gestion du panier › Test 9: Modification de la quantité dans le panier - Cas passant ✅" classname="04-cart-management.spec.js" time="5.426">
+<properties>
+<property name="test_key" value="DEMO-99">
+</property>
+<property name="tags" value="cart,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie la modification de la quantité d'un produit dans le panier et le recalcul du total.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[Prix unitaire: 10
+✅ Quantité mise à jour: 3, Sous-total: 30
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de gestion du panier › Test 9 bis: Suppression d&apos;un produit du panier - Cas passant ✅" classname="04-cart-management.spec.js" time="8.38">
+<properties>
+<property name="test_key" value="DEMO-100">
+</property>
+<property name="tags" value="cart,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie la suppression d'un produit spécifique du panier.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Produit supprimé avec succès du panier
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de gestion du panier › Test 9 ter: Vider complètement le panier - Cas passant ✅" classname="04-cart-management.spec.js" time="5.278">
+<properties>
+<property name="test_key" value="DEMO-101">
+</property>
+<property name="tags" value="cart,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie le vidage complet du panier et la réinitialisation du compteur.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Panier vidé complètement
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="05-order-checkout.spec.js" timestamp="2026-01-27T17:14:56.673Z" hostname="" tests="3" failures="0" skipped="0" time="43.298" errors="0">
+<testcase name="Tests de passage de commande › Test 10: Passage de commande complet - Cas passant ✅" classname="05-order-checkout.spec.js" time="16.522">
+<properties>
+<property name="test_key" value="DEMO-102">
+</property>
+<property name="tags" value="smoke,checkout,order,positive,critical">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie le processus complet de passage de commande avec toutes les étapes de checkout.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Compte créé pour les tests de commande: testuser_1769534166459@test.com
+📖 Livre sélectionné: Computing and Internet
+✅ Livre ajouté au panier
+✅ Page de checkout chargée (formulaire de facturation détecté)
+✅ Adresse de facturation remplie
+✅ Adresse de livraison confirmée
+✅ Méthode de livraison sélectionnée
+✅ Méthode de paiement sélectionnée
+✅ Informations de paiement confirmées
+✅ Récapitulatif vérifié
+✅ Order number: 2203347
+✅ Commande complète réussie - Panier vidé
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de passage de commande › Test 10 bis: Tentative de checkout sans accepter les conditions - Cas non passant ❌" classname="05-order-checkout.spec.js" time="9.531">
+<properties>
+<property name="test_key" value="DEMO-103">
+</property>
+<property name="tags" value="checkout,negative,validation">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie que le système empêche le checkout sans acceptation des conditions de service.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Compte créé pour les tests de commande: testuser_1769534182985@test.com
+✅ Pas de dialog, reste sur la page panier comme attendu
+✅ Le système empêche le checkout sans accepter les conditions
+]]>
+</system-out>
+</testcase>
+<testcase name="Tests de passage de commande › Test 10 ter: Commande avec plusieurs produits - Cas passant ✅" classname="05-order-checkout.spec.js" time="17.245">
+<properties>
+<property name="test_key" value="DEMO-104">
+</property>
+<property name="tags" value="checkout,order,positive">
+</property>
+<property name="test_description">
+<![CDATA[Vérifie le passage de commande avec plusieurs produits dans le panier.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Compte créé pour les tests de commande: testuser_1769534192531@test.com
+Total de la commande: 34.00
+✅ Page de checkout chargée (formulaire de facturation détecté)
+✅ Commande avec plusieurs produits réussie
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="99-sanity.spec.js" timestamp="2026-01-27T17:14:56.673Z" hostname="" tests="1" failures="0" skipped="0" time="0.824" errors="0">
+<testcase name="sanity test" classname="99-sanity.spec.js" time="0.824">
+<properties>
+<property name="test_key" value="DEMO-105">
+</property>
+<property name="tags" value="sanity,smoke">
+</property>
+<property name="test_description">
+<![CDATA[Test de sanité pour vérifier la détection Playwright et BrowserStack.]]>
+</property>
+<property name="testrun_evidence">
+</property>
+</properties>
 </testcase>
 </testsuite>
 </testsuites>

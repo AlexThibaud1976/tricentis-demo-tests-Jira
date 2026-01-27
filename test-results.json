@@ -1,9 +1,9 @@
 {
   "config": {
-    "configFile": "C:\\Users\\alexa\\OneDrive\\Documents\\VSCode\\tricentis-demo-tests\\playwright.config.browserstack.js",
-    "rootDir": "C:/Users/alexa/OneDrive/Documents/VSCode/tricentis-demo-tests/tests",
+    "configFile": "E:\\Code\\tricentis-demo-tests-Jira\\playwright.config.browserstack.js",
+    "rootDir": "E:/Code/tricentis-demo-tests-Jira/tests",
     "forbidOnly": false,
-    "fullyParallel": true,
+    "fullyParallel": false,
     "globalSetup": null,
     "globalTeardown": null,
     "globalTimeout": 0,
@@ -32,8 +32,21 @@
         }
       ],
       [
-        "C:\\Users\\alexa\\OneDrive\\Documents\\VSCode\\tricentis-demo-tests\\browserstack-reporter.js",
+        "E:\\Code\\tricentis-demo-tests-Jira\\browserstack-reporter.js",
         null
+      ],
+      [
+        "E:\\Code\\tricentis-demo-tests-Jira\\node_modules\\@xray-app\\playwright-junit-reporter\\dist\\index.js",
+        {
+          "outputFile": "xray-report.xml",
+          "embedAnnotationsAsProperties": true,
+          "embedTestrunAnnotationsAsItemProperties": true,
+          "embedAttachmentsAsProperty": "testrun_evidence",
+          "textContentAnnotations": [
+            "test_description",
+            "testrun_comment"
+          ]
+        }
       ]
     ],
     "reportSlowTests": {
@@ -43,7 +56,7 @@
     "quiet": false,
     "projects": [
       {
-        "outputDir": "C:/Users/alexa/OneDrive/Documents/VSCode/tricentis-demo-tests/test-results",
+        "outputDir": "E:/Code/tricentis-demo-tests-Jira/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -51,7 +64,7 @@
         },
         "id": "",
         "name": "",
-        "testDir": "C:/Users/alexa/OneDrive/Documents/VSCode/tricentis-demo-tests/tests",
+        "testDir": "E:/Code/tricentis-demo-tests-Jira/tests",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -63,10 +76,1325 @@
     "updateSnapshots": "missing",
     "updateSourceMethod": "patch",
     "version": "1.56.1",
-    "workers": 5,
+    "workers": 1,
     "webServer": null
   },
   "suites": [
+    {
+      "title": "01-account-creation.spec.js",
+      "file": "01-account-creation.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Tests de création de compte",
+          "file": "01-account-creation.spec.js",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Test 1: Création de compte utilisateur - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-87"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "smoke,account-creation,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie la création d'un compte utilisateur avec des données valides.\nLe test génère des données utilisateur uniques et valide le message de succès."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7676,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Compte créé avec succès: testuser_1769534097983@test.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:14:57.199Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-87"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "smoke,account-creation,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie la création d'un compte utilisateur avec des données valides.\nLe test génère des données utilisateur uniques et valide le message de succès."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c1f22c58c4ae500731c1-587197b1d74ef5d5c4bb",
+              "file": "01-account-creation.spec.js",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "Test 2: Création de compte - Cas non passant (email invalide) ❌",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-88"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "account-creation,negative,validation"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie que le système rejette un email invalide lors de la création de compte."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1241,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Le système a correctement rejeté l'email invalide\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:05.412Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-88"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "account-creation,negative,validation"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie que le système rejette un email invalide lors de la création de compte."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c1f22c58c4ae500731c1-fa3e862771106602b348",
+              "file": "01-account-creation.spec.js",
+              "line": 61,
+              "column": 3
+            },
+            {
+              "title": "Test 2 bis: Création de compte - Cas non passant (mots de passe différents) ❌",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-89"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "account-creation,negative,validation"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie que le système détecte les mots de passe non identiques lors de la création de compte."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1350,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Le système a correctement détecté les mots de passe différents\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:06.662Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-89"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "account-creation,negative,validation"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie que le système détecte les mots de passe non identiques lors de la création de compte."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c1f22c58c4ae500731c1-af8373007069854e8c12",
+              "file": "01-account-creation.spec.js",
+              "line": 91,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "02-login-logout.spec.js",
+      "file": "02-login-logout.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Tests de connexion et déconnexion",
+          "file": "02-login-logout.spec.js",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Test 3: Connexion utilisateur - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-90"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "smoke,login,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie la connexion d'un utilisateur avec des identifiants valides.\nCrée d'abord un compte puis teste la connexion."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6167,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Compte créé avec succès: testuser_1769534108071@test.com\n"
+                        },
+                        {
+                          "text": "✅ Connexion réussie avec: testuser_1769534108071@test.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:08.028Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-90"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "smoke,login,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie la connexion d'un utilisateur avec des identifiants valides.\nCrée d'abord un compte puis teste la connexion."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "91bded27fd2fcd69208f-73583f9a1d062a229281",
+              "file": "02-login-logout.spec.js",
+              "line": 18,
+              "column": 3
+            },
+            {
+              "title": "Test 4: Connexion utilisateur - Cas non passant (mot de passe incorrect) ❌",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-91"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "login,negative,security"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie que le système rejette une connexion avec un mot de passe incorrect."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4385,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Le système a correctement rejeté le mot de passe incorrect\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:14.203Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-91"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "login,negative,security"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie que le système rejette une connexion avec un mot de passe incorrect."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "91bded27fd2fcd69208f-f3e6e5179a8687088d26",
+              "file": "02-login-logout.spec.js",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "Test 4 bis: Connexion - Cas non passant (email inexistant) ❌",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-92"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "login,negative,security"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie que le système rejette une connexion avec un email inexistant."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 968,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Le système a correctement rejeté l'email inexistant\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:18.595Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-92"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "login,negative,security"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie que le système rejette une connexion avec un email inexistant."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "91bded27fd2fcd69208f-2b2fee1e765ee415d3bb",
+              "file": "02-login-logout.spec.js",
+              "line": 110,
+              "column": 3
+            },
+            {
+              "title": "Test 5: Déconnexion utilisateur - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-93"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "smoke,logout,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie la déconnexion d'un utilisateur et la réinitialisation de la session."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3814,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Déconnexion réussie\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:19.571Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-93"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "smoke,logout,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie la déconnexion d'un utilisateur et la réinitialisation de la session."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "91bded27fd2fcd69208f-694d65b4b8a991a0da59",
+              "file": "02-login-logout.spec.js",
+              "line": 129,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "03-catalog-navigation.spec.js",
+      "file": "03-catalog-navigation.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Tests de parcours du catalogue",
+          "file": "03-catalog-navigation.spec.js",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Test 6: Parcours du catalogue et visualisation de produit - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-94"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "smoke,catalog,navigation,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie la navigation dans le catalogue et l'affichage des détails d'un produit."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3223,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Nombre de produits trouvés dans Books: 6\n"
+                        },
+                        {
+                          "text": "Premier produit: Computing and Internet\n"
+                        },
+                        {
+                          "text": "✅ Page de détails du produit affichée correctement\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:23.397Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-94"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "smoke,catalog,navigation,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie la navigation dans le catalogue et l'affichage des détails d'un produit."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dbcaf432440ca65ce745-f36ee925507a321a0af6",
+              "file": "03-catalog-navigation.spec.js",
+              "line": 12,
+              "column": 3
+            },
+            {
+              "title": "Test 6 bis: Navigation entre plusieurs catégories - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-95"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "catalog,navigation,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie la navigation entre différentes catégories de produits (Computers, Electronics)."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3694,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ 6 ordinateurs de bureau trouvés\n"
+                        },
+                        {
+                          "text": "✅ 2 produits électroniques trouvés\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:26.627Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-95"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "catalog,navigation,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie la navigation entre différentes catégories de produits (Computers, Electronics)."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dbcaf432440ca65ce745-53458459ebbf51c771d9",
+              "file": "03-catalog-navigation.spec.js",
+              "line": 60,
+              "column": 3
+            },
+            {
+              "title": "Test 6 ter: Recherche de produits - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-96"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "smoke,search,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie la fonctionnalité de recherche de produits dans le catalogue."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2813,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Recherche \"computer\" a retourné 4 résultats\n"
+                        },
+                        {
+                          "text": "Premier résultat: Build your own cheap computer\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:30.329Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-96"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "smoke,search,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie la fonctionnalité de recherche de produits dans le catalogue."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dbcaf432440ca65ce745-959d0ce427fa3b1619e4",
+              "file": "03-catalog-navigation.spec.js",
+              "line": 120,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "04-cart-management.spec.js",
+      "file": "04-cart-management.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Tests de gestion du panier",
+          "file": "04-cart-management.spec.js",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Test 7: Ajout d'un produit au panier - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-97"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "smoke,cart,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie l'ajout d'un produit au panier et la mise à jour du compteur."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3840,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Compteur panier initial: 0\n"
+                        },
+                        {
+                          "text": "Ajout du produit: Computing and Internet\n"
+                        },
+                        {
+                          "text": "✅ Compteur panier mis à jour: 1\n"
+                        },
+                        {
+                          "text": "✅ Produit ajouté avec succès au panier\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:33.155Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-97"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "smoke,cart,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie l'ajout d'un produit au panier et la mise à jour du compteur."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "939d1966a546f5a52b56-1a0c0c77fb918a4bebd5",
+              "file": "04-cart-management.spec.js",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "Test 8: Ajout de plusieurs produits au panier - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-98"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "cart,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie l'ajout de plusieurs produits différents au panier."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10260,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Compteur panier: 3\n"
+                        },
+                        {
+                          "text": "✅ Trois produits différents ajoutés avec succès\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:37.005Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-98"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "cart,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie l'ajout de plusieurs produits différents au panier."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "939d1966a546f5a52b56-fcaa805894241aab9e92",
+              "file": "04-cart-management.spec.js",
+              "line": 64,
+              "column": 3
+            },
+            {
+              "title": "Test 9: Modification de la quantité dans le panier - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-99"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "cart,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie la modification de la quantité d'un produit dans le panier et le recalcul du total."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5426,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Prix unitaire: 10\n"
+                        },
+                        {
+                          "text": "✅ Quantité mise à jour: 3, Sous-total: 30\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:47.275Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-99"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "cart,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie la modification de la quantité d'un produit dans le panier et le recalcul du total."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "939d1966a546f5a52b56-a9dccc50c74967570ff4",
+              "file": "04-cart-management.spec.js",
+              "line": 106,
+              "column": 3
+            },
+            {
+              "title": "Test 9 bis: Suppression d'un produit du panier - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-100"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "cart,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie la suppression d'un produit spécifique du panier."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8380,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Produit supprimé avec succès du panier\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:15:52.713Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-100"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "cart,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie la suppression d'un produit spécifique du panier."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "939d1966a546f5a52b56-38ea5562d1204ae8423b",
+              "file": "04-cart-management.spec.js",
+              "line": 149,
+              "column": 3
+            },
+            {
+              "title": "Test 9 ter: Vider complètement le panier - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-101"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "cart,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie le vidage complet du panier et la réinitialisation du compteur."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5278,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Panier vidé complètement\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:16:01.105Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-101"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "cart,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie le vidage complet du panier et la réinitialisation du compteur."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "939d1966a546f5a52b56-a69f078e48f81c39359c",
+              "file": "04-cart-management.spec.js",
+              "line": 183,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "05-order-checkout.spec.js",
+      "file": "05-order-checkout.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Tests de passage de commande",
+          "file": "05-order-checkout.spec.js",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Test 10: Passage de commande complet - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-102"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "smoke,checkout,order,positive,critical"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie le processus complet de passage de commande avec toutes les étapes de checkout."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 16522,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Compte créé pour les tests de commande: testuser_1769534166459@test.com\n"
+                        },
+                        {
+                          "text": "📖 Livre sélectionné: Computing and Internet\n"
+                        },
+                        {
+                          "text": "✅ Livre ajouté au panier\n"
+                        },
+                        {
+                          "text": "✅ Page de checkout chargée (formulaire de facturation détecté)\n"
+                        },
+                        {
+                          "text": "✅ Adresse de facturation remplie\n"
+                        },
+                        {
+                          "text": "✅ Adresse de livraison confirmée\n"
+                        },
+                        {
+                          "text": "✅ Méthode de livraison sélectionnée\n"
+                        },
+                        {
+                          "text": "✅ Méthode de paiement sélectionnée\n"
+                        },
+                        {
+                          "text": "✅ Informations de paiement confirmées\n"
+                        },
+                        {
+                          "text": "✅ Récapitulatif vérifié\n"
+                        },
+                        {
+                          "text": "✅ Order number: 2203347\n"
+                        },
+                        {
+                          "text": "✅ Commande complète réussie - Panier vidé\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:16:06.405Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-102"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "smoke,checkout,order,positive,critical"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie le processus complet de passage de commande avec toutes les étapes de checkout."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6df3b02bf877ae574b17-77b830aa9f01c856557a",
+              "file": "05-order-checkout.spec.js",
+              "line": 29,
+              "column": 3
+            },
+            {
+              "title": "Test 10 bis: Tentative de checkout sans accepter les conditions - Cas non passant ❌",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-103"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "checkout,negative,validation"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie que le système empêche le checkout sans acceptation des conditions de service."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9531,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Compte créé pour les tests de commande: testuser_1769534182985@test.com\n"
+                        },
+                        {
+                          "text": "✅ Pas de dialog, reste sur la page panier comme attendu\n"
+                        },
+                        {
+                          "text": "✅ Le système empêche le checkout sans accepter les conditions\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:16:22.940Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-103"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "checkout,negative,validation"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie que le système empêche le checkout sans acceptation des conditions de service."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6df3b02bf877ae574b17-072d49f104de1f365c38",
+              "file": "05-order-checkout.spec.js",
+              "line": 115,
+              "column": 3
+            },
+            {
+              "title": "Test 10 ter: Commande avec plusieurs produits - Cas passant ✅",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-104"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "checkout,order,positive"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Vérifie le passage de commande avec plusieurs produits dans le panier."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17245,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Compte créé pour les tests de commande: testuser_1769534192531@test.com\n"
+                        },
+                        {
+                          "text": "Total de la commande: 34.00\n"
+                        },
+                        {
+                          "text": "✅ Page de checkout chargée (formulaire de facturation détecté)\n"
+                        },
+                        {
+                          "text": "✅ Commande avec plusieurs produits réussie\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-01-27T17:16:32.479Z",
+                      "annotations": [
+                        {
+                          "type": "test_key",
+                          "description": "DEMO-104"
+                        },
+                        {
+                          "type": "tags",
+                          "description": "checkout,order,positive"
+                        },
+                        {
+                          "type": "test_description",
+                          "description": "Vérifie le passage de commande avec plusieurs produits dans le panier."
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6df3b02bf877ae574b17-2a36b5ffedfb036169b2",
+              "file": "05-order-checkout.spec.js",
+              "line": 157,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
     {
       "title": "99-sanity.spec.js",
       "file": "99-sanity.spec.js",
@@ -80,7 +1408,20 @@
           "tests": [
             {
               "timeout": 90000,
-              "annotations": [],
+              "annotations": [
+                {
+                  "type": "test_key",
+                  "description": "DEMO-105"
+                },
+                {
+                  "type": "tags",
+                  "description": "sanity,smoke"
+                },
+                {
+                  "type": "test_description",
+                  "description": "Test de sanité pour vérifier la détection Playwright et BrowserStack."
+                }
+              ],
               "expectedStatus": "passed",
               "projectId": "",
               "projectName": "",
@@ -89,13 +1430,26 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5730,
+                  "duration": 824,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-11-15T14:44:48.821Z",
-                  "annotations": [],
+                  "startTime": "2026-01-27T17:16:49.738Z",
+                  "annotations": [
+                    {
+                      "type": "test_key",
+                      "description": "DEMO-105"
+                    },
+                    {
+                      "type": "tags",
+                      "description": "sanity,smoke"
+                    },
+                    {
+                      "type": "test_description",
+                      "description": "Test de sanité pour vérifier la détection Playwright et BrowserStack."
+                    }
+                  ],
                   "attachments": []
                 }
               ],
@@ -112,9 +1466,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-15T14:44:48.214Z",
-    "duration": 7383.049,
-    "expected": 1,
+    "startTime": "2026-01-27T17:14:56.611Z",
+    "duration": 114053.78899999999,
+    "expected": 19,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
