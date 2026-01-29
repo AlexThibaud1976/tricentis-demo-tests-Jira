@@ -23,13 +23,12 @@ test.describe('Tests des Avis Produits', () => {
 
     await captureEvidence(page, testInfo, 'product-page');
 
-    // Look for reviews section
+    // Look for reviews section or add review link
     const reviewsTab = page.getByRole('link', { name: 'Add your review' });
-    if (await reviewsTab.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await reviewsTab.click();
-      await wait(1000);
-      await captureEvidence(page, testInfo, 'reviews-section');
-    }
+    await expect(reviewsTab).toBeVisible({ timeout: 5000 });
+    await reviewsTab.click();
+    await wait(1000);
+    await captureEvidence(page, testInfo, 'reviews-section');
   });
 
   test('Soumission d\'un nouvel avis - Cas passant ✅', async ({ page }, testInfo) => {
@@ -54,34 +53,35 @@ test.describe('Tests des Avis Produits', () => {
 
     // Find add review link
     const addReviewLink = page.getByRole('link', { name: 'Add your review' });
-    if (await addReviewLink.isVisible({ timeout: 2000 }).catch(() => false)) {
-      await addReviewLink.click();
-      await wait(1000);
+    await expect(addReviewLink).toBeVisible({ timeout: 5000 });
+    await addReviewLink.click();
+    await wait(1000);
 
-      await captureEvidence(page, testInfo, 'review-form');
+    await captureEvidence(page, testInfo, 'review-form');
 
-      // Fill review form (now enabled since we're logged in)
-      const titleInput = page.locator('#AddProductReview_Title');
-      if (await titleInput.isEnabled({ timeout: 2000 }).catch(() => false)) {
-        await page.fill('#AddProductReview_Title', 'Test Review Title');
-        await page.fill('#AddProductReview_ReviewText', 'This is an automated test review for the product. The quality is excellent and I recommend it.');
+    // Fill review form (enabled since we're logged in)
+    const titleInput = page.locator('#AddProductReview_Title');
+    await expect(titleInput).toBeEnabled({ timeout: 5000 });
+    
+    await page.fill('#AddProductReview_Title', 'Test Review Title');
+    await page.fill('#AddProductReview_ReviewText', 'This is an automated test review for the product. The quality is excellent and I recommend it.');
 
-        // Select rating
-        const rating = page.locator('input[id*="addproductrating"]').first();
-        if (await rating.isVisible()) {
-          await rating.click();
-        }
+    // Select rating
+    const rating = page.locator('input[id*="addproductrating"]').first();
+    await expect(rating).toBeVisible();
+    await rating.click();
 
-        await captureEvidence(page, testInfo, 'review-filled');
+    await captureEvidence(page, testInfo, 'review-filled');
 
-        // Submit review
-        const submitBtn = page.locator('input[value="Submit review"]');
-        if (await submitBtn.isVisible()) {
-          await submitBtn.click();
-          await wait(1000);
-          await captureEvidence(page, testInfo, 'review-submitted');
-        }
-      }
-    }
+    // Submit review
+    const submitBtn = page.locator('input[value="Submit review"]');
+    await expect(submitBtn).toBeVisible();
+    await submitBtn.click();
+    await wait(1000);
+    await captureEvidence(page, testInfo, 'review-submitted');
+
+    // Verify review submission success
+    const successMessage = page.locator('.result, .bar-notification.success').first();
+    await expect(successMessage).toBeVisible({ timeout: 5000 });
   });
 });

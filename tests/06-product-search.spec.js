@@ -84,20 +84,23 @@ test.describe('Tests de Recherche Produit', () => {
     await wait(1000);
     await captureEvidence(page, testInfo, 'advanced-search-page');
 
-    // Check advanced search checkbox if visible
+    // Check advanced search checkbox
     const advancedCheckbox = page.locator('#adv');
-    if (await advancedCheckbox.isVisible({ timeout: 2000 }).catch(() => false)) {
+    const hasAdvanced = await advancedCheckbox.count() > 0;
+    if (hasAdvanced) {
       await advancedCheckbox.check();
       await wait(500);
     }
 
-    // Fill search term - use the correct search input
+    // Fill search term
     const searchInput = page.locator('input.search-text, #q, input[name="q"]').first();
+    await expect(searchInput).toBeVisible();
     await searchInput.fill('book');
 
     // Select category if available
     const categorySelect = page.locator('#cid, select[name="cid"]');
-    if (await categorySelect.isVisible({ timeout: 2000 }).catch(() => false)) {
+    const hasCategory = await categorySelect.count() > 0;
+    if (hasCategory) {
       await categorySelect.selectOption({ index: 1 });
     }
 
@@ -105,5 +108,9 @@ test.describe('Tests de Recherche Produit', () => {
     await wait(1000);
 
     await captureEvidence(page, testInfo, 'advanced-search-results');
+
+    // Verify search executed successfully
+    const searchResults = page.locator('.search-results, .product-grid').first();
+    await expect(searchResults).toBeVisible();
   });
 });

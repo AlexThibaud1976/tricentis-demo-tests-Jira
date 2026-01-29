@@ -44,25 +44,22 @@ test.describe('Tests d\'Historique des Commandes', () => {
 
     // Add product to cart
     const addToCartBtn = page.locator('input[value="Add to cart"]').first();
-    if (await addToCartBtn.isVisible()) {
-      await addToCartBtn.click();
-      await wait(1000);
+    await expect(addToCartBtn).toBeVisible();
+    await addToCartBtn.click();
+    await wait(1000);
 
-      // Go to cart and checkout
-      await page.goto('https://demowebshop.tricentis.com/cart');
-      await wait(1000);
+    // Go to cart and checkout
+    await page.goto('https://demowebshop.tricentis.com/cart');
+    await wait(1000);
 
-      const termsCheckbox = page.locator('#termsofservice');
-      if (await termsCheckbox.isVisible()) {
-        await termsCheckbox.check();
-      }
+    const termsCheckbox = page.locator('#termsofservice');
+    await expect(termsCheckbox).toBeVisible();
+    await termsCheckbox.check();
 
-      const checkoutBtn = page.locator('#checkout');
-      if (await checkoutBtn.isVisible()) {
-        await checkoutBtn.click();
-        await wait(2000);
-      }
-    }
+    const checkoutBtn = page.locator('#checkout');
+    await expect(checkoutBtn).toBeVisible();
+    await checkoutBtn.click();
+    await wait(2000);
 
     // Navigate to orders
     await page.goto('https://demowebshop.tricentis.com/customer/orders');
@@ -70,12 +67,23 @@ test.describe('Tests d\'Historique des Commandes', () => {
 
     await captureEvidence(page, testInfo, 'orders-list');
 
-    // Try to view order details
+    // View order details
     const detailsBtn = page.locator('input[value="Details"]').first();
-    if (await detailsBtn.isVisible()) {
+    const hasOrders = await detailsBtn.count() > 0;
+    
+    if (hasOrders) {
+      await expect(detailsBtn).toBeVisible();
       await detailsBtn.click();
       await wait(1000);
       await captureEvidence(page, testInfo, 'order-details');
+
+      // Verify order info area is displayed
+      const orderInfo = page.locator('.order-details, .order-info-area');
+      await expect(orderInfo).toBeVisible();
+    } else {
+      // No orders yet, verify empty orders page
+      const ordersContent = page.locator('.page-body, .order-list').first();
+      await expect(ordersContent).toBeVisible();
     }
   });
 });

@@ -43,6 +43,10 @@ test.describe('Tests de Mise à Jour du Panier', () => {
 
     // Verify quantity changed
     await expect(qtyInput).toHaveValue('3');
+    
+    // Verify total was recalculated
+    const updatedTotal = await page.locator('.order-total strong').first().textContent();
+    expect(updatedTotal).toBeTruthy();
   });
 
   test('Suppression d\'un article - Cas passant ✅', async ({ page }, testInfo) => {
@@ -76,7 +80,12 @@ test.describe('Tests de Mise à Jour du Panier', () => {
 
     await captureEvidence(page, testInfo, 'cart-after-remove');
 
-    // Verify cart is empty or item removed
+    // Verify item was removed
+    const cartItems = page.locator('.cart-item-row');
+    const remainingItems = await cartItems.count();
+    expect(remainingItems).toBe(0);
+    
+    // Verify empty cart message or summary
     const emptyCart = page.locator('.order-summary-content');
     await expect(emptyCart).toContainText(/empty|no items/i);
   });
@@ -103,20 +112,26 @@ test.describe('Tests de Mise à Jour du Panier', () => {
 
     // Try to apply coupon code
     const couponInput = page.locator('#discountcouponcode');
-    if (await couponInput.isVisible()) {
+    const hasCouponField = await couponInput.count() > 0;
+    
+    if (hasCouponField) {
+      await expect(couponInput).toBeVisible();
       await couponInput.fill('TESTCODE');
 
       const applyBtn = page.locator('input[name="applydiscountcouponcode"]');
+      await expect(applyBtn).toBeVisible();
       await applyBtn.click();
       await wait(1000);
 
       await captureEvidence(page, testInfo, 'promo-applied');
 
-      // Check for message (success or error)
+      // Verify message displayed (success or error)
       const message = page.locator('.message-error, .message-success, .coupon-box-message');
-      if (await message.isVisible()) {
-        await expect(message).toBeVisible();
-      }
+      await expect(message).toBeVisible({ timeout: 5000 });
+    } else {
+      // No coupon field available, just verify cart page loaded
+      const cartTitle = page.locator('.page-title, h1').first();
+      await expect(cartTitle).toBeVisible();
     }
   });
 });

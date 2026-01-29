@@ -18,7 +18,10 @@ test.describe('Tests du Blog/Actualités', () => {
 
     // Find news section on homepage
     const newsBlock = page.locator('.news-list-homepage');
-    if (await newsBlock.isVisible()) {
+    const hasNews = await newsBlock.count() > 0;
+    
+    if (hasNews) {
+      await expect(newsBlock).toBeVisible();
       await captureEvidence(page, testInfo, 'news-on-homepage');
     }
 
@@ -28,9 +31,13 @@ test.describe('Tests du Blog/Actualités', () => {
 
     await captureEvidence(page, testInfo, 'news-page');
 
-    // Verify news page
+    // Verify news page loaded
     const pageTitle = page.locator('h1').first();
     await expect(pageTitle).toContainText(/news/i);
+    
+    // Verify page body is visible
+    const pageBody = page.locator('.page-body');
+    await expect(pageBody).toBeVisible();
   });
 
   test('Lecture d\'un article - Cas passant ✅', async ({ page }, testInfo) => {
@@ -45,16 +52,25 @@ test.describe('Tests du Blog/Actualités', () => {
 
     // Click on first news item
     const newsItem = page.locator('.news-items .news-item a, .news-list a').first();
-    if (await newsItem.isVisible()) {
+    const hasArticle = await newsItem.count() > 0;
+    
+    if (hasArticle) {
+      await expect(newsItem).toBeVisible();
       await newsItem.click();
       await wait(1000);
       await captureEvidence(page, testInfo, 'news-article');
 
       // Verify article content is displayed
       const articleContent = page.locator('.news-body, .news-content');
-      if (await articleContent.isVisible()) {
-        await expect(articleContent).toBeVisible();
-      }
+      await expect(articleContent).toBeVisible();
+      
+      // Verify article title is visible
+      const articleTitle = page.locator('.news-title, h1');
+      await expect(articleTitle).toBeVisible();
+    } else {
+      // No articles available, just verify news page loaded
+      const pageTitle = page.locator('h1').first();
+      await expect(pageTitle).toBeVisible();
     }
   });
 });

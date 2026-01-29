@@ -19,22 +19,23 @@ test.describe('Tests du Sondage Communautaire', () => {
 
     // Find poll section
     const pollSection = page.locator('.poll');
-    if (await pollSection.isVisible()) {
-      await captureEvidence(page, testInfo, 'poll-section');
+    await expect(pollSection).toBeVisible();
+    await captureEvidence(page, testInfo, 'poll-section');
 
-      // Select an option
-      const pollOption = pollSection.locator('input[type="radio"]').first();
-      if (await pollOption.isVisible()) {
-        await pollOption.check();
+    // Select an option
+    const pollOption = pollSection.locator('input[type="radio"]').first();
+    await expect(pollOption).toBeVisible();
+    await pollOption.check();
 
-        // Submit vote
-        const voteBtn = pollSection.locator('#vote-poll-1, input[value="Vote"]');
-        if (await voteBtn.isVisible()) {
-          await voteBtn.click();
-          await wait(1000);
-          await captureEvidence(page, testInfo, 'poll-voted');
-        }
-      }
-    }
+    // Submit vote
+    const voteBtn = pollSection.locator('#vote-poll-1, input[value="Vote"]');
+    await expect(voteBtn).toBeVisible();
+    await voteBtn.click();
+    await wait(1000);
+    await captureEvidence(page, testInfo, 'poll-voted');
+
+    // Verify vote was recorded
+    const pollResults = page.locator('.poll-results, .poll');
+    await expect(pollResults).toBeVisible();
   });
 });

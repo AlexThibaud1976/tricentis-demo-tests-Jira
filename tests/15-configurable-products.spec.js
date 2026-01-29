@@ -19,21 +19,24 @@ test.describe('Tests de Produits Configurables', () => {
 
     // Select processor
     const processorSelect = page.locator('select[id*="product_attribute"]').first();
-    if (await processorSelect.isVisible()) {
+    const hasProcessor = await processorSelect.count() > 0;
+    if (hasProcessor) {
       await processorSelect.selectOption({ index: 1 });
       await wait(500);
     }
 
     // Select RAM
     const ramRadio = page.locator('input[type="radio"][id*="product_attribute"]').first();
-    if (await ramRadio.isVisible()) {
+    const hasRam = await ramRadio.count() > 0;
+    if (hasRam) {
       await ramRadio.check();
       await wait(500);
     }
 
     // Select HDD
     const hddRadio = page.locator('input[type="radio"][name*="product_attribute"]').nth(2);
-    if (await hddRadio.isVisible()) {
+    const hasHdd = await hddRadio.count() > 0;
+    if (hasHdd) {
       await hddRadio.check();
       await wait(500);
     }
@@ -46,10 +49,15 @@ test.describe('Tests de Produits Configurables', () => {
 
     // Add to cart
     const addToCartBtn = page.locator('#add-to-cart-button-16');
+    await expect(addToCartBtn).toBeVisible();
     await addToCartBtn.click();
     await wait(1000);
 
     await captureEvidence(page, testInfo, 'added-to-cart');
+
+    // Verify success notification
+    const success = page.locator('.bar-notification.success');
+    await expect(success).toBeVisible({ timeout: 5000 });
   });
 
   test('Produit avec options multiples - Cas passant ✅', async ({ page }, testInfo) => {

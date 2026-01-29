@@ -43,5 +43,9 @@ test.describe('Tests des Produits Récemment Consultés', () => {
     const recentProducts = page.locator('.product-item, .item-box');
     const count = await recentProducts.count();
     expect(count).toBeGreaterThan(0);
+    
+    // Verify page title
+    const pageTitle = page.locator('.page-title, h1').first();
+    await expect(pageTitle).toBeVisible();
   });
 });

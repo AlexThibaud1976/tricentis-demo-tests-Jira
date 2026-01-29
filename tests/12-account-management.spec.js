@@ -55,33 +55,36 @@ test.describe('Tests de Gestion de Compte', () => {
 
     // Add new address
     const addBtn = page.locator('input[value="Add new"]');
-    if (await addBtn.isVisible()) {
-      await addBtn.click();
-      await wait(1000);
+    await expect(addBtn).toBeVisible();
+    await addBtn.click();
+    await wait(1000);
 
-      // Fill address form
-      await page.fill('#Address_FirstName', userData.firstName);
-      await page.fill('#Address_LastName', userData.lastName);
-      await page.fill('#Address_Email', userData.email);
-      await page.fill('#Address_City', 'Test City');
-      await page.fill('#Address_Address1', '123 Test Street');
-      await page.fill('#Address_ZipPostalCode', '12345');
-      await page.fill('#Address_PhoneNumber', '1234567890');
+    // Fill address form
+    await page.fill('#Address_FirstName', userData.firstName);
+    await page.fill('#Address_LastName', userData.lastName);
+    await page.fill('#Address_Email', userData.email);
+    await page.fill('#Address_City', 'Test City');
+    await page.fill('#Address_Address1', '123 Test Street');
+    await page.fill('#Address_ZipPostalCode', '12345');
+    await page.fill('#Address_PhoneNumber', '1234567890');
 
-      // Select country
-      const countrySelect = page.locator('#Address_CountryId');
-      await countrySelect.selectOption({ index: 1 });
-      await wait(500);
+    // Select country
+    const countrySelect = page.locator('#Address_CountryId');
+    await countrySelect.selectOption({ index: 1 });
+    await wait(500);
 
-      await captureEvidence(page, testInfo, 'address-form-filled');
+    await captureEvidence(page, testInfo, 'address-form-filled');
 
-      // Save address
-      const saveBtn = page.locator('input[value="Save"]');
-      await saveBtn.click();
-      await wait(1000);
+    // Save address
+    const saveBtn = page.locator('input[value="Save"]');
+    await saveBtn.click();
+    await wait(1000);
 
-      await captureEvidence(page, testInfo, 'address-saved');
-    }
+    await captureEvidence(page, testInfo, 'address-saved');
+
+    // Verify address was saved
+    const addressList = page.locator('.address-list, .section.address-item').first();
+    await expect(addressList).toBeVisible();
   });
 
   test('Changement de mot de passe - Cas passant ✅', async ({ page }, testInfo) => {

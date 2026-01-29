@@ -27,5 +27,9 @@ test.describe('Tests des Nouveaux Produits', () => {
     const count = await products.count();
     // New products page may or may not have products
     expect(count).toBeGreaterThanOrEqual(0);
+    
+    // Verify page body is visible
+    const pageBody = page.locator('.page-body');
+    await expect(pageBody).toBeVisible();
   });
 });
