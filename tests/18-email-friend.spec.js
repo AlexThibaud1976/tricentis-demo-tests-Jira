@@ -15,6 +15,18 @@ test.describe('Tests d\'Envoi Email à un Ami', () => {
 
     const userData = generateUserData();
 
+    // Register a new account for this test
+    await page.goto('https://demowebshop.tricentis.com/register');
+    await page.check('#gender-male');
+    await page.fill('#FirstName', userData.firstName);
+    await page.fill('#LastName', userData.lastName);
+    await page.fill('#Email', userData.email);
+    await page.fill('#Password', userData.password);
+    await page.fill('#ConfirmPassword', userData.password);
+    await page.click('#register-button');
+    await wait(2000);
+
+    // Navigate to books
     await page.goto('https://demowebshop.tricentis.com/books');
     await wait(1000);
 
@@ -25,28 +37,34 @@ test.describe('Tests d\'Envoi Email à un Ami', () => {
 
     await captureEvidence(page, testInfo, 'product-page');
 
-    // Find email a friend link
-    const emailLink = page.locator('a[href*="emailafriend"], .email-a-friend a');
-    if (await emailLink.isVisible()) {
-      await emailLink.click();
-      await wait(1000);
+    // Find and click email a friend button (need to be logged in)
+    const emailButton = page.locator('input.button-2.email-a-friend-button, input[value*="Email a friend"]');
+    await expect(emailButton).toBeVisible();
+    await emailButton.click();
+    await wait(1000);
 
-      await captureEvidence(page, testInfo, 'email-friend-form');
+    await captureEvidence(page, testInfo, 'email-friend-form');
 
-      // Fill the form
-      await page.fill('#FriendEmail', 'friend@example.com');
-      await page.fill('#YourEmailAddress', userData.email);
-      await page.fill('#PersonalMessage', 'Check out this great product!');
+    // Fill the form
+    await page.fill('#FriendEmail', 'friend@example.com');
+    await page.fill('#YourEmailAddress', userData.email);
+    await page.fill('#PersonalMessage', 'Check out this great product!');
 
-      await captureEvidence(page, testInfo, 'form-filled');
+    await captureEvidence(page, testInfo, 'form-filled');
 
-      // Submit
-      const sendBtn = page.locator('input[name="send-email"], input[value="Send email"]');
-      if (await sendBtn.isVisible()) {
-        await sendBtn.click();
-        await wait(1000);
-        await captureEvidence(page, testInfo, 'email-sent');
-      }
-    }
+    // Click Send button
+    const sendBtn = page.locator('input[name="send-email"], input[value="Send email"]');
+    await expect(sendBtn).toBeVisible();
+    await sendBtn.click();
+    await wait(1000);
+
+    await captureEvidence(page, testInfo, 'email-sent');
+
+    // Verify success message
+    await wait(2000);
+    const pageContent = await page.textContent('body');
+    expect(pageContent).toContain('Your message has been sent');
+    
+    await captureEvidence(page, testInfo, 'success-confirmation');
   });
 });
