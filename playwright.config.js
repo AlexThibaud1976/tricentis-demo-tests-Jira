@@ -15,7 +15,9 @@ module.exports = defineConfig({
       embedAnnotationsAsProperties: true,
       embedTestrunAnnotationsAsItemProperties: true,
       embedAttachmentsAsProperty: 'testrun_evidence',
-      textContentAnnotations: ['test_description', 'testrun_comment']
+      textContentAnnotations: ['test_description', 'testrun_comment'],
+      // Ne pas inclure test_key pour éviter les erreurs avec des tests non existants dans Jira
+      annotationsToExclude: ['test_key']
     }]
   ],
   use: {

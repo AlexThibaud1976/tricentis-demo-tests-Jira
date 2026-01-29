@@ -64,7 +64,7 @@ module.exports = {
   capabilities,
 
   // Nombre de workers (1 en séquentiel, sinon la valeur demandée)
-  workers: runInOrder ? 1 : requestedWorkers,
+  workers: runInOrder ? 5 : requestedWorkers,
 
   // Timeout global des tests (en ms)
   timeout: 90000,

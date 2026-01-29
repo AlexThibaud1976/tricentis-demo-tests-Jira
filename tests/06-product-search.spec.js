@@ -8,7 +8,7 @@ test.describe('Tests de Recherche Produit', () => {
 
   test('Recherche simple par nom de produit - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-060' },
+      { type: 'test_key', description: 'DEMO-100' },
       { type: 'tags', description: '@smoke @search' },
       { type: 'test_description', description: 'Recherche d\'un produit par son nom exact' }
     );
@@ -35,7 +35,7 @@ test.describe('Tests de Recherche Produit', () => {
 
   test('Recherche avec terme partiel - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-061' },
+      { type: 'test_key', description: 'DEMO-101' },
       { type: 'tags', description: '@search' },
       { type: 'test_description', description: 'Recherche avec un terme partiel retourne des résultats' }
     );
@@ -55,7 +55,7 @@ test.describe('Tests de Recherche Produit', () => {
 
   test('Recherche sans résultat - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-062' },
+      { type: 'test_key', description: 'DEMO-104' },
       { type: 'tags', description: '@search' },
       { type: 'test_description', description: 'Recherche avec terme inexistant affiche message approprié' }
     );
@@ -75,7 +75,7 @@ test.describe('Tests de Recherche Produit', () => {
 
   test('Recherche avancée avec filtres - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-063' },
+      { type: 'test_key', description: 'DEMO-105' },
       { type: 'tags', description: '@search @advanced' },
       { type: 'test_description', description: 'Utilisation de la recherche avancée avec catégorie' }
     );
