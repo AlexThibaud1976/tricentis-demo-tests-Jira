@@ -15,13 +15,29 @@ Suite complète de tests end-to-end automatisés avec Playwright pour le site de
 
 ## 📋 Description
 
-Ce projet contient **10 tests automatisés** couvrant les fonctionnalités principales du site e-commerce :
+Ce projet contient **plus de 20 tests automatisés** couvrant l'ensemble des fonctionnalités du site e-commerce :
 
-- 🧾 Création de compte (cas passants et non passants)
-- 🔐 Authentification (login/logout)
-- 🧭 Navigation dans le catalogue
-- 🛒 Gestion du panier
-- ✅ Passage de commande complet
+### 🎯 Fonctionnalités Core
+- 🧾 **Création et gestion de compte** (création, modification, gestion des adresses, changement de mot de passe)
+- 🔐 **Authentification** (login/logout, cas passants et non-passants)
+- 🧭 **Navigation dans le catalogue** (catégories, recherche, filtres)
+- 🛒 **Gestion du panier** (ajout, modification, suppression, codes promo)
+- ✅ **Passage de commande** (checkout complet, checkout invité)
+
+### 🌟 Fonctionnalités Avancées
+- 🔍 **Recherche de produits** (recherche simple, recherche avancée, filtres)
+- ⭐ **Liste de souhaits** (wishlist)
+- 🛠️ **Produits configurables** (ordinateurs personnalisés, options multiples)
+- 📧 **Newsletter & Contact** (inscription newsletter, formulaire de contact)
+- ��� **Historique des commandes** (consultation, détails)
+- 🏷️ **Tags produits** (navigation par tags)
+- 👀 **Produits récemment consultés**
+- 📮 **Recommandation par email** (email a friend)
+- 🗳️ **Votes communautaires** (community poll)
+- 🏭 **Filtres fabricants**
+- 🆕 **Nouveaux produits**
+- 🔗 **Liens footer** (vérification navigation)
+- 📰 **Blog/Actualités** (consultation articles)
 
 ## 🚀 Installation
 
@@ -34,8 +50,8 @@ Ce projet contient **10 tests automatisés** couvrant les fonctionnalités princ
 
 1. Cloner le repository :
 ```bash
-git clone https://github.com/votre-username/tricentis-demo-tests.git
-cd tricentis-demo-tests
+git clone https://github.com/AlexThibaud1976/tricentis-demo-tests-Jira.git
+cd tricentis-demo-tests-Jira
 ```
 
 2. Installer les dépendances :
@@ -77,6 +93,9 @@ npm run test:debug
 ### Exécution par catégorie
 
 ```bash
+# Tests de sanité (smoke tests)
+npm run test:sanity
+
 # Tests de création de compte
 npm run test:creation
 
@@ -96,297 +115,179 @@ npm run test:order
 ## 📁 Structure du projet
 
 ```
-tricentis-demo-tests/
-
- tests/
-    01-account-creation.spec.js     # Tests de création de compte
-    02-login-logout.spec.js         # Tests de connexion/déconnexion
-    03-catalog-navigation.spec.js   # Tests de navigation catalogue
-    04-cart-management.spec.js      # Tests de gestion du panier
-    05-order-checkout.spec.js       # Tests de passage de commande
-
- utils/
-    helpers.js                       # Fonctions utilitaires réutilisables
-
- playwright.config.js                 # Configuration Playwright
- package.json                         # Dépendances du projet
- README.md                            # Documentation
+tricentis-demo-tests-Jira/
+├── .github/
+│   └── workflows/
+│       └── playwright.yml           # CI/CD avec GitHub Actions
+├── tests/
+│   ├── 01-account-creation.spec.js  # Tests création de compte
+│   ├── 02-login-logout.spec.js      # Tests authentification
+│   ├── 03-catalog-navigation.spec.js # Tests navigation catalogue
+│   ├── 04-cart-management.spec.js   # Tests gestion panier
+│   ├── 05-order-checkout.spec.js    # Tests passage commande
+│   ├── 06-product-search.spec.js    # Tests recherche produits
+│   ├── 07-wishlist.spec.js          # Tests liste de souhaits
+│   ├── 08-product-comparison.spec.js # Tests comparaison
+│   ├── 09-newsletter.spec.js        # Tests newsletter
+│   ├── 10-contact-form.spec.js      # Tests formulaire contact
+│   ├── 11-account-management.spec.js # Tests gestion compte
+│   ├── 12-order-history.spec.js     # Tests historique commandes
+│   ├── 13-product-filtering.spec.js # Tests filtres produits
+│   ├── 14-configurable-products.spec.js # Tests produits configurables
+│   ├── 16-product-tags.spec.js      # Tests tags produits
+│   ├── 17-recently-viewed.spec.js   # Tests produits consultés
+│   ├── 18-email-friend.spec.js      # Tests recommandation email
+│   ├── 19-community-poll.spec.js    # Tests votes communautaires
+│   ├── 20-manufacturer-filter.spec.js # Tests filtre fabricant
+│   ├── 21-new-products.spec.js      # Tests nouveaux produits
+│   ├── 22-footer-links.spec.js      # Tests liens footer
+│   ├── 23-news-blog.spec.js         # Tests blog actualités
+│   ├── 24-guest-checkout.spec.js    # Tests checkout invité
+│   ├── 25-cart-update.spec.js       # Tests mise à jour panier
+│   └── 99-sanity.spec.js            # Tests de sanité
+├── utils/
+│   └── helpers.js                    # Utilitaires réutilisables
+├── scripts/
+│   ├── resolve-browserstack-config.js # Configuration BrowserStack dynamique
+│   ├── upload-xray.ps1              # Upload résultats vers Xray
+│   ├── jira-post-execution.ps1      # Enrichissement Jira
+│   ├── get-browserstack-build-link.js # Récupération lien BrowserStack
+│   └── add-timestamps-to-xray-report.js # Ajout timestamps au rapport Xray
+├── playwright.config.js              # Configuration locale
+├── playwright.config.browserstack.js # Configuration BrowserStack
+├── browserstack.config.js            # Capacités BrowserStack
+├── test-fixtures.js                  # Fixtures Playwright custom
+└── package.json
 ```
 
-## 📊 Couverture des tests
-
-### Test 1-3 : Création de compte
--  Création avec données valides
--  Création avec email invalide
--  Création avec mots de passe différents
-
-### Test 3-5 : Authentification
--  Connexion avec identifiants valides
--  Connexion avec mot de passe incorrect
--  Connexion avec email inexistant
--  Déconnexion
-
-### Test 6 : Navigation catalogue
--  Parcours des catégories (Books, Computers, Electronics)
--  Visualisation détails produit
--  Recherche de produits
-
-### Test 7-9 : Gestion du panier
--  Ajout d'un produit
--  Ajout de plusieurs produits
--  Modification de quantité
--  Suppression d'un produit
--  Vidage complet du panier
-
-### Test 10 : Passage de commande
--  Commande complète avec un produit
--  Tentative sans accepter les conditions
--  Commande avec plusieurs produits
-
-## 🔧 Fonctions utilitaires
-
-Le fichier `utils/helpers.js` contient des fonctions réutilisables :
-
-- `generateUserData()` - Génère des données utilisateur uniques
-- `createAccount(page)` - Crée un compte automatiquement
-- `login(page, email, password)` - Authentification
-- `logout(page)` - Déconnexion
-- `clearCart(page)` - Vide le panier
-- `addProductToCart(page, categoryUrl, index)` - Ajout au panier
-- `getCartItemCount(page)` - Récupère le nombre d'articles
-
-### Reporters configurés
-
-- **HTML Reporter** : Rapport visuel interactif
-- **List Reporter** : Sortie console
-- **@xray-app/playwright-junit-reporter** : Génère xray-report.xml avec annotations Xray
-
-## 📈 Rapports de tests
-
-Ce projet génère plusieurs types de rapports après l'exécution des tests :
-
-### Rapport HTML Playwright
-
-Après l'exécution, un rapport HTML est automatiquement généré :
-
-```bash
-npm run test:report
-```
-
-Le rapport s'ouvre dans votre navigateur et affiche :
-- Résultats détaillés de chaque test
-- Captures d'écran en cas d'échec
-- Vidéos des tests échoués
-- Traces d'exécution
-
-### Rapport XML Xray (JUnit enrichi)
-
-Le projet utilise le reporter officiel **@xray-app/playwright-junit-reporter** qui génère un fichier `xray-report.xml` compatible avec Xray Cloud. Ce rapport inclut automatiquement :
-
-- **test_key** : Clé du test dans Jira (ex: DEMO-101)
-- **requirements** : Lien vers les stories/requirements Jira
-- **tags** : Labels pour catégoriser les tests (smoke, regression, etc.)
-- **test_description** : Description multilignes du test
-- **testrun_evidence** : Attachments embed (screenshots, fichiers)
-
-#### Exemple d'annotations dans les tests
-
-```javascript
-test('Test de connexion', async ({ page }, testInfo) => {
-  // Annotations Xray pour l'intégration Jira
-  testInfo.annotations.push({ type: 'test_key', description: 'DEMO-201' });
-  testInfo.annotations.push({ type: 'requirements', description: 'DEMO-2' });
-  testInfo.annotations.push({ type: 'tags', description: 'smoke,login,positive' });
-  testInfo.annotations.push({ 
-    type: 'test_description', 
-    description: 'Vérifie la connexion avec des identifiants valides' 
-  });
-  
-  // Votre test...
-});
-```
-
-Le fichier `xray-report.xml` est automatiquement créé lors de l'exécution des tests et peut être uploadé vers Xray Cloud via le script `upload-xray.ps1`.
-
-## 🧩 Intégration Jira (Post-Execution)
-
-Ce projet inclut un script d'intégration Jira pour publier automatiquement des artefacts d'exécution sur une issue de type "Test Execution".
-
-- Met à jour le titre de l'exécution avec le nom du device
-- Attache le rapport HTML (playwright-report/index.html)
-- Ajoute un lien "Remote link" vers le run GitHub Actions
-- Enrichit les Test Executions avec des champs personnalisés (OS, Browser, etc.)
-
-### Scripts disponibles
-
-- [scripts/jira-post-execution.ps1](scripts/jira-post-execution.ps1) - Publication des résultats vers Jira
-- [scripts/get-custom-field-ids.ps1](scripts/get-custom-field-ids.ps1) - Récupération des IDs des champs personnalisés Jira
-- [scripts/upload-xray.ps1](scripts/upload-xray.ps1) - Upload du rapport xray-report.xml vers Xray Cloud (format JUnit enrichi)
-
-### Prérequis
-
-- Accès Jira Cloud et un token API (compte utilisateur Jira)
-- JiraUrl (ex. https://votre-domaine.atlassian.net)
-- ExecKey (clé de l'issue Test Execution, ex. DEMO-131)
-- PowerShell 7+ (fonctionne sur Windows, Linux et macOS)
-- Rapport Playwright généré dans playwright-report (HTML requis)
-
-### Configuration des champs personnalisés Jira
-
-Ce projet utilise des champs personnalisés Jira pour enrichir les Test Executions avec des informations sur l'environnement de test :
-
-| Champ | ID | Description |
-|-------|-----|-------------|
-| OS | `customfield_10048` | Système d'exploitation (Windows, Mac) |
-| OS Version | `customfield_10049` | Version de l'OS (10, 11, etc.) |
-| Browser | `customfield_10050` | Navigateur (Chrome, Firefox, Safari, Edge) |
-| Browser Version | `customfield_10051` | Version du navigateur |
-
-#### Récupérer les IDs de vos champs personnalisés
-
-Pour obtenir les IDs de vos propres champs Jira :
-
-```powershell
-.\scripts\get-custom-field-ids.ps1 `
-  -JiraUrl "https://votre-domaine.atlassian.net" `
-  -JiraUser "votre-email@example.com" `
-  -JiraApiToken "votre-token-api"
-```
-
-#### Configurer les GitHub Secrets
-
-Ajoutez ces secrets dans votre repository GitHub (Settings → Secrets and variables → Actions) :
-
-- `JIRA_CUSTOM_FIELD_OS` = `customfield_10048`
-- `JIRA_CUSTOM_FIELD_OS_VERSION` = `customfield_10049`
-- `JIRA_CUSTOM_FIELD_BROWSER` = `customfield_10050`
-- `JIRA_CUSTOM_FIELD_BROWSER_VERSION` = `customfield_10051`
-- `JIRA_USER` = votre email Jira
-- `JIRA_API_TOKEN` = votre token API Jira
-- `JIRA_BASE_URL` = https://votre-domaine.atlassian.net
-
-### Utilisation
-
-Windows / Linux / macOS (pwsh):
-
-```powershell
-pwsh -File ./scripts/jira-post-execution.ps1 \
-   -ExecKey "DEMO-131" \
-   -DeviceName "win10-firefox" \
-   -JiraUrl "https://votre-domaine.atlassian.net" \
-   -JiraUser "email@domaine.com" \
-   -JiraApiToken "<token>" \
-   -GitHubRepository "AlexThibaud1976/tricentis-demo-tests-Jira" \
-   -GitHubRunId "20488622510" \
-   -GitHubRunNumber "42"
-```
-
-Paramètres:
-
-- -ExecKey: Clé de l'issue Test Execution
-- -DeviceName: Libellé du device (affiché dans le titre)
-- -JiraUrl: URL Jira Cloud
-- -JiraUser: Email du compte Jira
-- -JiraApiToken: Token API Jira
-- -GitHubRepository: owner/repo du projet
-- -GitHubRunId: ID du run GitHub Actions
-- -GitHubRunNumber: Numéro du run GitHub Actions
-- -ReportPath (optionnel): Chemin du rapport (playwright-report par défaut)
-
-### Dépannage
-
-- **Erreur "curl.exe non reconnu"**: le script utilise désormais des cmdlets PowerShell (Invoke-RestMethod, Invoke-WebRequest) compatibles multiplateforme. Assurez-vous d'utiliser PowerShell 7+.
-- **Pièces jointes non trouvées**: vérifiez que playwright-report/index.html existe avant d'exécuter le script.
-- **401/403 Jira**: confirmez JiraUser et JiraApiToken, et l'URL JiraUrl.
-- **Champs personnalisés non mis à jour**: vérifiez que les IDs des champs sont correctement configurés dans les GitHub Secrets et correspondent aux champs de votre instance Jira.
-
-### Ressources additionnelles
-
-Pour plus d'informations sur la configuration Jira, consultez :
-- [JIRA_CUSTOM_FIELDS_SETUP.md](JIRA_CUSTOM_FIELDS_SETUP.md) - Guide de configuration des champs personnalisés
-- [JIRA_TEST_SCOPE_FIELD.md](JIRA_TEST_SCOPE_FIELD.md) - Configuration du champ "Test Scope"
-- [LABELS_VIA_JIRA_IMPLEMENTATION.md](LABELS_VIA_JIRA_IMPLEMENTATION.md) - Utilisation des labels pour identifier les environnements
-
-## ⚙️ Configuration
-
-### Playwright Config
-
-Le fichier `playwright.config.js` est configuré avec :
-
-- **Base URL** : `https://demowebshop.tricentis.com`
-- **Mode headless** : `false` (navigateur visible par défaut)
-- **Workers** : `1` (exécution séquentielle pour éviter les conflits)
-- **Timeout** : `60000ms` (1 minute)
-- **Captures** : Screenshots et vidéos en cas d'échec
-- **Traces** : Activées lors de la première tentative échouée
-
-### Personnalisation
-
-Modifiez `playwright.config.js` selon vos besoins :
-
-```javascript
-use: {
-  headless: true,  // Mode sans interface
-  screenshot: 'on', // Toujours capturer
-  video: 'on',      // Toujours enregistrer
-}
-```
-
-## 🎯 Bonnes pratiques implémentées
-
-1. **Données dynamiques** : Chaque test génère des données uniques (email avec timestamp)
-2. **Isolation** : Chaque test est indépendant
-3. **Nettoyage** : Le panier est vidé entre les tests
-4. **Réutilisabilité** : Fonctions utilitaires partagées
-5. **Attentes explicites** : Utilisation de `waitForSelector` et `waitForLoadState`
-6. **Assertions robustes** : Vérifications multiples
-7. **Logs informatifs** : Messages console pour suivre l'exécution
-
-## 🐛 Débogage
-
-Pour déboguer un test spécifique :
-
-```bash
-npx playwright test tests/01-account-creation.spec.js --debug
-```
-
-Pour inspecter les sélecteurs :
-
-```bash
-npx playwright codegen https://demowebshop.tricentis.com/
-```
-
-## 📝 Notes importantes
-
-- **Données persistantes** : Chaque exécution crée de nouveaux comptes
-- **Pas de suppression** : Les comptes créés restent dans la base du site démo
-- **Exécution séquentielle** : Les tests s'exécutent un par un pour éviter les conflits
-- **Idempotence** : Les tests peuvent être relancés plusieurs fois
-
-## 🤝 Contribution
-
-Pour contribuer à ce projet :
-
-1. Fork le repository
-2. Créez une branche feature (`git checkout -b feature/nouvelle-fonctionnalite`)
-3. Committez vos changements (`git commit -am 'Ajout de nouvelle fonctionnalité'`)
-4. Push vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
-5. Créez une Pull Request
+## 🔗 Intégration Jira / Xray
+
+### ✨ Fonctionnalités d'intégration
+
+- **Remontée automatique des résultats** vers Xray après chaque exécution
+- **Annotations enrichies** dans les rapports XML :
+  - `test_key` : Identifiant du test Jira
+  - `tags` : Tags pour classification
+  - `test_description` : Description détaillée
+  - **Timestamps** : `started-at` et `finished-at` pour chaque test
+  - **Evidence** : Screenshots encodés en Base64 intégrés au rapport
+- **Champs personnalisés Jira** mis à jour automatiquement :
+  - OS & version
+  - Navigateur & version
+  - Nom de l'appareil
+  - Périmètre de test
+  - Lien vers le build BrowserStack
+  - Rapport HTML attaché
+- **Labels dynamiques** : Résultat (PASS/FAIL) et nom de l'appareil
+
+### 📊 Configuration
+
+Les rapports Xray sont générés automatiquement avec `@xray-app/playwright-junit-reporter` et enrichis par les scripts :
+- `add-timestamps-to-xray-report.js` : Ajoute les timestamps et evidence
+- `upload-xray.ps1` : Upload vers Xray
+- `jira-post-execution.ps1` : Enrichit les tickets Jira
+
+## 🌐 Intégration BrowserStack
+
+### 🎯 Exécution dynamique
+
+Le projet supporte l'**exécution dynamique sur BrowserStack** avec sélection des paramètres :
+
+- **Systèmes d'exploitation** : Windows (7, 8, 8.1, 10, 11), macOS (Big Sur, Monterey, Ventura, Sonoma)
+- **Navigateurs** : Chrome, Firefox, Safari, Edge
+- **Versions** : Dernière version (`latest`) ou version spécifique
+
+### 🚀 Lancement depuis Jira
+
+Configurez une **Automation Rule Jira** pour déclencher les tests directement depuis un ticket avec :
+- Sélection de l'OS et de la version
+- Sélection du navigateur et de la version
+- Sélection du périmètre de test (all, sanity, account-creation, etc.)
+
+Voir la documentation complète dans :
+- [DYNAMIC_EXECUTION_GUIDE.md](./DYNAMIC_EXECUTION_GUIDE.md)
+- [JIRA_AUTOMATION_SETUP.md](./JIRA_AUTOMATION_SETUP.md)
+- [BROWSERSTACK.md](./BROWSERSTACK.md)
+
+## 📚 Documentation
+
+Le projet inclut une documentation complète :
+
+| Document | Description |
+|----------|-------------|
+| [DOCUMENTATION_INDEX.md](./DOCUMENTATION_INDEX.md) | Index de toute la documentation |
+| [QUICK_START.md](./QUICK_START.md) | Guide de démarrage rapide |
+| [PROJECT_STRUCTURE_OVERVIEW.md](./PROJECT_STRUCTURE_OVERVIEW.md) | Vue d'ensemble du projet |
+| [BROWSERSTACK.md](./BROWSERSTACK.md) | Configuration BrowserStack |
+| [XRAY_REPORTER_GUIDE.md](./XRAY_REPORTER_GUIDE.md) | Guide reporting Xray |
+| [JIRA_CUSTOM_FIELDS_SETUP.md](./JIRA_CUSTOM_FIELDS_SETUP.md) | Configuration champs Jira |
+| [CLAUDE.md](./CLAUDE.md) | Documentation pour Claude AI |
+| [CHANGES_SUMMARY.md](./CHANGES_SUMMARY.md) | Résumé des changements |
+
+## 🤖 Support Claude Code
+
+Le projet inclut un répertoire `.claude/` avec :
+- Contexte d'architecture
+- Patterns et conventions
+- Prompts réutilisables
+- Snippets de code
+- Workflows de développement
+
+## 🔧 Technologies utilisées
+
+- **Playwright** : Framework de tests E2E
+- **Node.js** : Runtime JavaScript
+- **BrowserStack** : Plateforme de tests cross-browser
+- **Jira / Xray** : Gestion des tests et traçabilité
+- **GitHub Actions** : CI/CD
+- **PowerShell** : Scripts d'automatisation
+
+## 🧑‍💻 Développement
+
+### Ajout d'un nouveau test
+
+1. Créer un fichier dans `tests/` avec le pattern `[NN]-[nom].spec.js`
+2. Utiliser le template de test dans `.claude/snippets/test-template.js`
+3. Ajouter les annotations Xray (`test_key`, `tags`, `test_description`)
+4. Utiliser les helpers de `utils/helpers.js` pour les actions communes
+5. Ajouter les captures d'écran avec `captureEvidence()`
+
+### Bonnes pratiques
+
+- ✅ Toujours générer des données uniques avec `generateUserData()`
+- ✅ Nettoyer l'état entre les tests (panier, comptes)
+- ✅ Utiliser `assertUrl()` pour les vérifications d'URL
+- ✅ Ajouter `wait()` après les actions importantes
+- ✅ Capturer des screenshots aux étapes clés
+- ✅ Annoter les tests avec `test_key`, `tags` et `test_description`
+
+## 📈 Évolutions récentes
+
+### Janvier 2026
+- ✨ **Extension massive de la couverture** : 15+ nouveaux scénarios de tests
+- 🔧 **Amélioration du reporting Xray** : Timestamps et evidence automatiques
+- 📸 **Screenshots intégrés** : Encodés en Base64 dans les rapports XML
+- 🏗️ **Refactoring du code** : Amélioration de la lisibilité et maintenabilité
+- 🎯 **Script de nettoyage** : Suppression automatique des `test_key` pour éviter les erreurs
+- 📊 **Détermination du résultat** : Depuis le XML plutôt que les steps
 
 ## 📄 Licence
 
-MIT License - Libre d'utilisation et de modification
+MIT
 
 ## 👤 Auteur
 
-**Alexandre** - Software QA Expert @Itecor Geneva
+**Alex Thibaud**
+- GitHub : [@AlexThibaud1976](https://github.com/AlexThibaud1976)
+- Projet : [tricentis-demo-tests-Jira](https://github.com/AlexThibaud1976/tricentis-demo-tests-Jira)
 
-## 🔗 Liens utiles
+## 🤝 Contribution
 
-- [Documentation Playwright](https://playwright.dev/)
-- [Site de test](https://demowebshop.tricentis.com/)
-- [Playwright Best Practices](https://playwright.dev/docs/best-practices)
+Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou une pull request.
 
----
+## 📞 Support
 
-**Note** : Ce projet est à des fins éducatives et de démonstration. Le site testé est un environnement de démo fourni par Tricentis.
+Pour toute question ou problème, consultez :
+- La [documentation complète](./DOCUMENTATION_INDEX.md)
+- Les [issues GitHub](https://github.com/AlexThibaud1976/tricentis-demo-tests-Jira/issues)
+- Le [guide de démarrage rapide](./QUICK_START.md)
