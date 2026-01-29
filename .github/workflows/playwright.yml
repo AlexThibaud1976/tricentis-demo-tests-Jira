@@ -45,13 +45,48 @@ on:
         required: true
         type: choice
         options:
+          # 🎯 Tests généraux
           - all
           - sanity
+          
+          # 👤 Gestion de compte
           - account-creation
           - login-logout
+          - account-management
+          
+          # 📦 Catalogue et navigation
           - catalog-navigation
+          - product-search
+          - product-filtering
+          - manufacturer-filter
+          - new-products
+          
+          # 🛍️ Produits
+          - configurable-products
+          - product-comparison
+          - product-reviews
+          - product-tags
+          - recently-viewed
+          - email-friend
+          
+          # 🛒 Panier et commandes
           - cart-management
+          - cart-updates
           - order-checkout
+          - order-history
+          - guest-checkout
+          
+          # ⭐ Liste de souhaits
+          - wishlist-management
+          
+          # 📧 Communication
+          - newsletter-subscription
+          - contact-form
+          
+          # 🌐 Communauté et contenu
+          - community-poll
+          - news-blog
+          - footer-links
 
 env:
   XRAY_ENDPOINT: xray.cloud.getxray.app
