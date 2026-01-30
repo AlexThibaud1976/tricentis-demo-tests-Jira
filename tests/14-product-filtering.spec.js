@@ -8,7 +8,7 @@ test.describe('Tests de Filtrage de Produits', () => {
 
   test('Filtrage par prix - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-140' },
+      { type: 'test_key', description: 'DEMO-268' },
       { type: 'tags', description: '@filter @price' },
       { type: 'test_description', description: 'Filtrage des produits par tranche de prix' }
     );
@@ -39,7 +39,7 @@ test.describe('Tests de Filtrage de Produits', () => {
 
   test('Tri par nom - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-141' },
+      { type: 'test_key', description: 'DEMO-269' },
       { type: 'tags', description: '@filter @sort' },
       { type: 'test_description', description: 'Tri des produits par nom A-Z' }
     );
@@ -62,7 +62,7 @@ test.describe('Tests de Filtrage de Produits', () => {
 
   test('Changement de vue (grille/liste) - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-142' },
+      { type: 'test_key', description: 'DEMO-270' },
       { type: 'tags', description: '@filter @view' },
       { type: 'test_description', description: 'Basculement entre vue grille et liste' }
     );

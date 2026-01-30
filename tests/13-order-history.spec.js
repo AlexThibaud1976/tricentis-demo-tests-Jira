@@ -8,7 +8,7 @@ test.describe('Tests d\'Historique des Commandes', () => {
 
   test('Consultation historique des commandes - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-130' },
+      { type: 'test_key', description: 'DEMO-266' },
       { type: 'tags', description: '@orders @history' },
       { type: 'test_description', description: 'Affichage de la page historique des commandes' }
     );
@@ -30,7 +30,7 @@ test.describe('Tests d\'Historique des Commandes', () => {
 
   test('Détails d\'une commande - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-131' },
+      { type: 'test_key', description: 'DEMO-267' },
       { type: 'tags', description: '@orders @details' },
       { type: 'test_description', description: 'Consultation du détail d\'une commande existante' }
     );

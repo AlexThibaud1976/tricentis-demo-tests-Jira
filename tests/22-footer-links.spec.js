@@ -8,7 +8,7 @@ test.describe('Tests des Liens du Footer', () => {
 
   test('Vérification des liens footer - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-220' },
+      { type: 'test_key', description: 'DEMO-280' },
       { type: 'tags', description: '@footer @navigation' },
       { type: 'test_description', description: 'Vérification des liens dans le pied de page' }
     );

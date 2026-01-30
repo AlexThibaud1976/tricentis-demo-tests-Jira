@@ -8,7 +8,7 @@ test.describe('Tests des Nouveaux Produits', () => {
 
   test('Affichage des nouveaux produits - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-210' },
+      { type: 'test_key', description: 'DEMO-279' },
       { type: 'tags', description: '@new-products' },
       { type: 'test_description', description: 'Visualisation de la page des nouveaux produits' }
     );

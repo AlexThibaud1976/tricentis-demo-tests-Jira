@@ -8,7 +8,7 @@ test.describe('Tests du Filtre par Fabricant', () => {
 
   test('Filtrage par fabricant - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-200' },
+      { type: 'test_key', description: 'DEMO-278' },
       { type: 'tags', description: '@filter @manufacturer' },
       { type: 'test_description', description: 'Filtrage des produits par fabricant' }
     );

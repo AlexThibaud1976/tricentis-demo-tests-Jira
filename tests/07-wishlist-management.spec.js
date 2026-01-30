@@ -8,7 +8,7 @@ test.describe('Tests de Gestion de Liste de Souhaits', () => {
 
   test('Ajout d\'un produit à la liste de souhaits - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-070' },
+      { type: 'test_key', description: 'DEMO-251' },
       { type: 'tags', description: '@wishlist @smoke' },
       { type: 'test_description', description: 'Ajout d\'un produit simple à la wishlist' }
     );
@@ -49,7 +49,7 @@ test.describe('Tests de Gestion de Liste de Souhaits', () => {
 
   test('Visualisation de la liste de souhaits - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-071' },
+      { type: 'test_key', description: 'DEMO-252' },
       { type: 'tags', description: '@wishlist' },
       { type: 'test_description', description: 'Affichage de la page wishlist' }
     );
@@ -92,7 +92,7 @@ test.describe('Tests de Gestion de Liste de Souhaits', () => {
 
   test('Transfert wishlist vers panier - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-072' },
+      { type: 'test_key', description: 'DEMO-253' },
       { type: 'tags', description: '@wishlist @cart' },
       { type: 'test_description', description: 'Déplacement d\'un article de la wishlist vers le panier' }
     );

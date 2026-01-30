@@ -8,7 +8,7 @@ test.describe('Tests du Formulaire de Contact', () => {
 
   test('Envoi message de contact valide - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-110' },
+      { type: 'test_key', description: 'DEMO-261' },
       { type: 'tags', description: '@contact @smoke' },
       { type: 'test_description', description: 'Envoi d\'un message via le formulaire de contact' }
     );
@@ -40,7 +40,7 @@ test.describe('Tests du Formulaire de Contact', () => {
 
   test('Validation champs obligatoires - Cas non passant ❌', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-111' },
+      { type: 'test_key', description: 'DEMO-262' },
       { type: 'tags', description: '@contact @validation' },
       { type: 'test_description', description: 'Validation des champs requis du formulaire' }
     );

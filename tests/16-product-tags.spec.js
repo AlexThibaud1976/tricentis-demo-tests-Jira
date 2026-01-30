@@ -8,7 +8,7 @@ test.describe('Tests des Tags Produits', () => {
 
   test('Navigation via tags populaires - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-160' },
+      { type: 'test_key', description: 'DEMO-273' },
       { type: 'tags', description: '@tags @navigation' },
       { type: 'test_description', description: 'Utilisation des tags pour filtrer les produits' }
     );
@@ -44,7 +44,7 @@ test.describe('Tests des Tags Produits', () => {
 
   test('Tags sur page produit - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-161' },
+      { type: 'test_key', description: 'DEMO-274' },
       { type: 'tags', description: '@tags' },
       { type: 'test_description', description: 'Affichage et clic sur tags depuis une page produit' }
     );

@@ -8,7 +8,7 @@ test.describe('Tests de Gestion de Compte', () => {
 
   test('Modification informations personnelles - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-120' },
+      { type: 'test_key', description: 'DEMO-263' },
       { type: 'tags', description: '@account @profile' },
       { type: 'test_description', description: 'Mise à jour du profil utilisateur' }
     );
@@ -39,7 +39,7 @@ test.describe('Tests de Gestion de Compte', () => {
 
   test('Gestion des adresses - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-121' },
+      { type: 'test_key', description: 'DEMO-264' },
       { type: 'tags', description: '@account @addresses' },
       { type: 'test_description', description: 'Ajout d\'une nouvelle adresse' }
     );
@@ -89,7 +89,7 @@ test.describe('Tests de Gestion de Compte', () => {
 
   test('Changement de mot de passe - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-122' },
+      { type: 'test_key', description: 'DEMO-265' },
       { type: 'tags', description: '@account @security' },
       { type: 'test_description', description: 'Modification du mot de passe utilisateur' }
     );

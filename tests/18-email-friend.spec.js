@@ -8,7 +8,7 @@ test.describe('Tests d\'Envoi Email à un Ami', () => {
 
   test('Partage produit par email - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-180' },
+      { type: 'test_key', description: 'DEMO-276' },
       { type: 'tags', description: '@email @share' },
       { type: 'test_description', description: 'Envoi d\'un email pour recommander un produit' }
     );

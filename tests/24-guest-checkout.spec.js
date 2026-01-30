@@ -8,7 +8,7 @@ test.describe('Tests de Checkout Invité', () => {
 
   test('Commande en tant qu\'invité - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-240' },
+      { type: 'test_key', description: 'DEMO-283' },
       { type: 'tags', description: '@checkout @guest @smoke' },
       { type: 'test_description', description: 'Processus complet de commande sans création de compte' }
     );

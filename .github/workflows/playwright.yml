@@ -192,10 +192,6 @@ jobs:
       if: always()
       run: node scripts/add-timestamps-to-xray-report.js xray-report.xml
 
-    - name: Remove test_key properties from Xray report
-      if: always()
-      run: node scripts/remove-test-keys.js xray-report.xml
-
     - name: Upload BrowserStack test results
       uses: actions/upload-artifact@v4
       if: always()

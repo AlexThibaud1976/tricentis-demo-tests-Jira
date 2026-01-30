@@ -8,7 +8,7 @@ test.describe('Tests du Blog/Actualités', () => {
 
   test('Consultation des actualités - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-230' },
+      { type: 'test_key', description: 'DEMO-281' },
       { type: 'tags', description: '@news @blog' },
       { type: 'test_description', description: 'Affichage de la page des actualités' }
     );
@@ -42,7 +42,7 @@ test.describe('Tests du Blog/Actualités', () => {
 
   test('Lecture d\'un article - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-231' },
+      { type: 'test_key', description: 'DEMO-282' },
       { type: 'tags', description: '@news @article' },
       { type: 'test_description', description: 'Lecture complète d\'un article d\'actualité' }
     );

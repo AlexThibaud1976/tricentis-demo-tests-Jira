@@ -8,7 +8,7 @@ test.describe('Tests d\'Inscription Newsletter', () => {
 
   test('Inscription newsletter avec email valide - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-100' },
+      { type: 'test_key', description: 'DEMO-259' },
       { type: 'tags', description: '@newsletter @smoke' },
       { type: 'test_description', description: 'Inscription à la newsletter avec email valide' }
     );
@@ -39,7 +39,7 @@ test.describe('Tests d\'Inscription Newsletter', () => {
 
   test('Inscription newsletter avec email invalide - Cas non passant ❌', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-101' },
+      { type: 'test_key', description: 'DEMO-260' },
       { type: 'tags', description: '@newsletter @negative' },
       { type: 'test_description', description: 'Tentative d\'inscription avec email invalide' }
     );

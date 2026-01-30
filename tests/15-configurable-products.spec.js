@@ -8,7 +8,7 @@ test.describe('Tests de Produits Configurables', () => {
 
   test('Configuration d\'un ordinateur personnalisé - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-150' },
+      { type: 'test_key', description: 'DEMO-271' },
       { type: 'tags', description: '@configurable @computers' },
       { type: 'test_description', description: 'Configuration d\'un PC avec options personnalisées' }
     );
@@ -62,7 +62,7 @@ test.describe('Tests de Produits Configurables', () => {
 
   test('Produit avec options multiples - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-151' },
+      { type: 'test_key', description: 'DEMO-272' },
       { type: 'tags', description: '@configurable' },
       { type: 'test_description', description: 'Sélection de plusieurs options sur un produit' }
     );

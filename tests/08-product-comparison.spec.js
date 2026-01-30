@@ -8,7 +8,7 @@ test.describe('Tests de Comparaison de Produits', () => {
 
   test('Ajout de produits à la comparaison - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-080' },
+      { type: 'test_key', description: 'DEMO-254' },
       { type: 'tags', description: '@comparison @smoke' },
       { type: 'test_description', description: 'Ajout de deux produits à la liste de comparaison' }
     );
@@ -42,7 +42,7 @@ test.describe('Tests de Comparaison de Produits', () => {
 
   test('Affichage de la page de comparaison - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-081' },
+      { type: 'test_key', description: 'DEMO-255' },
       { type: 'tags', description: '@comparison' },
       { type: 'test_description', description: 'Visualisation de la page de comparaison avec produits' }
     );
@@ -81,7 +81,7 @@ test.describe('Tests de Comparaison de Produits', () => {
 
   test('Suppression d\'un produit de la comparaison - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-082' },
+      { type: 'test_key', description: 'DEMO-256' },
       { type: 'tags', description: '@comparison' },
       { type: 'test_description', description: 'Retrait d\'un produit de la liste de comparaison' }
     );

@@ -8,7 +8,7 @@ test.describe('Tests des Produits Récemment Consultés', () => {
 
   test('Affichage des produits récemment vus - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-170' },
+      { type: 'test_key', description: 'DEMO-275' },
       { type: 'tags', description: '@recently-viewed @smoke' },
       { type: 'test_description', description: 'Vérification que les produits consultés apparaissent dans la section récemment vus' }
     );

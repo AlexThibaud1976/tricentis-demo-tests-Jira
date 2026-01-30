@@ -8,7 +8,7 @@ test.describe('Tests du Sondage Communautaire', () => {
 
   test('Participation au sondage - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-190' },
+      { type: 'test_key', description: 'DEMO-277' },
       { type: 'tags', description: '@poll @community' },
       { type: 'test_description', description: 'Vote dans le sondage communautaire' }
     );

@@ -8,7 +8,7 @@ test.describe('Tests des Avis Produits', () => {
 
   test('Consultation des avis existants - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-090' },
+      { type: 'test_key', description: 'DEMO-257' },
       { type: 'tags', description: '@reviews @smoke' },
       { type: 'test_description', description: 'Affichage des avis sur une page produit' }
     );
@@ -33,7 +33,7 @@ test.describe('Tests des Avis Produits', () => {
 
   test('Soumission d\'un nouvel avis - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-091' },
+      { type: 'test_key', description: 'DEMO-258' },
       { type: 'tags', description: '@reviews' },
       { type: 'test_description', description: 'Ajout d\'un avis sur un produit' }
     );

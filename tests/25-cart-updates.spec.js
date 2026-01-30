@@ -9,7 +9,7 @@ test.describe('Tests de Mise à Jour du Panier', () => {
 
   test('Modification de la quantité - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-250' },
+      { type: 'test_key', description: 'DEMO-284' },
       { type: 'tags', description: '@cart @quantity' },
       { type: 'test_description', description: 'Modification de la quantité d\'un article dans le panier' }
     );
@@ -51,7 +51,7 @@ test.describe('Tests de Mise à Jour du Panier', () => {
 
   test('Suppression d\'un article - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-251' },
+      { type: 'test_key', description: 'DEMO-285' },
       { type: 'tags', description: '@cart @remove' },
       { type: 'test_description', description: 'Suppression d\'un article du panier' }
     );
@@ -92,7 +92,7 @@ test.describe('Tests de Mise à Jour du Panier', () => {
 
   test('Application d\'un code promo - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-252' },
+      { type: 'test_key', description: 'DEMO-286' },
       { type: 'tags', description: '@cart @promo' },
       { type: 'test_description', description: 'Tentative d\'application d\'un code promo' }
     );
