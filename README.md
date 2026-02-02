@@ -13,6 +13,9 @@
 
 Suite complète de tests end-to-end automatisés avec Playwright pour le site de démonstration [Demo Web Shop Tricentis](https://demowebshop.tricentis.com/).
 
+**🎯 Reporter unique** : Utilise exclusivement `@xray-app/playwright-junit-reporter` pour une intégration optimale avec Xray Cloud.
+**📸 Captures pleine page** : Screenshots complets (`fullPage: true`) sur échecs et evidence.
+
 ## 📋 Description
 
 Ce projet contient **plus de 20 tests automatisés** couvrant l'ensemble des fonctionnalités du site e-commerce :

@@ -58,10 +58,11 @@ node scripts/resolve-browserstack-config.js \
 ✅ Tester n'importe quelle combinaison OS/Navigateur  
 ✅ Lancer depuis GitHub Actions manuellement  
 ✅ Lancer depuis une Automation Rule Jira  
-✅ Génération automatique des rapports  
+✅ Génération automatique des rapports Xray enrichis  
 ✅ Remontée des résultats dans Xray/Jira  
 ✅ Validation automatique des paramètres  
 ✅ 40+ combinaisons supportées  
+✅ Screenshots pleine page automatiques (échecs + evidence)  
 
 ---
 
@@ -237,6 +238,6 @@ Tout est en place pour commencer. Commencez par:
 ---
 
 **Statut:** ✅ Implémentation complète  
-**Date:** Janvier 2026  
+**Date:** Février 2026 (dernière mise à jour: 2 février 2026)  
 **Version:** 1.0  
 **Auteur:** GitHub Copilot

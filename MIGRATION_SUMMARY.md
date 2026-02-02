@@ -120,14 +120,15 @@ Le test génère des données utilisateur uniques et valide le message de succè
 
 ## 📊 Impact sur le workflow
 
-### Avant (workflow simplifié)
+### Avant (workflow avec double reporter)
 ```
 Tests → HTML Report
      → results.xml (JUnit basique)
+     → xray-report.xml (JUnit Xray)
      → upload-xray.ps1 → Xray Cloud
 ```
 
-### Après (workflow optimisé)
+### Après (workflow optimisé - reporter unique)
 ```
 Tests → HTML Report
      → xray-report.xml (JUnit enrichi avec métadonnées)
@@ -135,12 +136,13 @@ Tests → HTML Report
 ```
 
 ### Avantages :
-1. **Traçabilité automatique** : Lien direct test ↔ Jira via test_key
-2. **Métadonnées enrichies** : Tags, requirements, descriptions
-3. **Custom fields TR** : Support des annotations tr:xxx
-4. **Evidence intégrée** : Possibilité d'embed screenshots/fichiers
-5. **Reporter officiel** : Maintenu par l'équipe Xray
-6. **Format standardisé** : Compatible Xray Cloud out-of-the-box
+1. **Reporter unique** : Seulement @xray-app/playwright-junit-reporter
+2. **Traçabilité automatique** : Lien direct test ↔ Jira via test_key
+3. **Métadonnées enrichies** : Tags, requirements, descriptions
+4. **Custom fields TR** : Support des annotations tr:xxx
+5. **Evidence intégrée** : Screenshots pleine page (fullPage: true)
+6. **Reporter officiel** : Maintenu par l'équipe Xray
+7. **Format standardisé** : Compatible Xray Cloud out-of-the-box
 
 ## 🔧 Configuration requise
 
@@ -151,9 +153,10 @@ Tests → HTML Report
 - `JIRA_PROJECT_KEY`
 
 ### Fichiers générés
-- `xray-report.xml` (nouveau, remplace results.xml)
+- `xray-report.xml` (reporter Xray uniquement)
 - `playwright-report/index.html` (inchangé)
 - `test-results.json` (inchangé)
+- Screenshots pleine page automatiques (échecs et evidence)
 
 ## ⚠️ Points d'attention
 

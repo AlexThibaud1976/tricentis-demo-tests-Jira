@@ -7,7 +7,7 @@ Complete Claude Code configuration for Tricentis Demo Tests project.
 - **Total Files**: 23
 - **Total Directories**: 8
 - **Version**: 2.0.0
-- **Last Updated**: 2026-01-11
+- **Last Updated**: 2026-02-02
 
 ## 🎯 Purpose
 
@@ -276,4 +276,4 @@ For questions or issues:
 
 **Start Here**: [INDEX.md](INDEX.md) | **Quick Guide**: [QUICK_START.md](QUICK_START.md) | **Details**: [STRUCTURE.md](STRUCTURE.md)
 
-**Version**: 2.0.0 | **Last Updated**: 2026-01-11 | **Status**: Complete ✅
+**Version**: 2.1.0 | **Last Updated**: 2026-02-02 | **Status**: Complete ✅

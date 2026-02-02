@@ -24,6 +24,13 @@ Le package est déjà installé dans le projet :
 }
 ```
 
+## 📸 Captures d'écran pleine page
+
+Le projet est configuré pour capturer automatiquement des **screenshots pleine page** (fullPage: true) :
+- Dans `utils/helpers.js` : `captureEvidence()` utilise `fullPage: true`
+- Dans `browserstack-fixtures.js` : Hook automatique sur échec avec `fullPage: true`
+- Intégration dans Xray via `embedAttachmentsAsProperty: 'testrun_evidence'`
+
 ## ⚙️ Configuration
 
 ### Configuration Playwright (playwright.config.js)

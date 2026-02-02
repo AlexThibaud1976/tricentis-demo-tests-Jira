@@ -1,5 +1,13 @@
 # 📖 Index de la Documentation
 
+## 🔄 Mises à jour récentes (Février 2026)
+
+✨ **Reporter unique Xray** : Suppression du reporter junit standard, utilisation exclusive de `@xray-app/playwright-junit-reporter`  
+📸 **Screenshots pleine page** : Captures complètes (`fullPage: true`) automatiques sur échecs et evidence  
+🗂️ **Fichiers générés** : `xray-report.xml` uniquement (plus de `results.xml`)  
+
+---
+
 ## 🎯 Par cas d'usage
 
 ### "Je veux comprendre le nouveau reporter Xray"
@@ -237,5 +245,5 @@ Assurez-vous que vous avez:
 
 ---
 
-**Dernière mise à jour:** Janvier 2026  
+**Dernière mise à jour:** 2 février 2026  
 **Statut:** ✅ Complet et testé

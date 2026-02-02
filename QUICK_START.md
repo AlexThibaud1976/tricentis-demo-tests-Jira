@@ -8,7 +8,10 @@ Lancer les tests sur BrowserStack avec des paramètres personnalisés depuis Jir
 ## 📋 Condition préalable
 ✅ Secrets GitHub configurés  
 ✅ Accès à BrowserStack  
-✅ Accès à Xray Cloud (optionnel)  
+✅ Accès à Xray Cloud (optionnel)
+
+**📊 Reporter** : Utilise exclusivement `@xray-app/playwright-junit-reporter` (plus de reporter junit standard)  
+**📸 Screenshots** : Captures pleine page automatiques sur échecs et evidence  
 
 ---
 

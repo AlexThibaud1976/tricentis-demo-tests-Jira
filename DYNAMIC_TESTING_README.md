@@ -11,8 +11,9 @@ Vous pouvez maintenant **lancer les tests sur BrowserStack avec n'importe quelle
 ✅ Sélection dynamique du **navigateur** (Chrome, Firefox, Safari, Edge)  
 ✅ Sélection dynamique de la **version du navigateur** (latest ou numéro spécifique)  
 ✅ Validation automatique des paramètres  
-✅ Rapports HTML/PDF automatiques  
+✅ Rapports Xray enrichis (reporter unique `@xray-app/playwright-junit-reporter`)  
 ✅ Remontée des résultats dans Xray/Jira  
+✅ Captures d'écran pleine page automatiques (échecs + evidence)  
 
 ---
 

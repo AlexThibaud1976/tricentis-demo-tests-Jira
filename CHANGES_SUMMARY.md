@@ -17,6 +17,8 @@ Permettre de lancer les tests BrowserStack avec des paramètres dynamiques (OS, 
 - Paramètres sélectionnables à chaque lancement
 - Workflow compatible avec Jira Automation
 - Support de **40+ combinaisons OS/Navigateur**
+- **Reporter Xray unique** : `@xray-app/playwright-junit-reporter` (génère `xray-report.xml`)
+- **Screenshots pleine page** : Captures automatiques avec `fullPage: true`
 
 ---
 

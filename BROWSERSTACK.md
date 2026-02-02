@@ -86,6 +86,15 @@ $env:BS_BROWSER="chrome"
 npx playwright test --config=playwright.config.browserstack.js
 ```
 
+## 📸 Captures d'écran
+
+Le projet est configuré pour capturer **des pages complètes** (fullPage: true) :
+- ✅ **Evidence manuelles** : Via `captureEvidence()` dans les tests
+- ✅ **Échecs automatiques** : Hook dans `browserstack-fixtures.js`
+- ✅ **Intégration Xray** : Screenshots encodés en Base64 dans xray-report.xml
+
+Cette configuration permet d'avoir une vision complète de la page lors des échecs, facilitant le diagnostic.
+
 ## 🧪 Utilisation
 
 ### Lancer tous les tests

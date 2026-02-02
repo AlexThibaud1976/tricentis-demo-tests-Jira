@@ -19,6 +19,8 @@ npx playwright test --config=playwright.config.browserstack.js
 
 Ouvrir [BrowserStack Dashboard](https://automate.browserstack.com/) pour voir les résultats en temps réel.
 
+**📸 Nouveauté** : Les screenshots sont maintenant capturés en **pleine page** (fullPage: true) pour un meilleur diagnostic.
+
 ---
 
 ## ⚙️ Personnalisation rapide

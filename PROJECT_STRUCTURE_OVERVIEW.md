@@ -118,7 +118,8 @@ tricentis-demo-tests-Jira/
 ┌─────────────────────────────────────────────────────────────────┐
 │                     Résultats & Reports                          │
 │  - playwright-report/ (HTML)                                    │
-│  - results.xml (JUnit)                                          │
+│  - xray-report.xml (JUnit enrichi Xray)                        │
+│  - Captures pleine page sur échec & evidence                    │
 └─────────────────────────────────────────────────────────────────┘
                              ↓
 ┌─────────────────────────────────────────────────────────────────┐
