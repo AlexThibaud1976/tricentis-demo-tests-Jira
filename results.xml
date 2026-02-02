@@ -1,0 +1,1760 @@
+<testsuites id="" name="" tests="60" failures="0" skipped="0" errors="0" time="382.08517800000004">
+<testsuite name="01-account-creation.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="3" failures="0" skipped="0" time="72.694" errors="0">
+<testcase name="Tests de création de compte › Test 1: Création de compte utilisateur - Cas passant ✅" classname="01-account-creation.spec.js" time="26.413">
+<properties>
+<property name="test_key" value="DEMO-87">
+</property>
+<property name="tags" value="smoke,account-creation,positive">
+</property>
+<property name="test_description" value="Vérifie la création d&apos;un compte utilisateur avec des données valides.
+Le test génère des données utilisateur uniques et valide le message de succès.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S1 for test: Test 1: Création de compte utilisateur - Cas passant ✅
+📸 Evidence captured: register_page_loaded
+📸 Evidence captured: form_filled
+📸 Evidence captured: registration_success
+📸 Evidence captured: homepage_after_registration
+✅ Compte créé avec succès: testuser_1769792158216@test.com
+[BrowserStack] Test S1 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S1
+[BrowserStack] Browser closed for S1
+
+[[ATTACHMENT|test-results/01-account-creation-Tests--814c5-utilisateur---Cas-passant-✅/attachments/register-page-loaded-9f32b0ae2890a5b22ba427ff88adf0e0082ec809.png]]
+
+[[ATTACHMENT|test-results/01-account-creation-Tests--814c5-utilisateur---Cas-passant-✅/attachments/form-filled-3694010e7de0f60078f7269eba3c7b0cd7e3f1dd.png]]
+
+[[ATTACHMENT|test-results/01-account-creation-Tests--814c5-utilisateur---Cas-passant-✅/attachments/registration-success-ac11fa5e3da75465340a60ef9125dca2496a4622.png]]
+
+[[ATTACHMENT|test-results/01-account-creation-Tests--814c5-utilisateur---Cas-passant-✅/attachments/homepage-after-registration-1e9156e19b093b870782a789b48aa6098e564bc8.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de création de compte › Test 2: Création de compte - Cas non passant (email invalide) ❌" classname="01-account-creation.spec.js" time="24.808">
+<properties>
+<property name="test_key" value="DEMO-88">
+</property>
+<property name="tags" value="account-creation,negative,validation">
+</property>
+<property name="test_description" value="Vérifie que le système rejette un email invalide lors de la création de compte.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S2 for test: Test 2: Création de compte - Cas non passant (email invalide) ❌
+📸 Evidence captured: email_validation_error
+✅ Le système a correctement rejeté l'email invalide
+[BrowserStack] Test S2 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S2
+[BrowserStack] Browser closed for S2
+
+[[ATTACHMENT|test-results/01-account-creation-Tests--7c217-on-passant-email-invalide-❌/attachments/email-validation-error-57888095512047c9a66af927ad5d2841931317af.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de création de compte › Test 2 bis: Création de compte - Cas non passant (mots de passe différents) ❌" classname="01-account-creation.spec.js" time="21.473">
+<properties>
+<property name="test_key" value="DEMO-89">
+</property>
+<property name="tags" value="account-creation,negative,validation">
+</property>
+<property name="test_description" value="Vérifie que le système détecte les mots de passe non identiques lors de la création de compte.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S3 for test: Test 2 bis: Création de compte - Cas non passant (mots de passe différents) ❌
+📸 Evidence captured: password_mismatch_error
+✅ Le système a correctement détecté les mots de passe différents
+[BrowserStack] Test S3 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S3
+[BrowserStack] Browser closed for S3
+
+[[ATTACHMENT|test-results/01-account-creation-Tests--a55d5--mots-de-passe-différents-❌/attachments/password-mismatch-error-8ed68efe0342b4768bd3732beecf97219fe83e49.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="02-login-logout.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="4" failures="0" skipped="0" time="96.22" errors="0">
+<testcase name="Tests de connexion et déconnexion › Test 3: Connexion utilisateur - Cas passant ✅" classname="02-login-logout.spec.js" time="30.295">
+<properties>
+<property name="test_key" value="DEMO-90">
+</property>
+<property name="tags" value="smoke,login,positive">
+</property>
+<property name="test_description" value="Vérifie la connexion d&apos;un utilisateur avec des identifiants valides.
+Crée d&apos;abord un compte puis teste la connexion.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S1 for test: Test 3: Connexion utilisateur - Cas passant ✅
+✅ Compte créé avec succès: testuser_1769792155696@test.com
+📸 Evidence captured: login_success
+✅ Connexion réussie avec: testuser_1769792155696@test.com
+[BrowserStack] Test S1 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S1
+[BrowserStack] Browser closed for S1
+
+[[ATTACHMENT|test-results/02-login-logout-Tests-de-c-5aef0-utilisateur---Cas-passant-✅/attachments/login-success-435e09488f35489c71508083231eeb9a2be3fdda.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de connexion et déconnexion › Test 4: Connexion utilisateur - Cas non passant (mot de passe incorrect) ❌" classname="02-login-logout.spec.js" time="23.94">
+<properties>
+<property name="test_key" value="DEMO-91">
+</property>
+<property name="tags" value="login,negative,security">
+</property>
+<property name="test_description" value="Vérifie que le système rejette une connexion avec un mot de passe incorrect.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S2 for test: Test 4: Connexion utilisateur - Cas non passant (mot de passe incorrect) ❌
+📸 Evidence captured: wrong_password_error
+✅ Le système a correctement rejeté le mot de passe incorrect
+[BrowserStack] Test S2 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S2
+[BrowserStack] Browser closed for S2
+
+[[ATTACHMENT|test-results/02-login-logout-Tests-de-c-a69b8-nt-mot-de-passe-incorrect-❌/attachments/wrong-password-error-19eebdd6a5e9a626b5fb7370c3f59ab2708c9238.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de connexion et déconnexion › Test 4 bis: Connexion - Cas non passant (email inexistant) ❌" classname="02-login-logout.spec.js" time="19.728">
+<properties>
+<property name="test_key" value="DEMO-92">
+</property>
+<property name="tags" value="login,negative,security">
+</property>
+<property name="test_description" value="Vérifie que le système rejette une connexion avec un email inexistant.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S3 for test: Test 4 bis: Connexion - Cas non passant (email inexistant) ❌
+📸 Evidence captured: nonexistent_email_error
+✅ Le système a correctement rejeté l'email inexistant
+[BrowserStack] Test S3 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S3
+[BrowserStack] Browser closed for S3
+
+[[ATTACHMENT|test-results/02-login-logout-Tests-de-c-adff3--passant-email-inexistant-❌/attachments/nonexistent-email-error-7bfa223cd839f3621ede1c505d45e93993ef6f89.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de connexion et déconnexion › Test 5: Déconnexion utilisateur - Cas passant ✅" classname="02-login-logout.spec.js" time="22.257">
+<properties>
+<property name="test_key" value="DEMO-93">
+</property>
+<property name="tags" value="smoke,logout,positive">
+</property>
+<property name="test_description" value="Vérifie la déconnexion d&apos;un utilisateur et la réinitialisation de la session.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S4 for test: Test 5: Déconnexion utilisateur - Cas passant ✅
+📸 Evidence captured: logout_success
+✅ Déconnexion réussie
+[BrowserStack] Test S4 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S4
+[BrowserStack] Browser closed for S4
+
+[[ATTACHMENT|test-results/02-login-logout-Tests-de-c-7524c-utilisateur---Cas-passant-✅/attachments/logout-success-2b4ceaf556c42df599ebe9f599760af913d2ec69.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="03-catalog-navigation.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="3" failures="0" skipped="0" time="74.822" errors="0">
+<testcase name="Tests de parcours du catalogue › Test 6: Parcours du catalogue et visualisation de produit - Cas passant ✅" classname="03-catalog-navigation.spec.js" time="23.206">
+<properties>
+<property name="test_key" value="DEMO-94">
+</property>
+<property name="tags" value="smoke,catalog,navigation,positive">
+</property>
+<property name="test_description" value="Vérifie la navigation dans le catalogue et l&apos;affichage des détails d&apos;un produit.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S1 for test: Test 6: Parcours du catalogue et visualisation de produit - Cas passant ✅
+✅ Nombre de produits trouvés dans Books: 6
+Premier produit: Computing and Internet
+📸 Evidence captured: product_details_page
+✅ Page de détails du produit affichée correctement
+[BrowserStack] Test S1 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S1
+[BrowserStack] Browser closed for S1
+
+[[ATTACHMENT|test-results/03-catalog-navigation-Test-58c37--de-produit---Cas-passant-✅/attachments/product-details-page-8e0e0206b1c691ad63ac6d8f7e46d42594910fd7.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de parcours du catalogue › Test 6 bis: Navigation entre plusieurs catégories - Cas passant ✅" classname="03-catalog-navigation.spec.js" time="27.121">
+<properties>
+<property name="test_key" value="DEMO-95">
+</property>
+<property name="tags" value="catalog,navigation,positive">
+</property>
+<property name="test_description" value="Vérifie la navigation entre différentes catégories de produits (Computers, Electronics).">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S2 for test: Test 6 bis: Navigation entre plusieurs catégories - Cas passant ✅
+✅ 6 ordinateurs de bureau trouvés
+📸 Evidence captured: electronics_category
+✅ 2 produits électroniques trouvés
+[BrowserStack] Test S2 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S2
+[BrowserStack] Browser closed for S2
+
+[[ATTACHMENT|test-results/03-catalog-navigation-Test-1883c--catégories---Cas-passant-✅/attachments/electronics-category-302f95df3631ea71e22c2969f847e68b26973711.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de parcours du catalogue › Test 6 ter: Recherche de produits - Cas passant ✅" classname="03-catalog-navigation.spec.js" time="24.495">
+<properties>
+<property name="test_key" value="DEMO-96">
+</property>
+<property name="tags" value="smoke,search,positive">
+</property>
+<property name="test_description" value="Vérifie la fonctionnalité de recherche de produits dans le catalogue.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S3 for test: Test 6 ter: Recherche de produits - Cas passant ✅
+✅ Recherche "computer" a retourné 4 résultats
+📸 Evidence captured: search_results
+Premier résultat: Build your own cheap computer
+[BrowserStack] Test S3 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S3
+[BrowserStack] Browser closed for S3
+
+[[ATTACHMENT|test-results/03-catalog-navigation-Test-483d3-de-produits---Cas-passant-✅/attachments/search-results-0615f0b5c652abdabb860eff7472cddc986918fd.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="04-cart-management.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="5" failures="0" skipped="0" time="154.642" errors="0">
+<testcase name="Tests de gestion du panier › Test 7: Ajout d&apos;un produit au panier - Cas passant ✅" classname="04-cart-management.spec.js" time="25.682">
+<properties>
+<property name="test_key" value="DEMO-97">
+</property>
+<property name="tags" value="smoke,cart,positive">
+</property>
+<property name="test_description" value="Vérifie l&apos;ajout d&apos;un produit au panier et la mise à jour du compteur.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S1 for test: Test 7: Ajout d'un produit au panier - Cas passant ✅
+Compteur panier initial: 0
+Ajout du produit: Computing and Internet
+✅ Compteur panier mis à jour: 1
+📸 Evidence captured: product_added_to_cart
+✅ Produit ajouté avec succès au panier
+[BrowserStack] Test S1 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S1
+[BrowserStack] Browser closed for S1
+
+[[ATTACHMENT|test-results/04-cart-management-Tests-d-7cafa-t-au-panier---Cas-passant-✅/attachments/product-added-to-cart-420991e0245280857d4e0fed7806f7764b3b710d.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de gestion du panier › Test 8: Ajout de plusieurs produits au panier - Cas passant ✅" classname="04-cart-management.spec.js" time="43.639">
+<properties>
+<property name="test_key" value="DEMO-98">
+</property>
+<property name="tags" value="cart,positive">
+</property>
+<property name="test_description" value="Vérifie l&apos;ajout de plusieurs produits différents au panier.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S2 for test: Test 8: Ajout de plusieurs produits au panier - Cas passant ✅
+✅ Compteur panier: 3
+📸 Evidence captured: multiple_products_in_cart
+✅ Trois produits différents ajoutés avec succès
+[BrowserStack] Test S2 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S2
+[BrowserStack] Browser closed for S2
+
+[[ATTACHMENT|test-results/04-cart-management-Tests-d-32a46-s-au-panier---Cas-passant-✅/attachments/multiple-products-in-cart-20cd471cc40bfa8d9b49a3db1d145cf1828e98bd.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de gestion du panier › Test 9: Modification de la quantité dans le panier - Cas passant ✅" classname="04-cart-management.spec.js" time="25.548">
+<properties>
+<property name="test_key" value="DEMO-99">
+</property>
+<property name="tags" value="cart,positive">
+</property>
+<property name="test_description" value="Vérifie la modification de la quantité d&apos;un produit dans le panier et le recalcul du total.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S3 for test: Test 9: Modification de la quantité dans le panier - Cas passant ✅
+Prix unitaire: 10
+📸 Evidence captured: quantity_updated
+✅ Quantité mise à jour: 3, Sous-total: 30
+[BrowserStack] Test S3 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S3
+[BrowserStack] Browser closed for S3
+
+[[ATTACHMENT|test-results/04-cart-management-Tests-d-bb86c-s-le-panier---Cas-passant-✅/attachments/quantity-updated-7ecbac004f8fcd39287c1c476893762ee609913d.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de gestion du panier › Test 9 bis: Suppression d&apos;un produit du panier - Cas passant ✅" classname="04-cart-management.spec.js" time="31.872">
+<properties>
+<property name="test_key" value="DEMO-100">
+</property>
+<property name="tags" value="cart,positive">
+</property>
+<property name="test_description" value="Vérifie la suppression d&apos;un produit spécifique du panier.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S4 for test: Test 9 bis: Suppression d'un produit du panier - Cas passant ✅
+📸 Evidence captured: product_removed
+✅ Produit supprimé avec succès du panier
+[BrowserStack] Test S4 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S4
+[BrowserStack] Browser closed for S4
+
+[[ATTACHMENT|test-results/04-cart-management-Tests-d-c3e64-t-du-panier---Cas-passant-✅/attachments/product-removed-feb184c94f11c5387928d36c016b2dc7e3c40ced.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de gestion du panier › Test 9 ter: Vider complètement le panier - Cas passant ✅" classname="04-cart-management.spec.js" time="27.901">
+<properties>
+<property name="test_key" value="DEMO-101">
+</property>
+<property name="tags" value="cart,positive">
+</property>
+<property name="test_description" value="Vérifie le vidage complet du panier et la réinitialisation du compteur.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S5 for test: Test 9 ter: Vider complètement le panier - Cas passant ✅
+📸 Evidence captured: cart_emptied
+✅ Panier vidé complètement
+[BrowserStack] Test S5 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S5
+[BrowserStack] Browser closed for S5
+
+[[ATTACHMENT|test-results/04-cart-management-Tests-d-ef48c-t-le-panier---Cas-passant-✅/attachments/cart-emptied-2d13b5526c78195290b486bd273a811073857d32.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="05-order-checkout.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="3" failures="0" skipped="0" time="129.302" errors="0">
+<testcase name="Tests de passage de commande › Test 10: Passage de commande complet - Cas passant ✅" classname="05-order-checkout.spec.js" time="52.969">
+<properties>
+<property name="test_key" value="DEMO-102">
+</property>
+<property name="tags" value="smoke,checkout,order,positive,critical">
+</property>
+<property name="test_description" value="Vérifie le processus complet de passage de commande avec toutes les étapes de checkout.">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Compte créé pour les tests de commande: testuser_1769792144404@test.com
+[BrowserStack] Connecting session S1 for test: Test 10: Passage de commande complet - Cas passant ✅
+📖 Livre sélectionné: Computing and Internet
+✅ Livre ajouté au panier
+✅ Page de checkout chargée (formulaire de facturation détecté)
+✅ Adresse de facturation remplie
+✅ Adresse de livraison confirmée
+✅ Méthode de livraison sélectionnée
+✅ Méthode de paiement sélectionnée
+✅ Informations de paiement confirmées
+✅ Récapitulatif vérifié
+📸 Evidence captured: order_confirmed
+✅ Order number: 2207614
+✅ Commande complète réussie - Panier vidé
+[BrowserStack] Test S1 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S1
+[BrowserStack] Browser closed for S1
+
+[[ATTACHMENT|test-results/05-order-checkout-Tests-de-66e44-nde-complet---Cas-passant-✅/attachments/order-confirmed-8e674b19de8cf60e1b8397bf44d692cb36710391.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de passage de commande › Test 10 bis: Tentative de checkout sans accepter les conditions - Cas non passant ❌" classname="05-order-checkout.spec.js" time="32.545">
+<properties>
+<property name="test_key" value="DEMO-103">
+</property>
+<property name="tags" value="checkout,negative,validation">
+</property>
+<property name="test_description" value="Vérifie que le système empêche le checkout sans acceptation des conditions de service.">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Compte créé pour les tests de commande: testuser_1769792197335@test.com
+[BrowserStack] Connecting session S2 for test: Test 10 bis: Tentative de checkout sans accepter les conditions - Cas non passant ❌
+✅ Pas de dialog, reste sur la page panier comme attendu
+📸 Evidence captured: checkout_blocked_no_terms
+✅ Le système empêche le checkout sans accepter les conditions
+[BrowserStack] Test S2 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S2
+[BrowserStack] Browser closed for S2
+
+[[ATTACHMENT|test-results/05-order-checkout-Tests-de-f9580-ditions---Cas-non-passant-❌/attachments/checkout-blocked-no-terms-59d322a5c1db8e3d864480e7d5e407fd48bc62c4.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de passage de commande › Test 10 ter: Commande avec plusieurs produits - Cas passant ✅" classname="05-order-checkout.spec.js" time="43.788">
+<properties>
+<property name="test_key" value="DEMO-104">
+</property>
+<property name="tags" value="checkout,order,positive">
+</property>
+<property name="test_description" value="Vérifie le passage de commande avec plusieurs produits dans le panier.">
+</property>
+</properties>
+<system-out>
+<![CDATA[✅ Compte créé pour les tests de commande: testuser_1769792229885@test.com
+[BrowserStack] Connecting session S3 for test: Test 10 ter: Commande avec plusieurs produits - Cas passant ✅
+Total de la commande: 34.00
+✅ Page de checkout chargée (formulaire de facturation détecté)
+📸 Evidence captured: multi_product_order_confirmed
+✅ Commande avec plusieurs produits réussie
+[BrowserStack] Test S3 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S3
+[BrowserStack] Browser closed for S3
+
+[[ATTACHMENT|test-results/05-order-checkout-Tests-de-2d365-rs-produits---Cas-passant-✅/attachments/multi-product-order-confirmed-60e55ed56962a190717a9bc96b4b603256594324.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="06-product-search.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="4" failures="0" skipped="0" time="101.124" errors="0">
+<testcase name="Tests de Recherche Produit › Recherche simple par nom de produit - Cas passant ✅" classname="06-product-search.spec.js" time="29.677">
+<properties>
+<property name="test_key" value="DEMO-247">
+</property>
+<property name="tags" value="@smoke @search">
+</property>
+<property name="test_description" value="Recherche d&apos;un produit par son nom exact">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S4 for test: Recherche simple par nom de produit - Cas passant ✅
+📸 Evidence captured: homepage
+📸 Evidence captured: search-results
+📸 Evidence captured: final-state
+[BrowserStack] Test S4 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S4
+[BrowserStack] Browser closed for S4
+
+[[ATTACHMENT|test-results/06-product-search-Tests-de-0da28--de-produit---Cas-passant-✅/attachments/homepage-bb2d84c86798c6a8770867a76f72da17fdb327fc.png]]
+
+[[ATTACHMENT|test-results/06-product-search-Tests-de-0da28--de-produit---Cas-passant-✅/attachments/search-results-9fcd336e21781176fe71e7af7ce070794d3885f4.png]]
+
+[[ATTACHMENT|test-results/06-product-search-Tests-de-0da28--de-produit---Cas-passant-✅/attachments/final-state-3045669cff43fe8547d5eecf77d54db614fd86b1.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Recherche Produit › Recherche avec terme partiel - Cas passant ✅" classname="06-product-search.spec.js" time="26.141">
+<properties>
+<property name="test_key" value="DEMO-248">
+</property>
+<property name="tags" value="@search">
+</property>
+<property name="test_description" value="Recherche avec un terme partiel retourne des résultats">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S5 for test: Recherche avec terme partiel - Cas passant ✅
+📸 Evidence captured: partial-search-results
+📸 Evidence captured: final-state
+[BrowserStack] Test S5 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S5
+[BrowserStack] Browser closed for S5
+
+[[ATTACHMENT|test-results/06-product-search-Tests-de-dbab1-rme-partiel---Cas-passant-✅/attachments/partial-search-results-e86f896b2daba618288ea34281ab9c881281ac94.png]]
+
+[[ATTACHMENT|test-results/06-product-search-Tests-de-dbab1-rme-partiel---Cas-passant-✅/attachments/final-state-172d25fb121ea3599449f546acad6a4344843b2d.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Recherche Produit › Recherche sans résultat - Cas passant ✅" classname="06-product-search.spec.js" time="21.375">
+<properties>
+<property name="test_key" value="DEMO-249">
+</property>
+<property name="tags" value="@search">
+</property>
+<property name="test_description" value="Recherche avec terme inexistant affiche message approprié">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S6 for test: Recherche sans résultat - Cas passant ✅
+📸 Evidence captured: no-results
+📸 Evidence captured: final-state
+[BrowserStack] Test S6 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S6
+[BrowserStack] Browser closed for S6
+
+[[ATTACHMENT|test-results/06-product-search-Tests-de-cc439-ns-résultat---Cas-passant-✅/attachments/no-results-20681aa336ef31e80464558078836ced9dc45044.png]]
+
+[[ATTACHMENT|test-results/06-product-search-Tests-de-cc439-ns-résultat---Cas-passant-✅/attachments/final-state-8839cb250039549b614274a58d9431a529399540.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Recherche Produit › Recherche avancée avec filtres - Cas passant ✅" classname="06-product-search.spec.js" time="23.931">
+<properties>
+<property name="test_key" value="DEMO-250">
+</property>
+<property name="tags" value="@search @advanced">
+</property>
+<property name="test_description" value="Utilisation de la recherche avancée avec catégorie">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S7 for test: Recherche avancée avec filtres - Cas passant ✅
+📸 Evidence captured: advanced-search-page
+📸 Evidence captured: advanced-search-results
+📸 Evidence captured: final-state
+[BrowserStack] Test S7 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S7
+[BrowserStack] Browser closed for S7
+
+[[ATTACHMENT|test-results/06-product-search-Tests-de-bd711-vec-filtres---Cas-passant-✅/attachments/advanced-search-page-e4b713e13ba1354c15a425574e29f2462a9533da.png]]
+
+[[ATTACHMENT|test-results/06-product-search-Tests-de-bd711-vec-filtres---Cas-passant-✅/attachments/advanced-search-results-acdcec4f6d232ea41a9eecb4d533378a62262dc4.png]]
+
+[[ATTACHMENT|test-results/06-product-search-Tests-de-bd711-vec-filtres---Cas-passant-✅/attachments/final-state-15548e3b5cbccce4cc5d5dcdbdc0f3f552a476ae.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="07-wishlist-management.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="3" failures="0" skipped="0" time="83.207" errors="0">
+<testcase name="Tests de Gestion de Liste de Souhaits › Ajout d&apos;un produit à la liste de souhaits - Cas passant ✅" classname="07-wishlist-management.spec.js" time="25.988">
+<properties>
+<property name="test_key" value="DEMO-251">
+</property>
+<property name="tags" value="@wishlist @smoke">
+</property>
+<property name="test_description" value="Ajout d&apos;un produit simple à la wishlist">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S4 for test: Ajout d'un produit à la liste de souhaits - Cas passant ✅
+📸 Evidence captured: homepage
+📸 Evidence captured: product-page
+📸 Evidence captured: final-state
+[BrowserStack] Test S4 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S4
+[BrowserStack] Browser closed for S4
+
+[[ATTACHMENT|test-results/07-wishlist-management-Tes-a378c-de-souhaits---Cas-passant-✅/attachments/homepage-3269e1c0e33638272b509a05276743afe66f8a1e.png]]
+
+[[ATTACHMENT|test-results/07-wishlist-management-Tes-a378c-de-souhaits---Cas-passant-✅/attachments/product-page-d0dff8882f90fdb5a5270c3fdb465b9e9d101710.png]]
+
+[[ATTACHMENT|test-results/07-wishlist-management-Tes-a378c-de-souhaits---Cas-passant-✅/attachments/final-state-6ac3a43be52736c1bfb64bcca1001a2716d134d2.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Gestion de Liste de Souhaits › Visualisation de la liste de souhaits - Cas passant ✅" classname="07-wishlist-management.spec.js" time="30.353">
+<properties>
+<property name="test_key" value="DEMO-252">
+</property>
+<property name="tags" value="@wishlist">
+</property>
+<property name="test_description" value="Affichage de la page wishlist">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S5 for test: Visualisation de la liste de souhaits - Cas passant ✅
+📸 Evidence captured: final-state
+[BrowserStack] Test S5 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S5
+[BrowserStack] Browser closed for S5
+
+[[ATTACHMENT|test-results/07-wishlist-management-Tes-dcaca-de-souhaits---Cas-passant-✅/attachments/final-state-55203e5a86ce6dacd6042aad019640ea8eea92cd.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Gestion de Liste de Souhaits › Transfert wishlist vers panier - Cas passant ✅" classname="07-wishlist-management.spec.js" time="26.866">
+<properties>
+<property name="test_key" value="DEMO-253">
+</property>
+<property name="tags" value="@wishlist @cart">
+</property>
+<property name="test_description" value="Déplacement d&apos;un article de la wishlist vers le panier">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S6 for test: Transfert wishlist vers panier - Cas passant ✅
+📸 Evidence captured: final-state
+[BrowserStack] Test S6 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S6
+[BrowserStack] Browser closed for S6
+
+[[ATTACHMENT|test-results/07-wishlist-management-Tes-a51ee-vers-panier---Cas-passant-✅/attachments/final-state-74541b878b9840c8ae2d15d3b08c767ffadaa039.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="08-product-comparison.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="3" failures="0" skipped="0" time="72.554" errors="0">
+<testcase name="Tests de Comparaison de Produits › Ajout de produits à la comparaison - Cas passant ✅" classname="08-product-comparison.spec.js" time="26.439">
+<properties>
+<property name="test_key" value="DEMO-254">
+</property>
+<property name="tags" value="@comparison @smoke">
+</property>
+<property name="test_description" value="Ajout de deux produits à la liste de comparaison">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S5 for test: Ajout de produits à la comparaison - Cas passant ✅
+📸 Evidence captured: books-category
+📸 Evidence captured: final-state
+[BrowserStack] Test S5 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S5
+[BrowserStack] Browser closed for S5
+
+[[ATTACHMENT|test-results/08-product-comparison-Test-a5152-comparaison---Cas-passant-✅/attachments/books-category-7771ec3d71204b8920fcbba4c07e0ae46cd42c2f.png]]
+
+[[ATTACHMENT|test-results/08-product-comparison-Test-a5152-comparaison---Cas-passant-✅/attachments/final-state-a8efd9d6cd1e2073fcb71133fc40dc9929fff23e.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Comparaison de Produits › Affichage de la page de comparaison - Cas passant ✅" classname="08-product-comparison.spec.js" time="19.918">
+<properties>
+<property name="test_key" value="DEMO-255">
+</property>
+<property name="tags" value="@comparison">
+</property>
+<property name="test_description" value="Visualisation de la page de comparaison avec produits">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S6 for test: Affichage de la page de comparaison - Cas passant ✅
+📸 Evidence captured: final-state
+[BrowserStack] Test S6 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S6
+[BrowserStack] Browser closed for S6
+
+[[ATTACHMENT|test-results/08-product-comparison-Test-f70e8-comparaison---Cas-passant-✅/attachments/final-state-33fa48f22df1b24737cb2f9bd9838fe5dd3b2561.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Comparaison de Produits › Suppression d&apos;un produit de la comparaison - Cas passant ✅" classname="08-product-comparison.spec.js" time="26.197">
+<properties>
+<property name="test_key" value="DEMO-256">
+</property>
+<property name="tags" value="@comparison">
+</property>
+<property name="test_description" value="Retrait d&apos;un produit de la liste de comparaison">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S7 for test: Suppression d'un produit de la comparaison - Cas passant ✅
+📸 Evidence captured: final-state
+[BrowserStack] Test S7 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S7
+[BrowserStack] Browser closed for S7
+
+[[ATTACHMENT|test-results/08-product-comparison-Test-ecc7c-comparaison---Cas-passant-✅/attachments/final-state-a562773f2693cbb99b5bee509303ccff8cd6e570.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="09-product-reviews.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="2" failures="0" skipped="0" time="75.774" errors="0">
+<testcase name="Tests des Avis Produits › Consultation des avis existants - Cas passant ✅" classname="09-product-reviews.spec.js" time="35.12">
+<properties>
+<property name="test_key" value="DEMO-257">
+</property>
+<property name="tags" value="@reviews @smoke">
+</property>
+<property name="test_description" value="Affichage des avis sur une page produit">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S4 for test: Consultation des avis existants - Cas passant ✅
+📸 Evidence captured: product-page
+📸 Evidence captured: reviews-section
+📸 Evidence captured: final-state
+[BrowserStack] Test S4 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S4
+[BrowserStack] Browser closed for S4
+
+[[ATTACHMENT|test-results/09-product-reviews-Tests-d-32201-s-existants---Cas-passant-✅/attachments/product-page-8182913ced4b3eea8b3e6dcb35c29715e15fa840.png]]
+
+[[ATTACHMENT|test-results/09-product-reviews-Tests-d-32201-s-existants---Cas-passant-✅/attachments/reviews-section-ac265486e68ad74ab9209b368b2e36947c2a5169.png]]
+
+[[ATTACHMENT|test-results/09-product-reviews-Tests-d-32201-s-existants---Cas-passant-✅/attachments/final-state-62bf7115387bff13259c9175439f777f5178fce8.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests des Avis Produits › Soumission d&apos;un nouvel avis - Cas passant ✅" classname="09-product-reviews.spec.js" time="40.654">
+<properties>
+<property name="test_key" value="DEMO-258">
+</property>
+<property name="tags" value="@reviews">
+</property>
+<property name="test_description" value="Ajout d&apos;un avis sur un produit">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S5 for test: Soumission d'un nouvel avis - Cas passant ✅
+📸 Evidence captured: account-created
+📸 Evidence captured: review-form
+📸 Evidence captured: review-filled
+📸 Evidence captured: review-submitted
+📸 Evidence captured: final-state
+[BrowserStack] Test S5 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S5
+[BrowserStack] Browser closed for S5
+
+[[ATTACHMENT|test-results/09-product-reviews-Tests-d-5e389-nouvel-avis---Cas-passant-✅/attachments/account-created-63e6a3801e4b5be1d9cd95f75ac6aebb0dc989be.png]]
+
+[[ATTACHMENT|test-results/09-product-reviews-Tests-d-5e389-nouvel-avis---Cas-passant-✅/attachments/review-form-5b46f622c5196efec9dc0fd63ff2d16ea65a9b69.png]]
+
+[[ATTACHMENT|test-results/09-product-reviews-Tests-d-5e389-nouvel-avis---Cas-passant-✅/attachments/review-filled-e73c01b1873ea538a764a0c0721e12dc2bf4a9cc.png]]
+
+[[ATTACHMENT|test-results/09-product-reviews-Tests-d-5e389-nouvel-avis---Cas-passant-✅/attachments/review-submitted-dec6cac23947d16e47ff452f17b38d88be211a7a.png]]
+
+[[ATTACHMENT|test-results/09-product-reviews-Tests-d-5e389-nouvel-avis---Cas-passant-✅/attachments/final-state-d5895ba9eba0801f5c1f66ff9be42970b50e7479.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="10-newsletter-subscription.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="2" failures="0" skipped="0" time="56.845" errors="0">
+<testcase name="Tests d&apos;Inscription Newsletter › Inscription newsletter avec email valide - Cas passant ✅" classname="10-newsletter-subscription.spec.js" time="27.683">
+<properties>
+<property name="test_key" value="DEMO-259">
+</property>
+<property name="tags" value="@newsletter @smoke">
+</property>
+<property name="test_description" value="Inscription à la newsletter avec email valide">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S6 for test: Inscription newsletter avec email valide - Cas passant ✅
+📸 Evidence captured: homepage
+📸 Evidence captured: email-entered
+📸 Evidence captured: subscription-result
+📸 Evidence captured: final-state
+[BrowserStack] Test S6 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S6
+[BrowserStack] Browser closed for S6
+
+[[ATTACHMENT|test-results/10-newsletter-subscription-32f00-mail-valide---Cas-passant-✅/attachments/homepage-9870f8dc332ea0911888ee29cfffd64313312b56.png]]
+
+[[ATTACHMENT|test-results/10-newsletter-subscription-32f00-mail-valide---Cas-passant-✅/attachments/email-entered-251adf9d34450db176ffb61da38d8af719aaa660.png]]
+
+[[ATTACHMENT|test-results/10-newsletter-subscription-32f00-mail-valide---Cas-passant-✅/attachments/subscription-result-926413965403c9e244a5fbde7dffd3df291b3672.png]]
+
+[[ATTACHMENT|test-results/10-newsletter-subscription-32f00-mail-valide---Cas-passant-✅/attachments/final-state-2c236f3cc1a8cce7a0d435343b976e6cce8234c7.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests d&apos;Inscription Newsletter › Inscription newsletter avec email invalide - Cas non passant ❌" classname="10-newsletter-subscription.spec.js" time="29.162">
+<properties>
+<property name="test_key" value="DEMO-260">
+</property>
+<property name="tags" value="@newsletter @negative">
+</property>
+<property name="test_description" value="Tentative d&apos;inscription avec email invalide">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S7 for test: Inscription newsletter avec email invalide - Cas non passant ❌
+📸 Evidence captured: homepage
+📸 Evidence captured: invalid-email-result
+📸 Evidence captured: final-state
+[BrowserStack] Test S7 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S7
+[BrowserStack] Browser closed for S7
+
+[[ATTACHMENT|test-results/10-newsletter-subscription-ff052-nvalide---Cas-non-passant-❌/attachments/homepage-90de2df1aca9215104b79f191f2540b5811222a2.png]]
+
+[[ATTACHMENT|test-results/10-newsletter-subscription-ff052-nvalide---Cas-non-passant-❌/attachments/invalid-email-result-eb819bebb9cbe2a500210f75873aec822e4c6da7.png]]
+
+[[ATTACHMENT|test-results/10-newsletter-subscription-ff052-nvalide---Cas-non-passant-❌/attachments/final-state-ee63c614aa7be5728cb665221b8af784b360c424.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="11-contact-form.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="2" failures="0" skipped="0" time="42.383" errors="0">
+<testcase name="Tests du Formulaire de Contact › Envoi message de contact valide - Cas passant ✅" classname="11-contact-form.spec.js" time="20.565">
+<properties>
+<property name="test_key" value="DEMO-261">
+</property>
+<property name="tags" value="@contact @smoke">
+</property>
+<property name="test_description" value="Envoi d&apos;un message via le formulaire de contact">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S7 for test: Envoi message de contact valide - Cas passant ✅
+📸 Evidence captured: contact-page
+📸 Evidence captured: form-filled
+📸 Evidence captured: form-submitted
+📸 Evidence captured: final-state
+[BrowserStack] Test S7 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S7
+[BrowserStack] Browser closed for S7
+
+[[ATTACHMENT|test-results/11-contact-form-Tests-du-F-b841f-tact-valide---Cas-passant-✅/attachments/contact-page-8554ecca9df38937cf9ef7f80a3a941ab8cc1602.png]]
+
+[[ATTACHMENT|test-results/11-contact-form-Tests-du-F-b841f-tact-valide---Cas-passant-✅/attachments/form-filled-19f10591e9b62f123a07ea38a7d38dd4e88bdbb3.png]]
+
+[[ATTACHMENT|test-results/11-contact-form-Tests-du-F-b841f-tact-valide---Cas-passant-✅/attachments/form-submitted-1d8ef8e3b9718e9514c42c391e7173c3ac86722c.png]]
+
+[[ATTACHMENT|test-results/11-contact-form-Tests-du-F-b841f-tact-valide---Cas-passant-✅/attachments/final-state-97aaa74df93495f1998760e08833f32ceba37701.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests du Formulaire de Contact › Validation champs obligatoires - Cas non passant ❌" classname="11-contact-form.spec.js" time="21.818">
+<properties>
+<property name="test_key" value="DEMO-262">
+</property>
+<property name="tags" value="@contact @validation">
+</property>
+<property name="test_description" value="Validation des champs requis du formulaire">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S8 for test: Validation champs obligatoires - Cas non passant ❌
+📸 Evidence captured: contact-page-empty
+📸 Evidence captured: validation-errors
+📸 Evidence captured: final-state
+[BrowserStack] Test S8 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S8
+[BrowserStack] Browser closed for S8
+
+[[ATTACHMENT|test-results/11-contact-form-Tests-du-F-0e075-atoires---Cas-non-passant-❌/attachments/contact-page-empty-fcb81377929f0fa7c717c3bf423b64c9ed6d5bdb.png]]
+
+[[ATTACHMENT|test-results/11-contact-form-Tests-du-F-0e075-atoires---Cas-non-passant-❌/attachments/validation-errors-00054fc8cfbd5931fdc11fe0c3754fe0cbdc3176.png]]
+
+[[ATTACHMENT|test-results/11-contact-form-Tests-du-F-0e075-atoires---Cas-non-passant-❌/attachments/final-state-5bde237f36a1fb4efb8efad884a46bf97b1c0729.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="12-account-management.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="3" failures="0" skipped="0" time="82.791" errors="0">
+<testcase name="Tests de Gestion de Compte › Modification informations personnelles - Cas passant ✅" classname="12-account-management.spec.js" time="24.344">
+<properties>
+<property name="test_key" value="DEMO-263">
+</property>
+<property name="tags" value="@account @profile">
+</property>
+<property name="test_description" value="Mise à jour du profil utilisateur">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S8 for test: Modification informations personnelles - Cas passant ✅
+📸 Evidence captured: account-created
+📸 Evidence captured: account-info-page
+📸 Evidence captured: profile-updated
+📸 Evidence captured: final-state
+[BrowserStack] Test S8 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S8
+[BrowserStack] Browser closed for S8
+
+[[ATTACHMENT|test-results/12-account-management-Test-06e2b-ersonnelles---Cas-passant-✅/attachments/account-created-569ddbcbbd3ec2088ec9d64ade50ddba38a17941.png]]
+
+[[ATTACHMENT|test-results/12-account-management-Test-06e2b-ersonnelles---Cas-passant-✅/attachments/account-info-page-7c7f7b038d6098526825b5984dcdc914a4035fa7.png]]
+
+[[ATTACHMENT|test-results/12-account-management-Test-06e2b-ersonnelles---Cas-passant-✅/attachments/profile-updated-36940fdbd4dad41c17874f57ed8c576c0cb5f750.png]]
+
+[[ATTACHMENT|test-results/12-account-management-Test-06e2b-ersonnelles---Cas-passant-✅/attachments/final-state-d05fd913dbe36914127795b68545e2254bae2b23.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Gestion de Compte › Gestion des adresses - Cas passant ✅" classname="12-account-management.spec.js" time="32.948">
+<properties>
+<property name="test_key" value="DEMO-264">
+</property>
+<property name="tags" value="@account @addresses">
+</property>
+<property name="test_description" value="Ajout d&apos;une nouvelle adresse">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S9 for test: Gestion des adresses - Cas passant ✅
+📸 Evidence captured: account-created
+📸 Evidence captured: addresses-page
+📸 Evidence captured: address-form-filled
+📸 Evidence captured: address-saved
+📸 Evidence captured: final-state
+[BrowserStack] Test S9 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S9
+[BrowserStack] Browser closed for S9
+
+[[ATTACHMENT|test-results/12-account-management-Test-43b74-es-adresses---Cas-passant-✅/attachments/account-created-ae986b7b235cd3fdeced2dec88980a2bcf8af11b.png]]
+
+[[ATTACHMENT|test-results/12-account-management-Test-43b74-es-adresses---Cas-passant-✅/attachments/addresses-page-cb5834ebc4df4bd84ec38d99272b70cb6222cbef.png]]
+
+[[ATTACHMENT|test-results/12-account-management-Test-43b74-es-adresses---Cas-passant-✅/attachments/address-form-filled-47f6b7a6186d243452d1f24dd392fa9737f200e2.png]]
+
+[[ATTACHMENT|test-results/12-account-management-Test-43b74-es-adresses---Cas-passant-✅/attachments/address-saved-01b99e688c4fe747bf3909a4c6ddc4c45a28d560.png]]
+
+[[ATTACHMENT|test-results/12-account-management-Test-43b74-es-adresses---Cas-passant-✅/attachments/final-state-e6074ff9d23da17260a1ad1ac21250814633528d.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Gestion de Compte › Changement de mot de passe - Cas passant ✅" classname="12-account-management.spec.js" time="25.499">
+<properties>
+<property name="test_key" value="DEMO-265">
+</property>
+<property name="tags" value="@account @security">
+</property>
+<property name="test_description" value="Modification du mot de passe utilisateur">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S10 for test: Changement de mot de passe - Cas passant ✅
+📸 Evidence captured: account-created
+📸 Evidence captured: change-password-page
+📸 Evidence captured: password-form-filled
+📸 Evidence captured: password-changed
+📸 Evidence captured: final-state
+[BrowserStack] Test S10 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S10
+[BrowserStack] Browser closed for S10
+
+[[ATTACHMENT|test-results/12-account-management-Test-88b78-ot-de-passe---Cas-passant-✅/attachments/account-created-3bba63332d4c851dec9398648676c318cb9daf90.png]]
+
+[[ATTACHMENT|test-results/12-account-management-Test-88b78-ot-de-passe---Cas-passant-✅/attachments/change-password-page-186d2af87aa0dd6e17943396cde8f472dc25e06d.png]]
+
+[[ATTACHMENT|test-results/12-account-management-Test-88b78-ot-de-passe---Cas-passant-✅/attachments/password-form-filled-2b8d50b552944c1def76c01af5500daa862cc86f.png]]
+
+[[ATTACHMENT|test-results/12-account-management-Test-88b78-ot-de-passe---Cas-passant-✅/attachments/password-changed-6c43b64753f03c22788d2af28f69f086a570cf71.png]]
+
+[[ATTACHMENT|test-results/12-account-management-Test-88b78-ot-de-passe---Cas-passant-✅/attachments/final-state-5b6dcb7b804a9505e64d51dd1766e39f4a737f86.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="13-order-history.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="2" failures="0" skipped="0" time="55.181" errors="0">
+<testcase name="Tests d&apos;Historique des Commandes › Consultation historique des commandes - Cas passant ✅" classname="13-order-history.spec.js" time="24.446">
+<properties>
+<property name="test_key" value="DEMO-266">
+</property>
+<property name="tags" value="@orders @history">
+</property>
+<property name="test_description" value="Affichage de la page historique des commandes">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S8 for test: Consultation historique des commandes - Cas passant ✅
+📸 Evidence captured: account-created
+📸 Evidence captured: orders-page
+📸 Evidence captured: final-state
+[BrowserStack] Test S8 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S8
+[BrowserStack] Browser closed for S8
+
+[[ATTACHMENT|test-results/13-order-history-Tests-d-H-b14d1-s-commandes---Cas-passant-✅/attachments/account-created-353237a5f89c845bc8ac69001c003102709efe09.png]]
+
+[[ATTACHMENT|test-results/13-order-history-Tests-d-H-b14d1-s-commandes---Cas-passant-✅/attachments/orders-page-7227df1765a5d1f1012aa0c51f4f2b92337fb4e8.png]]
+
+[[ATTACHMENT|test-results/13-order-history-Tests-d-H-b14d1-s-commandes---Cas-passant-✅/attachments/final-state-6269e8a04ac2b2684b903a84a610c51f958a0b90.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests d&apos;Historique des Commandes › Détails d&apos;une commande - Cas passant ✅" classname="13-order-history.spec.js" time="30.735">
+<properties>
+<property name="test_key" value="DEMO-267">
+</property>
+<property name="tags" value="@orders @details">
+</property>
+<property name="test_description" value="Consultation du détail d&apos;une commande existante">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S9 for test: Détails d'une commande - Cas passant ✅
+📸 Evidence captured: orders-list
+📸 Evidence captured: final-state
+[BrowserStack] Test S9 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S9
+[BrowserStack] Browser closed for S9
+
+[[ATTACHMENT|test-results/13-order-history-Tests-d-H-d6658-ne-commande---Cas-passant-✅/attachments/orders-list-e529f99e41dd29ff62bbdca2adab47216ff8c80a.png]]
+
+[[ATTACHMENT|test-results/13-order-history-Tests-d-H-d6658-ne-commande---Cas-passant-✅/attachments/final-state-5fca48df66fad1904676f8ecdfea15d83a1c7d45.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="14-product-filtering.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="3" failures="0" skipped="0" time="65.561" errors="0">
+<testcase name="Tests de Filtrage de Produits › Filtrage par prix - Cas passant ✅" classname="14-product-filtering.spec.js" time="20.597">
+<properties>
+<property name="test_key" value="DEMO-268">
+</property>
+<property name="tags" value="@filter @price">
+</property>
+<property name="test_description" value="Filtrage des produits par tranche de prix">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S9 for test: Filtrage par prix - Cas passant ✅
+📸 Evidence captured: books-page
+📸 Evidence captured: filtered-by-price
+📸 Evidence captured: final-state
+[BrowserStack] Test S9 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S9
+[BrowserStack] Browser closed for S9
+
+[[ATTACHMENT|test-results/14-product-filtering-Tests-847da-ge-par-prix---Cas-passant-✅/attachments/books-page-1fccaf8398502b55c5128e3a5d1b7b16a9fe15ed.png]]
+
+[[ATTACHMENT|test-results/14-product-filtering-Tests-847da-ge-par-prix---Cas-passant-✅/attachments/filtered-by-price-296a707a677cc8388f37452491b14074b59b5dca.png]]
+
+[[ATTACHMENT|test-results/14-product-filtering-Tests-847da-ge-par-prix---Cas-passant-✅/attachments/final-state-d8cfb4ebf3e982265f2a3616c1bc2b212f67d4dd.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Filtrage de Produits › Tri par nom - Cas passant ✅" classname="14-product-filtering.spec.js" time="22.83">
+<properties>
+<property name="test_key" value="DEMO-269">
+</property>
+<property name="tags" value="@filter @sort">
+</property>
+<property name="test_description" value="Tri des produits par nom A-Z">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S10 for test: Tri par nom - Cas passant ✅
+📸 Evidence captured: books-before-sort
+📸 Evidence captured: sorted-by-name
+📸 Evidence captured: final-state
+[BrowserStack] Test S10 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S10
+[BrowserStack] Browser closed for S10
+
+[[ATTACHMENT|test-results/14-product-filtering-Tests-a866b-Tri-par-nom---Cas-passant-✅/attachments/books-before-sort-06c0d367415c13fb94f0ff8038c1837b43ddb1f6.png]]
+
+[[ATTACHMENT|test-results/14-product-filtering-Tests-a866b-Tri-par-nom---Cas-passant-✅/attachments/sorted-by-name-74ae61306196e62aa4bba534f2081db62a1a50a6.png]]
+
+[[ATTACHMENT|test-results/14-product-filtering-Tests-a866b-Tri-par-nom---Cas-passant-✅/attachments/final-state-19b6e681177695456c7cdadf220137d0dab45432.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Filtrage de Produits › Changement de vue (grille/liste) - Cas passant ✅" classname="14-product-filtering.spec.js" time="22.134">
+<properties>
+<property name="test_key" value="DEMO-270">
+</property>
+<property name="tags" value="@filter @view">
+</property>
+<property name="test_description" value="Basculement entre vue grille et liste">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S11 for test: Changement de vue (grille/liste) - Cas passant ✅
+📸 Evidence captured: default-view
+📸 Evidence captured: list-view
+📸 Evidence captured: final-state
+[BrowserStack] Test S11 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S11
+[BrowserStack] Browser closed for S11
+
+[[ATTACHMENT|test-results/14-product-filtering-Tests-0096a-rille-liste---Cas-passant-✅/attachments/default-view-3c307cda33a76ef525958ff2ea10fbd2c9714d57.png]]
+
+[[ATTACHMENT|test-results/14-product-filtering-Tests-0096a-rille-liste---Cas-passant-✅/attachments/list-view-65ae3b8c1bc79b261ade1fb1f799706c48704501.png]]
+
+[[ATTACHMENT|test-results/14-product-filtering-Tests-0096a-rille-liste---Cas-passant-✅/attachments/final-state-7069b0ae1043ca5405d5fa8e6fc35fbc7b13f18c.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="15-configurable-products.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="2" failures="0" skipped="0" time="48.09" errors="0">
+<testcase name="Tests de Produits Configurables › Configuration d&apos;un ordinateur personnalisé - Cas passant ✅" classname="15-configurable-products.spec.js" time="27.876">
+<properties>
+<property name="test_key" value="DEMO-271">
+</property>
+<property name="tags" value="@configurable @computers">
+</property>
+<property name="test_description" value="Configuration d&apos;un PC avec options personnalisées">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S6 for test: Configuration d'un ordinateur personnalisé - Cas passant ✅
+📸 Evidence captured: computer-config-page
+📸 Evidence captured: computer-configured
+📸 Evidence captured: added-to-cart
+📸 Evidence captured: final-state
+[BrowserStack] Test S6 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S6
+[BrowserStack] Browser closed for S6
+
+[[ATTACHMENT|test-results/15-configurable-products-T-5d0db-ersonnalisé---Cas-passant-✅/attachments/computer-config-page-fcdfcef643aa4f1567b4c7ae4e645941fbc349de.png]]
+
+[[ATTACHMENT|test-results/15-configurable-products-T-5d0db-ersonnalisé---Cas-passant-✅/attachments/computer-configured-e811f5db552c8ca39297cdaacc9b5f2dcd13e831.png]]
+
+[[ATTACHMENT|test-results/15-configurable-products-T-5d0db-ersonnalisé---Cas-passant-✅/attachments/added-to-cart-f4f967627d49bf2365f08602f6b119202dba50a3.png]]
+
+[[ATTACHMENT|test-results/15-configurable-products-T-5d0db-ersonnalisé---Cas-passant-✅/attachments/final-state-c5c3f67eac83c840c6740743cb42358a9f326de8.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Produits Configurables › Produit avec options multiples - Cas passant ✅" classname="15-configurable-products.spec.js" time="20.214">
+<properties>
+<property name="test_key" value="DEMO-272">
+</property>
+<property name="tags" value="@configurable">
+</property>
+<property name="test_description" value="Sélection de plusieurs options sur un produit">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S7 for test: Produit avec options multiples - Cas passant ✅
+📸 Evidence captured: multiple-options-selected
+📸 Evidence captured: final-state
+[BrowserStack] Test S7 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S7
+[BrowserStack] Browser closed for S7
+
+[[ATTACHMENT|test-results/15-configurable-products-T-cb8d1-s-multiples---Cas-passant-✅/attachments/multiple-options-selected-05a8e3020ec30c8c144a5c4ecb83f1cdbc5ac637.png]]
+
+[[ATTACHMENT|test-results/15-configurable-products-T-cb8d1-s-multiples---Cas-passant-✅/attachments/final-state-614d42d1abd7c47927837776d821101e67330388.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="16-product-tags.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="2" failures="0" skipped="0" time="54.971" errors="0">
+<testcase name="Tests des Tags Produits › Navigation via tags populaires - Cas passant ✅" classname="16-product-tags.spec.js" time="23.521">
+<properties>
+<property name="test_key" value="DEMO-273">
+</property>
+<property name="tags" value="@tags @navigation">
+</property>
+<property name="test_description" value="Utilisation des tags pour filtrer les produits">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S8 for test: Navigation via tags populaires - Cas passant ✅
+📸 Evidence captured: homepage
+📸 Evidence captured: products-page
+📸 Evidence captured: final-state
+[BrowserStack] Test S8 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S8
+[BrowserStack] Browser closed for S8
+
+[[ATTACHMENT|test-results/16-product-tags-Tests-des--18ad1--populaires---Cas-passant-✅/attachments/homepage-1dce7aa613755cf36b78ad55b4a05eedd653139b.png]]
+
+[[ATTACHMENT|test-results/16-product-tags-Tests-des--18ad1--populaires---Cas-passant-✅/attachments/products-page-1c33b0627c9e9fc7380cdfd79ef067e3a72d153e.png]]
+
+[[ATTACHMENT|test-results/16-product-tags-Tests-des--18ad1--populaires---Cas-passant-✅/attachments/final-state-a03cba7ff1e65d315318403cc561050a82f8e988.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests des Tags Produits › Tags sur page produit - Cas passant ✅" classname="16-product-tags.spec.js" time="31.45">
+<properties>
+<property name="test_key" value="DEMO-274">
+</property>
+<property name="tags" value="@tags">
+</property>
+<property name="test_description" value="Affichage et clic sur tags depuis une page produit">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S9 for test: Tags sur page produit - Cas passant ✅
+📸 Evidence captured: product-page
+📸 Evidence captured: final-state
+[BrowserStack] Test S9 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S9
+[BrowserStack] Browser closed for S9
+
+[[ATTACHMENT|test-results/16-product-tags-Tests-des--4ffdb-age-produit---Cas-passant-✅/attachments/product-page-6a4afcd7bc2416fc78ef107307e3603d58badf2c.png]]
+
+[[ATTACHMENT|test-results/16-product-tags-Tests-des--4ffdb-age-produit---Cas-passant-✅/attachments/final-state-d7ce6d052be6dd1a498898a7f31412b3cfc1d777.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="17-recently-viewed.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="1" failures="0" skipped="0" time="37.603" errors="0">
+<testcase name="Tests des Produits Récemment Consultés › Affichage des produits récemment vus - Cas passant ✅" classname="17-recently-viewed.spec.js" time="37.603">
+<properties>
+<property name="test_key" value="DEMO-275">
+</property>
+<property name="tags" value="@recently-viewed @smoke">
+</property>
+<property name="test_description" value="Vérification que les produits consultés apparaissent dans la section récemment vus">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S10 for test: Affichage des produits récemment vus - Cas passant ✅
+📸 Evidence captured: first-product-viewed
+📸 Evidence captured: second-product-viewed
+📸 Evidence captured: recently-viewed-page
+📸 Evidence captured: final-state
+[BrowserStack] Test S10 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S10
+[BrowserStack] Browser closed for S10
+
+[[ATTACHMENT|test-results/17-recently-viewed-Tests-d-3f907-cemment-vus---Cas-passant-✅/attachments/first-product-viewed-91da19941f10992acd7f3f8f7634081d4ad11768.png]]
+
+[[ATTACHMENT|test-results/17-recently-viewed-Tests-d-3f907-cemment-vus---Cas-passant-✅/attachments/second-product-viewed-d27d757cfa3523667c6aba4a807436809cefbc1b.png]]
+
+[[ATTACHMENT|test-results/17-recently-viewed-Tests-d-3f907-cemment-vus---Cas-passant-✅/attachments/recently-viewed-page-2a53ad43bff68dea235d273a0171c98cb8d6c58d.png]]
+
+[[ATTACHMENT|test-results/17-recently-viewed-Tests-d-3f907-cemment-vus---Cas-passant-✅/attachments/final-state-ab2fd64a3d7424cd164f9a09fae67a060e0e0438.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="18-email-friend.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="1" failures="0" skipped="0" time="33.734" errors="0">
+<testcase name="Tests d&apos;Envoi Email à un Ami › Partage produit par email - Cas passant ✅" classname="18-email-friend.spec.js" time="33.734">
+<properties>
+<property name="test_key" value="DEMO-276">
+</property>
+<property name="tags" value="@email @share">
+</property>
+<property name="test_description" value="Envoi d&apos;un email pour recommander un produit">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S11 for test: Partage produit par email - Cas passant ✅
+📸 Evidence captured: product-page
+📸 Evidence captured: email-friend-form
+📸 Evidence captured: form-filled
+📸 Evidence captured: email-sent
+📸 Evidence captured: success-confirmation
+📸 Evidence captured: final-state
+[BrowserStack] Test S11 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S11
+[BrowserStack] Browser closed for S11
+
+[[ATTACHMENT|test-results/18-email-friend-Tests-d-En-0c1b6-t-par-email---Cas-passant-✅/attachments/product-page-39edd84cfd4281f30781f23754462ec628acd8de.png]]
+
+[[ATTACHMENT|test-results/18-email-friend-Tests-d-En-0c1b6-t-par-email---Cas-passant-✅/attachments/email-friend-form-03fa8bc22efc3144fefbbcac91f5edcbbcb84969.png]]
+
+[[ATTACHMENT|test-results/18-email-friend-Tests-d-En-0c1b6-t-par-email---Cas-passant-✅/attachments/form-filled-5d3bf69b0eb25f2eb53ec64f686424bb2882ca0d.png]]
+
+[[ATTACHMENT|test-results/18-email-friend-Tests-d-En-0c1b6-t-par-email---Cas-passant-✅/attachments/email-sent-efe5c9a82b1377a71586408726c009b860be0773.png]]
+
+[[ATTACHMENT|test-results/18-email-friend-Tests-d-En-0c1b6-t-par-email---Cas-passant-✅/attachments/success-confirmation-94ef5289fe2c5f7de9db4ccf1ce79edf3dcc36ad.png]]
+
+[[ATTACHMENT|test-results/18-email-friend-Tests-d-En-0c1b6-t-par-email---Cas-passant-✅/attachments/final-state-6e933312ea5535a8941c431eb2e405d48541a185.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="19-community-poll.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="1" failures="0" skipped="0" time="22.279" errors="0">
+<testcase name="Tests du Sondage Communautaire › Participation au sondage - Cas passant ✅" classname="19-community-poll.spec.js" time="22.279">
+<properties>
+<property name="test_key" value="DEMO-277">
+</property>
+<property name="tags" value="@poll @community">
+</property>
+<property name="test_description" value="Vote dans le sondage communautaire">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S8 for test: Participation au sondage - Cas passant ✅
+📸 Evidence captured: homepage
+📸 Evidence captured: poll-section
+📸 Evidence captured: poll-voted
+📸 Evidence captured: final-state
+[BrowserStack] Test S8 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S8
+[BrowserStack] Browser closed for S8
+
+[[ATTACHMENT|test-results/19-community-poll-Tests-du-46e45--au-sondage---Cas-passant-✅/attachments/homepage-52335889c703396c0a94ffb223ae8a0bb4e57f3e.png]]
+
+[[ATTACHMENT|test-results/19-community-poll-Tests-du-46e45--au-sondage---Cas-passant-✅/attachments/poll-section-328dc4bfa5ff50338a0d47a91b967651b8959b7e.png]]
+
+[[ATTACHMENT|test-results/19-community-poll-Tests-du-46e45--au-sondage---Cas-passant-✅/attachments/poll-voted-e65b09fcf432d3a7bb2fde8721b12b7c8ffb8929.png]]
+
+[[ATTACHMENT|test-results/19-community-poll-Tests-du-46e45--au-sondage---Cas-passant-✅/attachments/final-state-4ccd4957b54d850b41a99986567d39a103294d31.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="20-manufacturer-filter.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="1" failures="0" skipped="0" time="26.686" errors="0">
+<testcase name="Tests du Filtre par Fabricant › Filtrage par fabricant - Cas passant ✅" classname="20-manufacturer-filter.spec.js" time="26.686">
+<properties>
+<property name="test_key" value="DEMO-278">
+</property>
+<property name="tags" value="@filter @manufacturer">
+</property>
+<property name="test_description" value="Filtrage des produits par fabricant">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S12 for test: Filtrage par fabricant - Cas passant ✅
+📸 Evidence captured: homepage
+📸 Evidence captured: products-instead
+📸 Evidence captured: final-state
+[BrowserStack] Test S12 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S12
+[BrowserStack] Browser closed for S12
+
+[[ATTACHMENT|test-results/20-manufacturer-filter-Tes-dc103-r-fabricant---Cas-passant-✅/attachments/homepage-15391520f30a21a3b9002ccfac6a138262e9f330.png]]
+
+[[ATTACHMENT|test-results/20-manufacturer-filter-Tes-dc103-r-fabricant---Cas-passant-✅/attachments/products-instead-b2e521ad649de90f94c80dbc1b63d810ba3201d5.png]]
+
+[[ATTACHMENT|test-results/20-manufacturer-filter-Tes-dc103-r-fabricant---Cas-passant-✅/attachments/final-state-94296d4fba3ae2e2a6a19d5eac8e220fc9c30fb4.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="21-new-products.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="1" failures="0" skipped="0" time="24.085" errors="0">
+<testcase name="Tests des Nouveaux Produits › Affichage des nouveaux produits - Cas passant ✅" classname="21-new-products.spec.js" time="24.085">
+<properties>
+<property name="test_key" value="DEMO-279">
+</property>
+<property name="tags" value="@new-products">
+</property>
+<property name="test_description" value="Visualisation de la page des nouveaux produits">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S10 for test: Affichage des nouveaux produits - Cas passant ✅
+📸 Evidence captured: new-products-page
+📸 Evidence captured: final-state
+[BrowserStack] Test S10 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S10
+[BrowserStack] Browser closed for S10
+
+[[ATTACHMENT|test-results/21-new-products-Tests-des--fefba-ux-produits---Cas-passant-✅/attachments/new-products-page-5d40ca5359ef52dd9177606809e2be349ffc1016.png]]
+
+[[ATTACHMENT|test-results/21-new-products-Tests-des--fefba-ux-produits---Cas-passant-✅/attachments/final-state-575650d1d1728db80deb60d1a8fdee6e9b7f20d8.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="22-footer-links.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="1" failures="0" skipped="0" time="23.12" errors="0">
+<testcase name="Tests des Liens du Footer › Vérification des liens footer - Cas passant ✅" classname="22-footer-links.spec.js" time="23.12">
+<properties>
+<property name="test_key" value="DEMO-280">
+</property>
+<property name="tags" value="@footer @navigation">
+</property>
+<property name="test_description" value="Vérification des liens dans le pied de page">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S11 for test: Vérification des liens footer - Cas passant ✅
+📸 Evidence captured: homepage
+📸 Evidence captured: final-state
+[BrowserStack] Test S11 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S11
+[BrowserStack] Browser closed for S11
+
+[[ATTACHMENT|test-results/22-footer-links-Tests-des--cfbeb-iens-footer---Cas-passant-✅/attachments/homepage-911faaf572713f6638c11ddbbf06ede88492e2cd.png]]
+
+[[ATTACHMENT|test-results/22-footer-links-Tests-des--cfbeb-iens-footer---Cas-passant-✅/attachments/final-state-87416dbbe4b1b91ac2a06cfbba8855d518f24e47.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="23-news-blog.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="2" failures="0" skipped="0" time="45.219" errors="0">
+<testcase name="Tests du Blog/Actualités › Consultation des actualités - Cas passant ✅" classname="23-news-blog.spec.js" time="25.729">
+<properties>
+<property name="test_key" value="DEMO-281">
+</property>
+<property name="tags" value="@news @blog">
+</property>
+<property name="test_description" value="Affichage de la page des actualités">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S9 for test: Consultation des actualités - Cas passant ✅
+📸 Evidence captured: news-page
+📸 Evidence captured: final-state
+[BrowserStack] Test S9 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S9
+[BrowserStack] Browser closed for S9
+
+[[ATTACHMENT|test-results/23-news-blog-Tests-du-Blog-41f98--actualités---Cas-passant-✅/attachments/news-page-66f3b241d3abacd715dbdbe196e300aafc959f8e.png]]
+
+[[ATTACHMENT|test-results/23-news-blog-Tests-du-Blog-41f98--actualités---Cas-passant-✅/attachments/final-state-5cb3f59660cf3d6de4173b2c73bde9215c3c0bd0.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests du Blog/Actualités › Lecture d&apos;un article - Cas passant ✅" classname="23-news-blog.spec.js" time="19.49">
+<properties>
+<property name="test_key" value="DEMO-282">
+</property>
+<property name="tags" value="@news @article">
+</property>
+<property name="test_description" value="Lecture complète d&apos;un article d&apos;actualité">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S10 for test: Lecture d'un article - Cas passant ✅
+📸 Evidence captured: final-state
+[BrowserStack] Test S10 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S10
+[BrowserStack] Browser closed for S10
+
+[[ATTACHMENT|test-results/23-news-blog-Tests-du-Blog-f2204--un-article---Cas-passant-✅/attachments/final-state-61d38615b462e1b054a342b6157c4942291d2bad.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="24-guest-checkout.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="1" failures="0" skipped="0" time="34.895" errors="0">
+<testcase name="Tests de Checkout Invité › Commande en tant qu&apos;invité - Cas passant ✅" classname="24-guest-checkout.spec.js" time="34.895">
+<properties>
+<property name="test_key" value="DEMO-283">
+</property>
+<property name="tags" value="@checkout @guest @smoke">
+</property>
+<property name="test_description" value="Processus complet de commande sans création de compte">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S12 for test: Commande en tant qu'invité - Cas passant ✅
+📸 Evidence captured: cart-with-product
+📸 Evidence captured: checkout-options
+📸 Evidence captured: billing-address-form
+📸 Evidence captured: billing-filled
+📸 Evidence captured: after-billing
+📸 Evidence captured: final-state
+[BrowserStack] Test S12 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S12
+[BrowserStack] Browser closed for S12
+
+[[ATTACHMENT|test-results/24-guest-checkout-Tests-de-afe24-t-qu-invité---Cas-passant-✅/attachments/cart-with-product-9d38d50689fe82f953350040be92d896971d255d.png]]
+
+[[ATTACHMENT|test-results/24-guest-checkout-Tests-de-afe24-t-qu-invité---Cas-passant-✅/attachments/checkout-options-f219a558ca29ae66eeacc76ac00c269b308dcaf9.png]]
+
+[[ATTACHMENT|test-results/24-guest-checkout-Tests-de-afe24-t-qu-invité---Cas-passant-✅/attachments/billing-address-form-bee5b1e4cc9492137ae168788d5595528b2cf077.png]]
+
+[[ATTACHMENT|test-results/24-guest-checkout-Tests-de-afe24-t-qu-invité---Cas-passant-✅/attachments/billing-filled-afe6551ab6693bb805e31f4155d1106a316c0f66.png]]
+
+[[ATTACHMENT|test-results/24-guest-checkout-Tests-de-afe24-t-qu-invité---Cas-passant-✅/attachments/after-billing-34c0eefadcfb2fcfea458e910f9cd497b36a5bd4.png]]
+
+[[ATTACHMENT|test-results/24-guest-checkout-Tests-de-afe24-t-qu-invité---Cas-passant-✅/attachments/final-state-fe49b84e4fbae972673117080a2c3a269fcd246d.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="25-cart-updates.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="3" failures="0" skipped="0" time="90.037" errors="0">
+<testcase name="Tests de Mise à Jour du Panier › Modification de la quantité - Cas passant ✅" classname="25-cart-updates.spec.js" time="30.8">
+<properties>
+<property name="test_key" value="DEMO-284">
+</property>
+<property name="tags" value="@cart @quantity">
+</property>
+<property name="test_description" value="Modification de la quantité d&apos;un article dans le panier">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S12 for test: Modification de la quantité - Cas passant ✅
+📸 Evidence captured: cart-initial
+📸 Evidence captured: cart-updated
+📸 Evidence captured: final-state
+[BrowserStack] Test S12 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S12
+[BrowserStack] Browser closed for S12
+
+[[ATTACHMENT|test-results/25-cart-updates-Tests-de-M-cf44b-la-quantité---Cas-passant-✅/attachments/cart-initial-b303f43b20c11ad4272f26c7740dbfa067793cd0.png]]
+
+[[ATTACHMENT|test-results/25-cart-updates-Tests-de-M-cf44b-la-quantité---Cas-passant-✅/attachments/cart-updated-b1014c1aca9e7a00284ba50aa520c75d3896f40e.png]]
+
+[[ATTACHMENT|test-results/25-cart-updates-Tests-de-M-cf44b-la-quantité---Cas-passant-✅/attachments/final-state-da42b4bf80192505ca137c5a5390c8970af8d9e3.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Mise à Jour du Panier › Suppression d&apos;un article - Cas passant ✅" classname="25-cart-updates.spec.js" time="33.421">
+<properties>
+<property name="test_key" value="DEMO-285">
+</property>
+<property name="tags" value="@cart @remove">
+</property>
+<property name="test_description" value="Suppression d&apos;un article du panier">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S13 for test: Suppression d'un article - Cas passant ✅
+📸 Evidence captured: cart-with-item
+📸 Evidence captured: cart-after-remove
+📸 Evidence captured: final-state
+[BrowserStack] Test S13 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S13
+[BrowserStack] Browser closed for S13
+
+[[ATTACHMENT|test-results/25-cart-updates-Tests-de-M-57e95--un-article---Cas-passant-✅/attachments/cart-with-item-2026856b1069de2c8d35559427446a99c1ddd8f7.png]]
+
+[[ATTACHMENT|test-results/25-cart-updates-Tests-de-M-57e95--un-article---Cas-passant-✅/attachments/cart-after-remove-f86cd9fe1bb0d62af1a7ffc50e6ccc4eae229042.png]]
+
+[[ATTACHMENT|test-results/25-cart-updates-Tests-de-M-57e95--un-article---Cas-passant-✅/attachments/final-state-ec704dbd9b31811350cbfbcf1d8c6faff37b946a.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+<testcase name="Tests de Mise à Jour du Panier › Application d&apos;un code promo - Cas passant ✅" classname="25-cart-updates.spec.js" time="25.816">
+<properties>
+<property name="test_key" value="DEMO-286">
+</property>
+<property name="tags" value="@cart @promo">
+</property>
+<property name="test_description" value="Tentative d&apos;application d&apos;un code promo">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S14 for test: Application d'un code promo - Cas passant ✅
+📸 Evidence captured: cart-before-promo
+📸 Evidence captured: final-state
+[BrowserStack] Test S14 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S14
+[BrowserStack] Browser closed for S14
+
+[[ATTACHMENT|test-results/25-cart-updates-Tests-de-M-aacf6--code-promo---Cas-passant-✅/attachments/cart-before-promo-ffc4f3a6f54859d24f1c53facfd92288e8e6a7b5.png]]
+
+[[ATTACHMENT|test-results/25-cart-updates-Tests-de-M-aacf6--code-promo---Cas-passant-✅/attachments/final-state-0d4629731535d7f92439301aacdf8dffb1c66ad5.png]]
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="99-sanity.spec.js" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="1" failures="0" skipped="0" time="18.863" errors="0">
+<testcase name="sanity test" classname="99-sanity.spec.js" time="18.863">
+<properties>
+<property name="test_key" value="DEMO-105">
+</property>
+<property name="tags" value="sanity,smoke">
+</property>
+<property name="test_description" value="Test de sanité pour vérifier la détection Playwright et BrowserStack.">
+</property>
+</properties>
+<system-out>
+<![CDATA[[BrowserStack] Connecting session S11 for test: sanity test
+[BrowserStack] Test S11 finished with status: passed
+[BrowserStack] Setting status to: passed
+[BrowserStack] setSessionStatus executed successfully
+[BrowserStack] Context closed for S11
+[BrowserStack] Browser closed for S11
+]]>
+</system-out>
+<system-err>
+</system-err>
+</testcase>
+</testsuite>
+<testsuite name="seed.spec.ts" timestamp="2026-01-30T16:55:42.758Z" hostname="" tests="1" failures="0" skipped="0" time="0.11" errors="0">
+<testcase name="Test group › seed" classname="seed.spec.ts" time="0.11">
+</testcase>
+</testsuite>
+</testsuites>

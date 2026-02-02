@@ -167,14 +167,13 @@ jobs:
 
     - name: Run tests on BrowserStack
       id: run-tests
-      run: npx playwright test ${{ steps.test-pattern.outputs.pattern }} --config=playwright.config.browserstack.js --reporter=list,html,junit
+      run: npx playwright test ${{ steps.test-pattern.outputs.pattern }} --config=playwright.config.browserstack.js
       env:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         BROWSERSTACK_BUILD_NAME: "GitHub Actions #${{ github.run_number }} - ${{ github.ref_name }} - ${{ env.DEVICE_NAME }} - ${{ steps.test-pattern.outputs.description }}"
         BS_WORKERS: "5"
         CI: true
-        PLAYWRIGHT_JUNIT_OUTPUT_NAME: results.xml
       continue-on-error: true
 
     - name: Fetch BrowserStack build link
@@ -200,8 +199,7 @@ jobs:
         path: |
           playwright-report/
           results.xml
-          xray-report.xml
-        retention-days: 30
+          tention-days: 30
 
     - name: Upload results to Xray
       if: always()

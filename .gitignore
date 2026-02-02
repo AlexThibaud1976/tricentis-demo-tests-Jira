@@ -10,6 +10,7 @@ playwright/.cache/
 screenshots/
 videos/
 traces/
+divers/
 
 # Environment variables
 .env

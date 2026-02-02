@@ -1,6 +1,6 @@
 <testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="6.567662999987602">
 <testsuite name="25-cart-updates.spec.js" timestamp="2026-01-30T16:49:01.955Z" hostname="chromium" tests="1" failures="0" skipped="0" time="5.553" errors="0">
-<testcase name="Tests de Mise à Jour du Panier › Application d&apos;un code promo - Cas passant ✅" classname="25-cart-updates.spec.js" time="5.553">
+<testcase name="Tests de Mise à Jour du Panier › Application d&apos;un code promo - Cas passant ✅" classname="25-cart-updates.spec.js" time="5.553" started-at="2026-01-30T16:49:01.955Z" finished-at="2026-01-30T16:49:07.508Z">
 <properties>
 <property name="test_key" value="DEMO-286">
 </property>
