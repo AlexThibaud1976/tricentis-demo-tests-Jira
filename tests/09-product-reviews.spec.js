@@ -1,11 +1,21 @@
 const { test, expect } = require('../test-fixtures');
-const { assertUrl, captureEvidence, wait, generateUserData } = require('../utils/helpers');
+const { assertUrl, wait, generateUserData } = require('../utils/helpers');
+
+// Helper simplifié pour les screenshots viewport (sans fullPage)
+async function captureSimpleScreenshot(page, testInfo, name) {
+  try {
+    const screenshot = await page.screenshot({ timeout: 5000 });
+    await testInfo.attach(name, { body: screenshot, contentType: 'image/png' });
+    console.log(`📸 Screenshot captured: ${name}`);
+  } catch (error) {
+    console.warn(`⚠️ Screenshot failed: ${error.message}`);
+  }
+}
 
 test.describe('Tests des Avis Produits', () => {
-  test.afterEach(async ({ page }, testInfo) => {
-    await captureEvidence(page, testInfo, 'final-state');
-  });
-
+  // Suppression du afterEach problématique qui cause des timeouts
+  // Les screenshots d'échec sont déjà gérés par le hook dans browserstack-fixtures.js
+  
   test('Consultation des avis existants - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
       { type: 'test_key', description: 'DEMO-257' },
@@ -21,14 +31,14 @@ test.describe('Tests des Avis Produits', () => {
     await firstProduct.locator('a').first().click();
     await wait(1000);
 
-    await captureEvidence(page, testInfo, 'product-page');
+    await captureSimpleScreenshot(page, testInfo, 'product-page');
 
     // Look for reviews section or add review link
     const reviewsTab = page.getByRole('link', { name: 'Add your review' });
     await expect(reviewsTab).toBeVisible({ timeout: 5000 });
     await reviewsTab.click();
     await wait(1000);
-    await captureEvidence(page, testInfo, 'reviews-section');
+    await captureSimpleScreenshot(page, testInfo, 'reviews-section');
   });
 
   test('Soumission d\'un nouvel avis - Cas passant ✅', async ({ page }, testInfo) => {
@@ -41,7 +51,7 @@ test.describe('Tests des Avis Produits', () => {
     // Need to create account first to submit reviews
     const { createAccount } = require('../utils/helpers');
     const userData = await createAccount(page);
-    await captureEvidence(page, testInfo, 'account-created');
+    await captureSimpleScreenshot(page, testInfo, 'account-created');
 
     await page.goto('https://demowebshop.tricentis.com/books');
     await wait(1000);
@@ -57,7 +67,7 @@ test.describe('Tests des Avis Produits', () => {
     await addReviewLink.click();
     await wait(1000);
 
-    await captureEvidence(page, testInfo, 'review-form');
+    await captureSimpleScreenshot(page, testInfo, 'review-form');
 
     // Fill review form (enabled since we're logged in)
     const titleInput = page.locator('#AddProductReview_Title');
@@ -71,14 +81,14 @@ test.describe('Tests des Avis Produits', () => {
     await expect(rating).toBeVisible();
     await rating.click();
 
-    await captureEvidence(page, testInfo, 'review-filled');
+    await captureSimpleScreenshot(page, testInfo, 'review-filled');
 
-    // Submit review
-    const submitBtn = page.locator('input[value="Submit review"]');
-    await expect(submitBtn).toBeVisible();
+    // Submit review - bouton submit avec plusieurs sélecteurs possibles
+    const submitBtn = page.locator('input[name="add-review"], input[value*="ubmit"], button[type="submit"]').first();
+    await expect(submitBtn).toBeVisible({ timeout: 10000 });
     await submitBtn.click();
     await wait(1000);
-    await captureEvidence(page, testInfo, 'review-submitted');
+    await captureSimpleScreenshot(page, testInfo, 'review-submitted');
 
     // Verify review submission success
     const successMessage = page.locator('.result, .bar-notification.success').first();

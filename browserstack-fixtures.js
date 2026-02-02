@@ -209,12 +209,34 @@ const test = base.test.extend({
     // Capture pleine page en cas d'échec
     if (testInfo.status !== testInfo.expectedStatus) {
       const screenshotPath = testInfo.outputPath(`failure-fullpage.png`);
-      await page.screenshot({ path: screenshotPath, fullPage: true });
-      await testInfo.attach('failure-fullpage', {
-        path: screenshotPath,
-        contentType: 'image/png'
-      });
-      console.log('📸 Full page screenshot captured on failure');
+      try {
+        await page.screenshot({ 
+          path: screenshotPath, 
+          fullPage: true,
+          timeout: 10000
+        });
+        await testInfo.attach('failure-fullpage', {
+          path: screenshotPath,
+          contentType: 'image/png'
+        });
+        console.log('📸 Full page screenshot captured on failure');
+      } catch (error) {
+        console.warn(`⚠️ Full page screenshot failed, trying viewport: ${error.message}`);
+        try {
+          await page.screenshot({ 
+            path: screenshotPath, 
+            fullPage: false,
+            timeout: 5000
+          });
+          await testInfo.attach('failure-viewport', {
+            path: screenshotPath,
+            contentType: 'image/png'
+          });
+          console.log('📸 Viewport screenshot captured on failure');
+        } catch (fallbackError) {
+          console.error(`❌ Screenshot failed: ${fallbackError.message}`);
+        }
+      }
     }
   },
 });

@@ -29,13 +29,34 @@ async function captureEvidence(page, testInfo, name) {
   const filename = `${testKey}_${sanitizedName}_${timestamp}.png`;
   const filepath = path.join(EVIDENCE_DIR, filename);
   
-  // Prendre la capture d'écran (fullPage: true pour capturer toute la page)
-  await page.screenshot({ path: filepath, fullPage: true });
-  
-  // Attacher au rapport Playwright
-  await testInfo.attach(name, { path: filepath, contentType: 'image/png' });
-  
-  console.log(`📸 Evidence captured: ${name}`);
+  try {
+    // Prendre la capture d'écran (fullPage: true pour capturer toute la page)
+    // Avec timeout de 10s pour éviter les blocages sur les pages très longues
+    await page.screenshot({ 
+      path: filepath, 
+      fullPage: true,
+      timeout: 10000
+    });
+    
+    // Attacher au rapport Playwright
+    await testInfo.attach(name, { path: filepath, contentType: 'image/png' });
+    
+    console.log(`📸 Evidence captured: ${name}`);
+  } catch (error) {
+    console.warn(`⚠️ Failed to capture full page screenshot: ${error.message}`);
+    // Fallback: capture viewport only
+    try {
+      await page.screenshot({ 
+        path: filepath, 
+        fullPage: false,
+        timeout: 5000
+      });
+      await testInfo.attach(name, { path: filepath, contentType: 'image/png' });
+      console.log(`📸 Evidence captured (viewport only): ${name}`);
+    } catch (fallbackError) {
+      console.error(`❌ Screenshot failed completely: ${fallbackError.message}`);
+    }
+  }
   
   return filepath;
 }
