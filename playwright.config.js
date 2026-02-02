@@ -23,7 +23,10 @@ module.exports = defineConfig({
   use: {
     baseURL: 'https://demowebshop.tricentis.com',
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+    screenshot: {
+      mode: 'only-on-failure',
+      fullPage: true
+    },
     video: 'retain-on-failure',
     headless: false,
   },

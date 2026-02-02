@@ -32,7 +32,10 @@ module.exports = defineConfig({
   use: {
     baseURL: 'https://demowebshop.tricentis.com',
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+    screenshot: {
+      mode: 'only-on-failure',
+      fullPage: true
+    },
     video: 'retain-on-failure',
     // null pour obtenir un viewport plein écran (1920x1080 par défaut sur BrowserStack)
     viewport: null,
