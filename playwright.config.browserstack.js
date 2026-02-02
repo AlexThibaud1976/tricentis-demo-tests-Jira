@@ -37,6 +37,9 @@ module.exports = defineConfig({
     // null pour obtenir un viewport plein écran (1920x1080 par défaut sur BrowserStack)
     viewport: null,
   },
+  
+  // Note: Les screenshots automatiques sont complétés par une capture pleine page
+  // dans browserstack-fixtures.js en cas d'échec
 
   timeout: bsConfig.timeout,
   expect: {

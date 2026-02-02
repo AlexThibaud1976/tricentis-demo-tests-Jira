@@ -29,8 +29,8 @@ async function captureEvidence(page, testInfo, name) {
   const filename = `${testKey}_${sanitizedName}_${timestamp}.png`;
   const filepath = path.join(EVIDENCE_DIR, filename);
   
-  // Prendre la capture d'écran
-  await page.screenshot({ path: filepath, fullPage: false });
+  // Prendre la capture d'écran (fullPage: true pour capturer toute la page)
+  await page.screenshot({ path: filepath, fullPage: true });
   
   // Attacher au rapport Playwright
   await testInfo.attach(name, { path: filepath, contentType: 'image/png' });

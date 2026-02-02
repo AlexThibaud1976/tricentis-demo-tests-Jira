@@ -27,6 +27,9 @@ module.exports = defineConfig({
     video: 'retain-on-failure',
     headless: false,
   },
+  
+  // Note: Pour ajouter des screenshots pleine page en cas d'échec,
+  // utiliser testInfo.attach() dans un hook afterEach global
 
   projects: [
     {

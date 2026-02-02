@@ -201,10 +201,21 @@ const test = base.test.extend({
   },
 
   // Override de page : utilise la page du contexte ou en crée une nouvelle
-  page: async ({ context }, use) => {
+  page: async ({ context }, use, testInfo) => {
     const pages = context.pages();
     const page = pages.length > 0 ? pages[0] : await context.newPage();
     await use(page);
+    
+    // Capture pleine page en cas d'échec
+    if (testInfo.status !== testInfo.expectedStatus) {
+      const screenshotPath = testInfo.outputPath(`failure-fullpage.png`);
+      await page.screenshot({ path: screenshotPath, fullPage: true });
+      await testInfo.attach('failure-fullpage', {
+        path: screenshotPath,
+        contentType: 'image/png'
+      });
+      console.log('📸 Full page screenshot captured on failure');
+    }
   },
 });
 
