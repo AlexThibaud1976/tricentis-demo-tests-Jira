@@ -18,7 +18,7 @@ Suite complète de tests end-to-end automatisés avec Playwright pour le site de
 
 ## 📋 Description
 
-Ce projet contient **plus de 20 tests automatisés** couvrant l'ensemble des fonctionnalités du site e-commerce :
+Ce projet contient **plus de 40 tests automatisés** couvrant l'ensemble des fonctionnalités du site e-commerce :
 
 ### 🎯 Fonctionnalités Core
 - 🧾 **Création et gestion de compte** (création, modification, gestion des adresses, changement de mot de passe)
@@ -147,6 +147,10 @@ tricentis-demo-tests-Jira/
 │   ├── 23-news-blog.spec.js         # Tests blog actualités
 │   ├── 24-guest-checkout.spec.js    # Tests checkout invité
 │   ├── 25-cart-update.spec.js       # Tests mise à jour panier
+│   ├── 26-shipping-methods.spec.js  # Tests méthodes de livraison (9 tests)
+│   ├── 27-payment-methods.spec.js   # Tests moyens de paiement (12 tests)
+│   ├── 27b-card-types.spec.js       # Tests types de cartes (6 tests - Visa, Mastercard, Amex, etc.)
+│   ├── 28-checkout-combinations.spec.js # Tests combinaisons checkout (12 tests)
 │   └── 99-sanity.spec.js            # Tests de sanité
 ├── utils/
 │   └── helpers.js                    # Utilitaires réutilisables

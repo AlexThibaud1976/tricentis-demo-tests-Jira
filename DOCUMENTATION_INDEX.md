@@ -2,19 +2,31 @@
 
 ## 🔄 Mises à jour récentes (Février 2026)
 
-✨ **Reporter unique Xray** : Suppression du reporter junit standard, utilisation exclusive de `@xray-app/playwright-junit-reporter`  
-📸 **Screenshots pleine page** : Captures complètes (`fullPage: true`) automatiques sur échecs et evidence  
+✨ **Tests types de cartes** : 6 nouveaux tests couvrant Visa, Mastercard, Amex, Discover, Diners, JCB (5 février)  
+💳 **Cartes de test Adyen** : Intégration des numéros de test officiels dans `utils/helpers.js` (5 février)  
+🛒 **Extension checkout** : 37 tests couvrant méthodes de livraison, moyens de paiement et combinaisons  
+✨ **Reporter unique Xray** : Suppression du reporter junit standard, utilisation exclusive de `@xray-app/playwright-junit-reporter` (2 février)  
+📸 **Screenshots pleine page** : Captures complètes (`fullPage: true`) automatiques sur échecs et evidence (2 février)  
 🗂️ **Fichiers générés** : `xray-report.xml` uniquement (plus de `results.xml`)  
 
 ---
 
 ## 🎯 Par cas d'usage
 
+### "Je veux comprendre les tests de types de cartes"
+→ Consultez [CARD_TYPES_TESTING.md](./CARD_TYPES_TESTING.md)
+
+### "Je veux voir la couverture complète des tests checkout"
+→ Consultez [CHECKOUT_COVERAGE_EXTENSION.md](./CHECKOUT_COVERAGE_EXTENSION.md)
+
 ### "Je veux comprendre le nouveau reporter Xray"
 → Consultez [XRAY_REPORTER_GUIDE.md](./XRAY_REPORTER_GUIDE.md)
 
 ### "Je veux voir ce qui a changé avec la migration"
 → Consultez [MIGRATION_SUMMARY.md](./MIGRATION_SUMMARY.md)
+
+### "Je veux voir les mises à jour récentes"
+→ Consultez [RECENT_UPDATES.md](./RECENT_UPDATES.md)
 
 ### "Je veux tester rapidement une configuration"
 → Consultez [COPY_PASTE_EXAMPLES.md](./COPY_PASTE_EXAMPLES.md)
@@ -41,6 +53,15 @@
 |----------|-------------|------------------|
 | [XRAY_REPORTER_GUIDE.md](./XRAY_REPORTER_GUIDE.md) | Testeurs, Développeurs | 15 min |
 | [MIGRATION_SUMMARY.md](./MIGRATION_SUMMARY.md) | Tous | 5 min |
+| [RECENT_UPDATES.md](./RECENT_UPDATES.md) | Tous | 10 min |
+
+### Documentation Tests & Couverture (Nouveau !) 🧪
+
+| Document | Public cible | Durée de lecture |
+|----------|-------------|------------------|
+| [CARD_TYPES_TESTING.md](./CARD_TYPES_TESTING.md) | Testeurs, Développeurs | 10 min |
+| [CHECKOUT_COVERAGE_EXTENSION.md](./CHECKOUT_COVERAGE_EXTENSION.md) | Testeurs, Product Owners | 15 min |
+| [CHECKOUT_OPTIONS_ANALYSIS.md](./CHECKOUT_OPTIONS_ANALYSIS.md) | Analystes, Testeurs | 5 min |
 
 ### Documentation utilisateur
 

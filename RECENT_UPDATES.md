@@ -1,5 +1,92 @@
 # 📝 Mises à jour récentes - Février 2026
 
+## 🗓️ 5 février 2026 - Tests des Types de Cartes de Crédit
+
+### 🎯 Nouveautés
+
+#### 1. Intégration des cartes de test Adyen
+**Ajout** : Support de 6 types de cartes de crédit avec numéros de test officiels
+
+**Cartes supportées** :
+- ✅ **Visa** : 4111 1111 1111 1111
+- ✅ **Mastercard** : 5555 5555 5555 4444
+- ✅ **American Express** : 3700 0000 0000 002
+- ✅ **Discover** : 6011 6011 6011 6611
+- ✅ **Diners Club** : 3600 6666 3333 44
+- ✅ **JCB** : 3569 9900 1009 5841
+
+**Source** : [Adyen Test Card Numbers](https://docs.adyen.com/development-resources/test-cards-and-credentials/test-card-numbers)
+
+**Impact** :
+- Meilleure couverture des types de paiement
+- Tests plus réalistes avec des numéros valides
+- Validation de l'acceptation de différentes cartes
+
+---
+
+#### 2. Nouveau fichier de tests : 27b-card-types.spec.js
+**Contenu** : 6 tests dédiés aux différents types de cartes
+
+| Test ID | Type de Carte | Numéro | Tags |
+|---------|---------------|--------|------|
+| DEMO-CARD-001 | Visa | 4111 1111 1111 1111 | @payment @creditcard @visa |
+| DEMO-CARD-002 | Mastercard | 5555 5555 5555 4444 | @payment @creditcard @mastercard |
+| DEMO-CARD-003 | American Express | 3700 0000 0000 002 | @payment @creditcard @amex |
+| DEMO-CARD-004 | Discover | 6011 6011 6011 6611 | @payment @creditcard @discover |
+| DEMO-CARD-005 | Diners Club | 3600 6666 3333 44 | @payment @creditcard @diners |
+| DEMO-CARD-006 | JCB | 3569 9900 1009 5841 | @payment @creditcard @jcb |
+
+**Résultats** : ✅ **6/6 tests passent** (2.3 minutes)
+
+---
+
+#### 3. Amélioration de la fonction fillCreditCardInfo()
+**Avant** : Acceptait uniquement un objet avec les détails de carte
+```javascript
+fillCreditCardInfo(page, { number: '...', cvv: '...' })
+```
+
+**Après** : Accepte également un type de carte en string
+```javascript
+fillCreditCardInfo(page, 'visa')        // Utilise TEST_CARDS.visa
+fillCreditCardInfo(page, 'mastercard')  // Utilise TEST_CARDS.mastercard
+fillCreditCardInfo(page, 'amex')        // Utilise TEST_CARDS.amex
+// ... ou toujours :
+fillCreditCardInfo(page, { number: '...', cvv: '...' })  // Objet custom
+```
+
+**Fichiers modifiés** :
+- `utils/helpers.js` : Ajout constante `TEST_CARDS`
+- `utils/helpers.js` : Refactoring `fillCreditCardInfo()` pour support string/object
+- `utils/helpers.js` : Export de `TEST_CARDS` pour réutilisation
+
+---
+
+#### 4. Corrections des tests 26, 27, 28
+**Problème** : Paramètre incorrect dans `addProductToCart()`
+- ❌ `addProductToCart(page, '/books', '.product-item')` → STRING au lieu d'INDEX
+- ✅ `addProductToCart(page, '/books', 0)` → INDEX NUMÉRIQUE
+
+**Fichiers corrigés** :
+- `tests/26-shipping-methods.spec.js` : Ligne 27
+- `tests/27-payment-methods.spec.js` : Ligne 30
+- `tests/28-checkout-combinations.spec.js` : Ligne 28
+
+**Impact** :
+- Tests 26, 27, 28 fonctionnent maintenant correctement
+- Élimination des timeouts dans beforeEach
+
+---
+
+### 📊 Statistiques mises à jour
+
+- **Total tests** : 25+ fichiers de tests
+- **Nouveaux tests** : +6 (types de cartes)
+- **Couverture paiement** : 100% des types de cartes courants
+- **Helpers** : 15+ fonctions utilitaires
+
+---
+
 ## 🗓️ 2 février 2026 - Optimisation Reporter et Screenshots
 
 ### 🎯 Changements majeurs
