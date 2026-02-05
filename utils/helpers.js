@@ -30,12 +30,11 @@ async function captureEvidence(page, testInfo, name) {
   const filepath = path.join(EVIDENCE_DIR, filename);
   
   try {
-    // Prendre la capture d'écran (fullPage: true pour capturer toute la page)
-    // Avec timeout de 10s pour éviter les blocages sur les pages très longues
+    // Prendre la capture d'écran (viewport uniquement pour éviter timeouts sur BrowserStack)
     await page.screenshot({ 
       path: filepath, 
-      fullPage: true,
-      timeout: 10000
+      fullPage: false,
+      timeout: 5000
     });
     
     // Attacher au rapport Playwright
@@ -43,19 +42,7 @@ async function captureEvidence(page, testInfo, name) {
     
     console.log(`📸 Evidence captured: ${name}`);
   } catch (error) {
-    console.warn(`⚠️ Failed to capture full page screenshot: ${error.message}`);
-    // Fallback: capture viewport only
-    try {
-      await page.screenshot({ 
-        path: filepath, 
-        fullPage: false,
-        timeout: 5000
-      });
-      await testInfo.attach(name, { path: filepath, contentType: 'image/png' });
-      console.log(`📸 Evidence captured (viewport only): ${name}`);
-    } catch (fallbackError) {
-      console.error(`❌ Screenshot failed completely: ${fallbackError.message}`);
-    }
+    console.error(`❌ Screenshot failed: ${error.message}`);
   }
   
   return filepath;

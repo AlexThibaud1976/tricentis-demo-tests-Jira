@@ -32,17 +32,12 @@ module.exports = defineConfig({
   use: {
     baseURL: 'https://demowebshop.tricentis.com',
     trace: 'on-first-retry',
-    screenshot: {
-      mode: 'only-on-failure',
-      fullPage: true
-    },
+    // Screenshots en viewport uniquement pour éviter les timeouts sur BrowserStack
+    screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     // null pour obtenir un viewport plein écran (1920x1080 par défaut sur BrowserStack)
     viewport: null,
   },
-  
-  // Note: Les screenshots automatiques sont complétés par une capture pleine page
-  // dans browserstack-fixtures.js en cas d'échec
 
   timeout: bsConfig.timeout,
   expect: {
