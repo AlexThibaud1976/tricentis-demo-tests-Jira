@@ -43,7 +43,11 @@ test.describe('Tests de passage de commande', () => {
     
     // Ajouter le livre au panier
     await firstBook.locator('input[value="Add to cart"]').click();
-    await wait(2000);
+    
+    // Wait for success notification to confirm product was added
+    const successNotification = page.locator('.bar-notification.success');
+    await expect(successNotification).toBeVisible({ timeout: 10000 });
+    await wait(1000);
     
     // Aller au panier et vérifier
     await page.goto('/cart');

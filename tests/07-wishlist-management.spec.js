@@ -129,11 +129,14 @@ test.describe('Tests de Gestion de Liste de Souhaits', () => {
       const addToCartBtn = page.locator('input[name="addtocartbutton"], .wishlist-add-to-cart-button');
       await expect(addToCartBtn).toBeVisible();
       await addToCartBtn.click();
-      await wait(1000);
+      
+      // Wait for cart to be updated after transfer
+      await wait(2000);
       await captureEvidence(page, testInfo, 'transferred-to-cart');
 
-      // Verify transfer success
+      // Verify transfer success - wait for cart counter to update
       const cartLink = page.locator('.cart-qty');
+      await expect(cartLink).toContainText(/\(\d+\)/, { timeout: 10000 });
       const cartText = await cartLink.textContent();
       expect(cartText).toMatch(/\d+/);
     } else {

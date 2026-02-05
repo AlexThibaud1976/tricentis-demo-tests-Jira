@@ -20,6 +20,10 @@ test.describe('Tests de Mise à Jour du Panier', () => {
     // Add product to cart
     const addToCartBtn = page.locator('input[value="Add to cart"]').first();
     await addToCartBtn.click();
+
+    // Wait for success notification
+    const successNotification = page.locator('.bar-notification.success');
+    await expect(successNotification).toBeVisible({ timeout: 10000 });
     await wait(1000);
 
     // Go to cart
@@ -62,6 +66,10 @@ test.describe('Tests de Mise à Jour du Panier', () => {
     // Add product to cart
     const addToCartBtn = page.locator('input[value="Add to cart"]').first();
     await addToCartBtn.click();
+
+    // Wait for success notification
+    const successNotification = page.locator('.bar-notification.success');
+    await expect(successNotification).toBeVisible({ timeout: 10000 });
     await wait(1000);
 
     // Go to cart
@@ -103,6 +111,10 @@ test.describe('Tests de Mise à Jour du Panier', () => {
     // Add product to cart
     const addToCartBtn = page.locator('input[value="Add to cart"]').first();
     await addToCartBtn.click();
+
+    // Wait for success notification
+    const successNotification = page.locator('.bar-notification.success');
+    await expect(successNotification).toBeVisible({ timeout: 10000 });
     await wait(1000);
 
     // Go to cart

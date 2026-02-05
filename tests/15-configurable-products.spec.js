@@ -51,13 +51,13 @@ test.describe('Tests de Produits Configurables', () => {
     const addToCartBtn = page.locator('#add-to-cart-button-16');
     await expect(addToCartBtn).toBeVisible();
     await addToCartBtn.click();
+
+    // Verify success notification first
+    const success = page.locator('.bar-notification.success');
+    await expect(success).toBeVisible({ timeout: 10000 });
     await wait(1000);
 
     await captureEvidence(page, testInfo, 'added-to-cart');
-
-    // Verify success notification
-    const success = page.locator('.bar-notification.success');
-    await expect(success).toBeVisible({ timeout: 5000 });
   });
 
   test('Produit avec options multiples - Cas passant ✅', async ({ page }, testInfo) => {

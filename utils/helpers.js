@@ -160,7 +160,11 @@ async function addProductToCart(page, categoryUrl, productIndex = 0) {
   await page.goto(categoryUrl);
   const addToCartButton = page.locator('.product-item input[value="Add to cart"]').nth(productIndex);
   await addToCartButton.click();
-  await wait(2000); // Attendre la mise à jour du panier
+  
+  // Wait for success notification to confirm product was added
+  const successNotification = page.locator('.bar-notification.success');
+  await successNotification.waitFor({ state: 'visible', timeout: 10000 });
+  await wait(1000);
 }
 
 /**

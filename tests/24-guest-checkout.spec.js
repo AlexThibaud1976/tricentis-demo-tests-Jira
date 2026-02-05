@@ -25,20 +25,20 @@ test.describe('Tests de Checkout Invité', () => {
     const addToCartBtn = page.locator('input[value="Add to cart"]').first();
     await expect(addToCartBtn).toBeVisible();
     await addToCartBtn.click();
-    await wait(1000);
 
-    // Verify product added
+    // Verify product added - wait for success notification
     const successNotification = page.locator('.bar-notification.success');
-    await expect(successNotification).toBeVisible({ timeout: 5000 });
+    await expect(successNotification).toBeVisible({ timeout: 10000 });
+    await wait(1000);
 
     // Go to cart
     await page.goto('https://demowebshop.tricentis.com/cart');
     await wait(1000);
-    await captureEvidence(page, testInfo, 'cart-with-product');
 
-    // Verify cart has items
+    // Verify cart has items before proceeding
     const cartItems = page.locator('.cart-item-row');
-    expect(await cartItems.count()).toBeGreaterThan(0);
+    await expect(cartItems.first()).toBeVisible({ timeout: 5000 });
+    await captureEvidence(page, testInfo, 'cart-with-product');
 
     // Accept terms and checkout
     const termsCheckbox = page.locator('#termsofservice');
