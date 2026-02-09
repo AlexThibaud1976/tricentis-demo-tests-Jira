@@ -313,7 +313,10 @@ async function getAvailablePaymentMethods(page) {
 /**
  * Remplir les informations de carte bancaire
  * @param {Page} page - Page Playwright
- * @param {Object} cardData - Données de la carte {holderName, number, expMonth, expYear, cvv}
+ * @param {string|Object} cardData - Nom de la carte ('visa', 'mastercard', etc.) ou objet {holderName, number, expMonth, expYear, cvv}
+ * @param {TestInfo} testInfo - (Optionnel) Info du test pour capture d'écran
+ * @param {string} evidenceName - (Optionnel) Nom de la capture d'écran
+ * @returns {Promise<Object>} - Carte utilisée
  */
 /**
  * Cartes de test Adyen
@@ -328,7 +331,7 @@ const TEST_CARDS = {
   jcb: { holderName: 'JCB Test', number: '3569990010095841', expMonth: '12', expYear: '2027', cvv: '737', type: 'JCB' }
 };
 
-async function fillCreditCardInfo(page, cardData = {}) {
+async function fillCreditCardInfo(page, cardData = {}, testInfo = null, evidenceName = null) {
   let card;
   if (typeof cardData === 'string') {
     card = TEST_CARDS[cardData.toLowerCase()] || TEST_CARDS.visa;
@@ -336,13 +339,30 @@ async function fillCreditCardInfo(page, cardData = {}) {
     card = { ...TEST_CARDS.visa, ...cardData };
   }
   
+  // Remplir les champs
   await page.locator('input#CardholderName').fill(card.holderName);
   await page.locator('input#CardNumber').fill(card.number);
   await page.locator('select#ExpireMonth').selectOption(card.expMonth);
   await page.locator('select#ExpireYear').selectOption(card.expYear);
   await page.locator('input#CardCode').fill(card.cvv);
   
+  // Attendre un peu que les champs soient bien remplis
+  await wait(500);
+  
+  // Vérifier que les champs sont bien remplis
+  await expect(page.locator('input#CardholderName')).toHaveValue(card.holderName);
+  await expect(page.locator('input#CardNumber')).toHaveValue(card.number);
+  await expect(page.locator('input#CardCode')).toHaveValue(card.cvv);
+  
   console.log(`✅ Credit card info filled: ${card.type || card.holderName}`);
+  
+  // Prendre une capture d'écran si testInfo est fourni
+  if (testInfo) {
+    const screenshotName = evidenceName || `Carte_${card.type}_completee`;
+    await captureEvidence(page, testInfo, screenshotName);
+  }
+  
+  return card;
 }
 
 /**

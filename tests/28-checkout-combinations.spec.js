@@ -51,11 +51,11 @@ test.describe('Tests des Combinaisons Shipping × Payment', () => {
   /**
    * Helper pour finaliser la commande selon le moyen de paiement
    */
-  async function finalizeOrder(page, paymentIndex) {
+  async function finalizeOrder(page, paymentIndex, testInfo = null) {
     // Remplir les champs selon le moyen de paiement
     if (paymentIndex === 2) {
       // Credit Card
-      await fillCreditCardInfo(page);
+      await fillCreditCardInfo(page, 'visa', testInfo, 'Carte_completee_combinaison');
     } else if (paymentIndex === 3) {
       // Purchase Order
       await fillPurchaseOrder(page);
@@ -113,7 +113,7 @@ test.describe('Tests des Combinaisons Shipping × Payment', () => {
     await prepareCheckout(page);
     await selectShippingMethod(page, 0); // Ground
     await selectPaymentMethod(page, 2);  // Credit Card
-    await finalizeOrder(page, 2);
+    await finalizeOrder(page, 2, testInfo);
     
     console.log('✅ Ground + Credit Card combination successful');
   });
@@ -171,7 +171,7 @@ test.describe('Tests des Combinaisons Shipping × Payment', () => {
     await prepareCheckout(page);
     await selectShippingMethod(page, 1); // Next Day Air
     await selectPaymentMethod(page, 2);  // Credit Card
-    await finalizeOrder(page, 2);
+    await finalizeOrder(page, 2, testInfo);
     
     console.log('✅ Next Day Air + Credit Card combination successful');
   });
@@ -229,7 +229,7 @@ test.describe('Tests des Combinaisons Shipping × Payment', () => {
     await prepareCheckout(page);
     await selectShippingMethod(page, 2); // 2nd Day Air
     await selectPaymentMethod(page, 2);  // Credit Card
-    await finalizeOrder(page, 2);
+    await finalizeOrder(page, 2, testInfo);
     
     console.log('✅ 2nd Day Air + Credit Card combination successful');
   });

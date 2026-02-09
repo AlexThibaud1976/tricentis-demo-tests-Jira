@@ -137,7 +137,7 @@ test.describe('Tests de Moyens de Paiement', () => {
     expect(selectedMethod).toContain('Credit Card');
     
     // Remplir les informations de carte
-    await fillCreditCardInfo(page);
+    await fillCreditCardInfo(page, 'visa', testInfo, 'Informations_carte_completees');
     
     // Continue
     await page.locator('#payment-info-buttons-container input[value="Continue"]').click();
@@ -188,7 +188,7 @@ test.describe('Tests de Moyens de Paiement', () => {
     await selectPaymentMethod(page, 2);
     
     // Remplir avec un numéro de carte invalide
-    await fillCreditCardInfo(page, { number: '1234567890123456' });
+    await fillCreditCardInfo(page, { number: '1234567890123456' }, testInfo, 'Carte_invalide_completee');
     
     // Essayer de continuer
     await page.locator('#payment-info-buttons-container input[value="Continue"]').click();
@@ -273,7 +273,7 @@ test.describe('Tests de Moyens de Paiement', () => {
     await selectPaymentMethod(page, 2);
     
     // Remplir la carte
-    await fillCreditCardInfo(page);
+    await fillCreditCardInfo(page, 'visa', testInfo, 'Carte_apres_changement_methode');
     
     // Continuer et terminer
     await page.locator('#payment-info-buttons-container input[value="Continue"]').click();

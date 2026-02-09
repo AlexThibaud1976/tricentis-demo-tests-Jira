@@ -63,7 +63,7 @@ test.describe('Tests des Types de Cartes de Crédit', () => {
     );
 
     await selectPaymentMethod(page, 2);
-    await fillCreditCardInfo(page, 'visa');
+    await fillCreditCardInfo(page, 'visa', testInfo, 'Informations_carte_Visa_completees');
     
     await page.locator('#payment-info-buttons-container input[value="Continue"]').click();
     await wait(2000);
@@ -81,7 +81,7 @@ test.describe('Tests des Types de Cartes de Crédit', () => {
     );
 
     await selectPaymentMethod(page, 2);
-    await fillCreditCardInfo(page, 'mastercard');
+    await fillCreditCardInfo(page, 'mastercard', testInfo, 'Informations_carte_Mastercard_completees');
     
     await page.locator('#payment-info-buttons-container input[value="Continue"]').click();
     await wait(2000);
@@ -99,7 +99,7 @@ test.describe('Tests des Types de Cartes de Crédit', () => {
     );
 
     await selectPaymentMethod(page, 2);
-    await fillCreditCardInfo(page, 'amex');
+    await fillCreditCardInfo(page, 'amex', testInfo, 'Informations_carte_American_Express_completees');
     
     await page.locator('#payment-info-buttons-container input[value="Continue"]').click();
     await wait(2000);
@@ -117,7 +117,7 @@ test.describe('Tests des Types de Cartes de Crédit', () => {
     );
 
     await selectPaymentMethod(page, 2);
-    await fillCreditCardInfo(page, 'discover');
+    await fillCreditCardInfo(page, 'discover', testInfo, 'Informations_carte_Discover_completees');
     
     await page.locator('#payment-info-buttons-container input[value="Continue"]').click();
     await wait(2000);
@@ -135,7 +135,7 @@ test.describe('Tests des Types de Cartes de Crédit', () => {
     );
 
     await selectPaymentMethod(page, 2);
-    await fillCreditCardInfo(page, 'diners');
+    await fillCreditCardInfo(page, 'diners', testInfo, 'Informations_carte_Diners_Club_completees');
     
     await page.locator('#payment-info-buttons-container input[value="Continue"]').click();
     await wait(2000);
@@ -153,7 +153,7 @@ test.describe('Tests des Types de Cartes de Crédit', () => {
     );
 
     await selectPaymentMethod(page, 2);
-    await fillCreditCardInfo(page, 'jcb');
+    await fillCreditCardInfo(page, 'jcb', testInfo, 'Informations_carte_JCB_completees');
     
     await page.locator('#payment-info-buttons-container input[value="Continue"]').click();
     await wait(2000);
