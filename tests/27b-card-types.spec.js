@@ -11,15 +11,14 @@ const {
 /**
  * TESTS DES DIFFÉRENTS TYPES DE CARTES DE CRÉDIT
  * 
- * Teste tous les types de cartes supportés avec des numéros de test Adyen:
+ * Teste les types de cartes supportés par le site avec des numéros de test Adyen:
  * - Visa (4111 1111 1111 1111)
- * - Mastercard (5555 5555 5555 4444)
- * - American Express (3700 0000 0000 002)
+ * - Master card (5555 5555 5555 4444)
+ * - Amex (3700 0000 0000 002)
  * - Discover (6011 6011 6011 6611)
- * - Diners Club (3600 6666 3333 44)
- * - JCB (3569 9900 1009 5841)
  * 
- * Source: https://docs.adyen.com/development-resources/test-cards-and-credentials/test-card-numbers
+ * Note: Le site ne supporte que ces 4 types de cartes selon le dropdown disponible.
+ * Source des numéros: https://docs.adyen.com/development-resources/test-cards-and-credentials/test-card-numbers
  * 
  * Jira: Étiquettes = @payment @creditcard @cardtypes
  */
@@ -92,14 +91,14 @@ test.describe('Tests des Types de Cartes de Crédit', () => {
     console.log('✅ Order completed with Mastercard (5555 5555 5555 4444)');
   });
 
-  test('Checkout avec carte American Express - Cas passant ✅', async ({ page }, testInfo) => {
+  test('Checkout avec carte Amex - Cas passant ✅', async ({ page }, testInfo) => {
     testInfo.annotations.push(
       { type: 'test_key', description: 'DEMO-CARD-003' },
       { type: 'tags', description: '@payment @creditcard @amex' }
     );
 
     await selectPaymentMethod(page, 2);
-    await fillCreditCardInfo(page, 'amex', testInfo, 'Informations_carte_American_Express_completees');
+    await fillCreditCardInfo(page, 'amex', testInfo, 'Informations_carte_Amex_completees');
     
     await page.locator('#payment-info-buttons-container input[value="Continue"]').click();
     await wait(2000);
@@ -107,7 +106,7 @@ test.describe('Tests des Types de Cartes de Crédit', () => {
     await wait(3000);
     
     await expect(page.locator('.order-completed')).toBeVisible();
-    console.log('✅ Order completed with American Express (3700 0000 0000 002)');
+    console.log('✅ Order completed with Amex (3700 0000 0000 002)');
   });
 
   test('Checkout avec carte Discover - Cas passant ✅', async ({ page }, testInfo) => {
@@ -126,41 +125,5 @@ test.describe('Tests des Types de Cartes de Crédit', () => {
     
     await expect(page.locator('.order-completed')).toBeVisible();
     console.log('✅ Order completed with Discover (6011 6011 6011 6611)');
-  });
-
-  test('Checkout avec carte Diners Club - Cas passant ✅', async ({ page }, testInfo) => {
-    testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-CARD-005' },
-      { type: 'tags', description: '@payment @creditcard @diners' }
-    );
-
-    await selectPaymentMethod(page, 2);
-    await fillCreditCardInfo(page, 'diners', testInfo, 'Informations_carte_Diners_Club_completees');
-    
-    await page.locator('#payment-info-buttons-container input[value="Continue"]').click();
-    await wait(2000);
-    await page.locator('#confirm-order-buttons-container input[value="Confirm"]').click();
-    await wait(3000);
-    
-    await expect(page.locator('.order-completed')).toBeVisible();
-    console.log('✅ Order completed with Diners Club (3600 6666 3333 44)');
-  });
-
-  test('Checkout avec carte JCB - Cas passant ✅', async ({ page }, testInfo) => {
-    testInfo.annotations.push(
-      { type: 'test_key', description: 'DEMO-CARD-006' },
-      { type: 'tags', description: '@payment @creditcard @jcb' }
-    );
-
-    await selectPaymentMethod(page, 2);
-    await fillCreditCardInfo(page, 'jcb', testInfo, 'Informations_carte_JCB_completees');
-    
-    await page.locator('#payment-info-buttons-container input[value="Continue"]').click();
-    await wait(2000);
-    await page.locator('#confirm-order-buttons-container input[value="Confirm"]').click();
-    await wait(3000);
-    
-    await expect(page.locator('.order-completed')).toBeVisible();
-    console.log('✅ Order completed with JCB (3569 9900 1009 5841)');
   });
 });

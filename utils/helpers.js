@@ -324,11 +324,9 @@ async function getAvailablePaymentMethods(page) {
  */
 const TEST_CARDS = {
   visa: { holderName: 'Visa Test', number: '4111111111111111', expMonth: '12', expYear: '2027', cvv: '737', type: 'Visa' },
-  mastercard: { holderName: 'Mastercard Test', number: '5555555555554444', expMonth: '12', expYear: '2027', cvv: '737', type: 'Mastercard' },
-  amex: { holderName: 'Amex Test', number: '370000000000002', expMonth: '12', expYear: '2027', cvv: '7373', type: 'American Express' },
-  discover: { holderName: 'Discover Test', number: '6011601160116611', expMonth: '12', expYear: '2027', cvv: '737', type: 'Discover' },
-  diners: { holderName: 'Diners Test', number: '36006666333344', expMonth: '12', expYear: '2027', cvv: '737', type: 'Diners Club' },
-  jcb: { holderName: 'JCB Test', number: '3569990010095841', expMonth: '12', expYear: '2027', cvv: '737', type: 'JCB' }
+  mastercard: { holderName: 'Mastercard Test', number: '5555555555554444', expMonth: '12', expYear: '2027', cvv: '737', type: 'Master card' },
+  amex: { holderName: 'Amex Test', number: '370000000000002', expMonth: '12', expYear: '2027', cvv: '7373', type: 'Amex' },
+  discover: { holderName: 'Discover Test', number: '6011601160116611', expMonth: '12', expYear: '2027', cvv: '737', type: 'Discover' }
 };
 
 async function fillCreditCardInfo(page, cardData = {}, testInfo = null, evidenceName = null) {
@@ -337,6 +335,12 @@ async function fillCreditCardInfo(page, cardData = {}, testInfo = null, evidence
     card = TEST_CARDS[cardData.toLowerCase()] || TEST_CARDS.visa;
   } else {
     card = { ...TEST_CARDS.visa, ...cardData };
+  }
+  
+  // Sélectionner le type de carte en premier
+  if (card.type) {
+    await page.locator('select#CreditCardType').selectOption({ label: card.type });
+    await wait(300);
   }
   
   // Remplir les champs
