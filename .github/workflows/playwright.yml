@@ -87,6 +87,11 @@ on:
           - community-poll
           - news-blog
           - footer-links
+      confluenceReport:
+        description: "Publier le rapport sur Confluence"
+        required: false
+        type: boolean
+        default: false
 
 env:
   XRAY_ENDPOINT: xray.cloud.getxray.app
@@ -260,6 +265,27 @@ jobs:
           -GitHubRunId "${{ github.run_id }}" `
           -GitHubRunNumber "${{ github.run_number }}" `
           -BrowserStackBuildUrl "${{ steps.bs-link.outputs.build_url }}"
+
+    - name: Update Confluence Report
+      if: ${{ always() && github.event.inputs.confluenceReport == 'true' }}
+      shell: bash
+      env:
+        CONFLUENCE_URL: ${{ secrets.CONFLUENCE_URL }}
+        CONFLUENCE_USER: ${{ secrets.CONFLUENCE_USER }}
+        CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
+        CONFLUENCE_SPACE_KEY: ${{ secrets.CONFLUENCE_SPACE_KEY }}
+        CONFLUENCE_PAGE_TITLE: ${{ secrets.CONFLUENCE_PAGE_TITLE }}
+        CONFLUENCE_PARENT_PAGE_ID: ${{ secrets.CONFLUENCE_PARENT_PAGE_ID }}
+        JIRA_URL: ${{ secrets.JIRA_URL }}
+      run: |
+        node scripts/update-confluence-report.js \
+          --exec-key "${{ steps.xray-upload.outputs.exec_key }}" \
+          --test-result "${{ steps.test-result.outputs.result }}" \
+          --test-scope "${{ steps.test-pattern.outputs.description }}" \
+          --run-number "${{ github.run_number }}" \
+          --run-id "${{ github.run_id }}" \
+          --repository "${{ github.repository }}" \
+          --browserstack-url "${{ steps.bs-link.outputs.build_url }}"
 
     - name: Check test results
       if: always()
