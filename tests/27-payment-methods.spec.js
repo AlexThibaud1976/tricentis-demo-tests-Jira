@@ -36,18 +36,28 @@ test.describe('Tests de Moyens de Paiement', () => {
     await page.locator('button#checkout').click();
     await wait(2000);
     
-    // Billing address
-    await page.locator('select#BillingNewAddress_CountryId').selectOption({ label: 'United States' });
-    await wait(500);
-    await page.locator('input#BillingNewAddress_City').fill('New York');
-    await page.locator('input#BillingNewAddress_Address1').fill('123 Main St');
-    await page.locator('input#BillingNewAddress_ZipPostalCode').fill('10001');
-    await page.locator('input#BillingNewAddress_PhoneNumber').fill('5551234567');
-    await page.locator('#billing-buttons-container input[value="Continue"]').click();
+    // Sur onepagecheckout, utiliser les adresses existantes
+    // Billing address (utiliser l'option par défaut si elle existe, sinon remplir)
+    const billingSelect = page.locator('select#billing-address-select');
+    const hasBillingAddress = await billingSelect.isVisible().catch(() => false);
+    
+    if (hasBillingAddress) {
+      // Une adresse existe déjà, continuer
+      await page.getByRole('button', { name: 'Continue' }).first().click();
+    } else {
+      // Remplir l'adresse de facturation
+      await page.locator('select#BillingNewAddress_CountryId').selectOption({ label: 'United States' });
+      await wait(500);
+      await page.locator('input#BillingNewAddress_City').fill('New York');
+      await page.locator('input#BillingNewAddress_Address1').fill('123 Main St');
+      await page.locator('input#BillingNewAddress_ZipPostalCode').fill('10001');
+      await page.locator('input#BillingNewAddress_PhoneNumber').fill('5551234567');
+      await page.getByRole('button', { name: 'Continue' }).first().click();
+    }
     await wait(2000);
     
-    // Shipping address
-    await page.locator('#shipping-buttons-container input[value="Continue"]').click();
+    // Shipping address (utiliser la même adresse)
+    await page.getByRole('button', { name: 'Continue' }).first().click();
     await wait(2000);
     
     // Shipping method (Ground par défaut)
@@ -262,11 +272,11 @@ test.describe('Tests de Moyens de Paiement', () => {
     await selectPaymentMethod(page, 0);
     await expect(page.locator('#payment-info-buttons-container')).toBeVisible();
     
-    // Revenir en arrière
-    await page.goBack();
-    await wait(1500);
+    // Utiliser le lien "Back" dans onepagecheckout pour revenir à la sélection
+    await page.locator('#payment-info-buttons-container a:has-text("Back")').click();
+    await wait(1000);
     
-    // Vérifier qu'on est de retour sur payment method selection
+    // Vérifier que les options de paiement sont de nouveau visibles
     await expect(page.locator('input[name="paymentmethod"]').first()).toBeVisible();
     
     // Changer pour Credit Card
@@ -282,7 +292,7 @@ test.describe('Tests de Moyens de Paiement', () => {
     await wait(3000);
     
     await expect(page.locator('.order-completed')).toBeVisible();
-    console.log('✅ Can change payment method by navigating back');
+    console.log('✅ Can change payment method by re-selecting');
   });
 
   test('Vérifier que Credit Card affiche les champs requis', async ({ page }, testInfo) => {
@@ -333,19 +343,20 @@ test.describe('Tests de Moyens de Paiement', () => {
     // Test COD
     await selectPaymentMethod(page, 0);
     
-    // Vérifier qu'il n'y a pas de champs de formulaire visibles
-    const codInputs = await page.locator('input[type="text"]:visible, input[type="tel"]:visible').count();
+    // Vérifier qu'il n'y a pas de champs de formulaire visibles dans la section payment-info
+    const codInputs = await page.locator('#payment-info input[type="text"]:visible, #payment-info input[type="tel"]:visible').count();
     console.log(`COD additional fields: ${codInputs}`);
     expect(codInputs).toBe(0);
     
-    // Retour
-    await page.goBack();
-    await wait(1500);
+    // Utiliser le lien "Back" pour revenir à la sélection des méthodes de paiement
+    await page.locator('#payment-info-buttons-container a:has-text("Back")').click();
+    await wait(1000);
     
-    // Test Check/Money Order
+    // Re-sélectionner Check/Money Order
     await selectPaymentMethod(page, 1);
+    await wait(1000);
     
-    const checkInputs = await page.locator('input[type="text"]:visible, input[type="tel"]:visible').count();
+    const checkInputs = await page.locator('#payment-info input[type="text"]:visible, #payment-info input[type="tel"]:visible').count();
     console.log(`Check/Money Order additional fields: ${checkInputs}`);
     expect(checkInputs).toBe(0);
     

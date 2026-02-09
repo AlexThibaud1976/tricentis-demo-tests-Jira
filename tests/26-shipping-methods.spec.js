@@ -171,10 +171,9 @@ test.describe('Tests de Méthodes de Livraison', () => {
       { type: 'tags', description: '@shipping @virtualproduct' }
     );
 
-    // Nettoyer le panier et ajouter un produit virtuel (gift card)
+    // Nettoyer le panier (supprimer le produit physique du beforeEach)
     await page.goto('/cart');
     
-    // Supprimer le produit physique
     const removeButtons = await page.locator('.remove-from-cart input[type="checkbox"]').all();
     for (const button of removeButtons) {
       await button.check();
@@ -182,12 +181,22 @@ test.describe('Tests de Méthodes de Livraison', () => {
     await page.locator('input[name="updatecart"]').click();
     await wait(2000);
     
-    // Ajouter une gift card
-    await page.goto('/giftcards');
-    await page.waitForSelector('.product-grid .product-item', { state: 'visible', timeout: 10000 });
-    const firstGiftCard = page.locator('.product-grid .product-item').first();
-    await firstGiftCard.locator('input[value="Add to cart"]').click();
-    await wait(2000);
+    // Ajouter une gift card virtuelle
+    await page.goto('/gift-cards');
+    const firstGiftCard = page.locator('.product-item input[value="Add to cart"]').first();
+    await firstGiftCard.click();
+    
+    // Remplir les champs requis pour la gift card
+    await page.locator('input[name="giftcard_1.RecipientName"]').fill('John Doe');
+    await page.locator('input[name="giftcard_1.RecipientEmail"]').fill('recipient@test.com');
+    
+    // Ajouter au panier - utiliser getByRole pour plus de fiabilité
+    await page.getByRole('button', { name: 'Add to cart', exact: false }).first().click();
+    
+    // Attendre la notification de succès
+    const successNotification = page.locator('.bar-notification.success');
+    await successNotification.waitFor({ state: 'visible', timeout: 10000 });
+    await wait(1000);
     
     // Checkout
     await page.goto('/cart');
@@ -195,23 +204,17 @@ test.describe('Tests de Méthodes de Livraison', () => {
     await page.locator('button#checkout').click();
     await wait(2000);
     
-    // Remplir billing
-    await page.locator('select#BillingNewAddress_CountryId').selectOption({ label: 'United States' });
-    await wait(500);
-    await page.locator('input#BillingNewAddress_City').fill('New York');
-    await page.locator('input#BillingNewAddress_Address1').fill('123 Main St');
-    await page.locator('input#BillingNewAddress_ZipPostalCode').fill('10001');
-    await page.locator('input#BillingNewAddress_PhoneNumber').fill('5551234567');
-    await page.locator('#billing-buttons-container input[value="Continue"]').click();
+    // Sur onepagecheckout, utiliser l'adresse de facturation existante
+    await page.getByRole('button', { name: 'Continue' }).first().click();
     await wait(2000);
     
-    // Vérifier qu'on saute directement au paiement (pas de shipping)
+    // Vérifier qu'on saute directement au paiement (pas de shipping pour produits virtuels)
     const paymentOptions = page.locator('input[name="paymentmethod"]');
     await expect(paymentOptions.first()).toBeVisible({ timeout: 10000 });
     
-    // Vérifier qu'il n'y a PAS d'options de shipping
-    const shippingOptions = page.locator('input[name="shippingoption"]');
-    await expect(shippingOptions.first()).not.toBeVisible();
+    // Vérifier explicitement qu'il n'y a PAS de section shipping method visible
+    const shippingSection = page.locator('#opc-shipping_method');
+    await expect(shippingSection).not.toBeVisible();
     
     console.log('✅ Virtual products skip shipping method selection');
   });
@@ -287,12 +290,15 @@ test.describe('Tests de Méthodes de Livraison', () => {
     );
 
     // Le produit book est déjà dans le panier (beforeEach)
-    // Ajouter un produit électronique
-    await page.goto('/electronics');
-    await page.waitForSelector('.product-grid .product-item', { state: 'visible', timeout: 10000 });
-    const electronics = page.locator('.product-grid .product-item').first();
-    await electronics.locator('input[value="Add to cart"]').click();
-    await wait(2000);
+    // Ajouter un produit électronique (cell phone)
+    await page.goto('/cell-phones');
+    const electronics = page.locator('.product-item input[value="Add to cart"]').first();
+    await electronics.click();
+    
+    // Attendre la notification de succès
+    const successNotification = page.locator('.bar-notification.success');
+    await successNotification.waitFor({ state: 'visible', timeout: 10000 });
+    await wait(1000);
     
     // Retourner au checkout
     await page.goto('/cart');
@@ -301,18 +307,12 @@ test.describe('Tests de Méthodes de Livraison', () => {
     await page.locator('button#checkout').click();
     await wait(2000);
     
-    // Billing
-    await page.locator('select#BillingNewAddress_CountryId').selectOption({ label: 'United States' });
-    await wait(500);
-    await page.locator('input#BillingNewAddress_City').fill('New York');
-    await page.locator('input#BillingNewAddress_Address1').fill('123 Main St');
-    await page.locator('input#BillingNewAddress_ZipPostalCode').fill('10001');
-    await page.locator('input#BillingNewAddress_PhoneNumber').fill('5551234567');
-    await page.locator('#billing-buttons-container input[value="Continue"]').click();
+    // Utiliser l'adresse de facturation existante (onepagecheckout)
+    await page.getByRole('button', { name: 'Continue' }).first().click();
     await wait(2000);
     
-    // Shipping address
-    await page.locator('#shipping-buttons-container input[value="Continue"]').click();
+    // Utiliser la même adresse pour la livraison
+    await page.getByRole('button', { name: 'Continue' }).first().click();
     await wait(2000);
     
     // Vérifier que les méthodes de livraison sont disponibles
