@@ -152,6 +152,16 @@ if (-not (Test-Path "xray-report.xml")) {
   exit 1
 }
 
+# Supprimer les test_key du XML pour éviter les erreurs avec des tests non existants dans Jira
+Write-Host "[Xray] Removing test_key properties from XML..."
+try {
+  $nodeRemoveKeys = & node scripts/remove-test-keys.js xray-report.xml
+  Write-Host $nodeRemoveKeys
+} catch {
+  Write-Host "Warning: Failed to remove test_key properties: $($_.Exception.Message)"
+  Write-Host "Continuing with upload..."
+}
+
 $junitContent = Get-Content -Path "xray-report.xml" -Raw
 Write-Host "xray-report.xml size: $($junitContent.Length) characters"
 if ($junitContent.Length -gt 0) {
