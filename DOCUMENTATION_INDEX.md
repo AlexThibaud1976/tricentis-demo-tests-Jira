@@ -2,11 +2,12 @@
 
 ## 🔄 Mises à jour récentes (Février 2026)
 
-✨ **Tests types de cartes** : 6 nouveaux tests couvrant Visa, Mastercard, Amex, Discover, Diners, JCB (5 février)  
-💳 **Cartes de test Adyen** : Intégration des numéros de test officiels dans `utils/helpers.js` (5 février)  
-🛒 **Extension checkout** : 37 tests couvrant méthodes de livraison, moyens de paiement et combinaisons  
-✨ **Reporter unique Xray** : Suppression du reporter junit standard, utilisation exclusive de `@xray-app/playwright-junit-reporter` (2 février)  
-📸 **Screenshots pleine page** : Captures complètes (`fullPage: true`) automatiques sur échecs et evidence (2 février)  
+📊 **Reporting Confluence** : Dashboard high-level avec macros Xray/Jira + tableau CI/CD automatique, toggle on/off (9 février)
+✨ **Tests types de cartes** : 6 nouveaux tests couvrant Visa, Mastercard, Amex, Discover, Diners, JCB (5 février)
+💳 **Cartes de test Adyen** : Intégration des numéros de test officiels dans `utils/helpers.js` (5 février)
+🛒 **Extension checkout** : 37 tests couvrant méthodes de livraison, moyens de paiement et combinaisons
+✨ **Reporter unique Xray** : Suppression du reporter junit standard, utilisation exclusive de `@xray-app/playwright-junit-reporter` (2 février)
+📸 **Screenshots pleine page** : Captures complètes (`fullPage: true`) automatiques sur échecs et evidence (2 février)
 🗂️ **Fichiers générés** : `xray-report.xml` uniquement (plus de `results.xml`)  
 
 ---
@@ -36,6 +37,9 @@
 
 ### "Je veux lancer les tests manuellement depuis GitHub"
 → Consultez [DYNAMIC_EXECUTION_GUIDE.md](./DYNAMIC_EXECUTION_GUIDE.md#-utilisation-via-github-actions)
+
+### "Je veux publier un reporting sur Confluence"
+→ Consultez [CONFLUENCE_REPORTING_GUIDE.md](./CONFLUENCE_REPORTING_GUIDE.md)
 
 ### "Je veux configurer Jira Automation"
 → Consultez [JIRA_AUTOMATION_SETUP.md](./JIRA_AUTOMATION_SETUP.md)
@@ -76,6 +80,7 @@
 | Document | Public cible | Durée de lecture |
 |----------|-------------|------------------|
 | [JIRA_AUTOMATION_SETUP.md](./JIRA_AUTOMATION_SETUP.md) | Administrateurs Jira | 15 min |
+| [CONFLUENCE_REPORTING_GUIDE.md](./CONFLUENCE_REPORTING_GUIDE.md) | QA Managers, Administrateurs | 10 min |
 | [IMPLEMENTATION_CHECKLIST.md](./IMPLEMENTATION_CHECKLIST.md) | Administrateurs, DevOps | 20 min |
 
 ### Documentation technique
@@ -93,12 +98,14 @@
 ```
 📁 scripts/
   ├── 🆕 resolve-browserstack-config.js    # Validation et mapping des paramètres
+  ├── 🆕 update-confluence-report.js       # Mise à jour dashboard Confluence
   └── 🆕 test-browserstack-config.ps1      # Script PowerShell de test
 
 📁 Documentation/
   ├── 🆕 DYNAMIC_TESTING_README.md         # Vue d'ensemble rapide
   ├── 🆕 DYNAMIC_EXECUTION_GUIDE.md        # Guide d'utilisation complet
   ├── 🆕 JIRA_AUTOMATION_SETUP.md          # Configuration Jira
+  ├── 🆕 CONFLUENCE_REPORTING_GUIDE.md     # Guide reporting Confluence
   ├── 🆕 IMPLEMENTATION_CHECKLIST.md       # Checklist d'implémentation
   ├── 🆕 CHANGES_SUMMARY.md                # Résumé des changements
   ├── 🆕 COPY_PASTE_EXAMPLES.md            # Exemples prêts à copier
@@ -171,6 +178,9 @@ Pour les grandes équipes avec des besoin de flexibilité maximalite.
 #### ...tester localement ?
 → [DYNAMIC_EXECUTION_GUIDE.md#-tester-localement](./DYNAMIC_EXECUTION_GUIDE.md#-tester-localement)
 
+#### ...publier un reporting Confluence ?
+→ [CONFLUENCE_REPORTING_GUIDE.md](./CONFLUENCE_REPORTING_GUIDE.md)
+
 #### ...dépanner une erreur ?
 → [DYNAMIC_EXECUTION_GUIDE.md#-dépannage](./DYNAMIC_EXECUTION_GUIDE.md#-dépannage) ou [JIRA_AUTOMATION_SETUP.md#-dépannage-des-automation-rules](./JIRA_AUTOMATION_SETUP.md#-dépannage-des-automation-rules)
 
@@ -239,6 +249,11 @@ Pour les grandes équipes avec des besoin de flexibilité maximalite.
 **Code à réutiliser:**
 - [scripts/resolve-browserstack-config.js](./scripts/resolve-browserstack-config.js)
 
+### Pour les QA Managers / Product Owners
+**Lire en priorité:**
+1. [CONFLUENCE_REPORTING_GUIDE.md](./CONFLUENCE_REPORTING_GUIDE.md) - 10 min
+2. [DYNAMIC_TESTING_README.md](./DYNAMIC_TESTING_README.md) - 5 min
+
 ### Pour les Architectes / Tech Leads
 **Lire en priorité:**
 1. [DYNAMIC_TESTING_README.md](./DYNAMIC_TESTING_README.md) - 5 min
@@ -266,5 +281,5 @@ Assurez-vous que vous avez:
 
 ---
 
-**Dernière mise à jour:** 2 février 2026  
+**Dernière mise à jour:** 9 février 2026
 **Statut:** ✅ Complet et testé
