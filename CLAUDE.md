@@ -72,6 +72,7 @@ pwsh scripts/test-browserstack-config.ps1
    - Labels (device name, PASS/FAIL)
    - HTML report attachment
    - Remote links to GitHub Actions and BrowserStack
+6. **Confluence Report** (optional): `update-confluence-report.js` updates a Confluence dashboard page (toggle on/off via workflow input)
 
 ### Key Files
 
@@ -100,6 +101,7 @@ scripts/
   jira-post-execution.ps1        # Jira Test Execution enrichment
   upload-xray.ps1                # Xray result upload
   get-browserstack-build-link.js # Fetch BrowserStack build URL
+  update-confluence-report.js  # Confluence dashboard update (optional)
 ```
 
 ### Test Utilities (utils/helpers.js)
@@ -240,6 +242,19 @@ To update the fallback cache (used when API is unavailable), edit `FALLBACK_VERS
 3. Update `jira-post-execution.ps1` to populate the field
 4. Reference in workflow environment variables
 
+### Confluence Reporting (optional)
+
+High-level test reporting can be published to Confluence via two complementary approaches:
+
+1. **Xray/Jira macros** (manual setup in Confluence editor): real-time dashboards
+2. **CI/CD script** (`scripts/update-confluence-report.js`): historical execution table, updated automatically after each run
+
+The CI/CD approach is controlled by a **toggle** (`confluenceReport`) in the GitHub Actions workflow dispatch inputs. It is disabled by default.
+
+**Required secrets** (for CI/CD approach): `CONFLUENCE_URL`, `CONFLUENCE_USER`, `CONFLUENCE_API_TOKEN`, `CONFLUENCE_SPACE_KEY`. Optional: `CONFLUENCE_PAGE_TITLE`, `CONFLUENCE_PARENT_PAGE_ID`.
+
+See `CONFLUENCE_REPORTING_GUIDE.md` for complete setup instructions.
+
 ## Related Documentation
 
 Comprehensive documentation available:
@@ -249,3 +264,4 @@ Comprehensive documentation available:
 - `JIRA_AUTOMATION_SETUP.md`: Jira integration configuration
 - `IMPLEMENTATION_CHECKLIST.md`: Complete setup guide
 - `COPY_PASTE_EXAMPLES.md`: Ready-to-use configuration examples
+- `CONFLUENCE_REPORTING_GUIDE.md`: Confluence reporting setup (macros + CI/CD)
