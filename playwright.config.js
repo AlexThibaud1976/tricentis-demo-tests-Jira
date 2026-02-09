@@ -6,7 +6,7 @@ module.exports = defineConfig({
   fullyParallel: false, // Tests séquentiels pour éviter les conflits
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: 1, // Un seul worker pour éviter les conflits de données
+  workers: 5, // Un seul worker pour éviter les conflits de données
   reporter: [
     ['html'],
     ['list'],

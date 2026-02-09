@@ -228,9 +228,20 @@ test.describe('Tests de Méthodes de Livraison', () => {
     // Vérifier qu'on est sur la page payment
     await expect(page.locator('input[name="paymentmethod"]').first()).toBeVisible();
     
-    // Revenir en arrière
-    await page.goBack();
-    await wait(1500);
+    // Aller au checkout depuis le début pour revenir à shipping
+    await page.goto('/cart');
+    await expect(page.locator('.cart-item-row')).toBeVisible();
+    await page.locator('input#termsofservice').check();
+    await page.locator('button#checkout').click();
+    await wait(2000);
+    
+    // Continuer billing (déjà rempli)
+    await page.locator('#billing-buttons-container input[value="Continue"]').click();
+    await wait(2000);
+    
+    // Continuer shipping address (déjà rempli)
+    await page.locator('#shipping-buttons-container input[value="Continue"]').click();
+    await wait(2000);
     
     // Vérifier qu'on est de retour sur shipping
     await expect(page.locator('input[name="shippingoption"]').first()).toBeVisible();
