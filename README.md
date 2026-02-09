@@ -159,7 +159,8 @@ tricentis-demo-tests-Jira/
 │   ├── upload-xray.ps1              # Upload résultats vers Xray
 │   ├── jira-post-execution.ps1      # Enrichissement Jira
 │   ├── get-browserstack-build-link.js # Récupération lien BrowserStack
-│   └── add-timestamps-to-xray-report.js # Ajout timestamps au rapport Xray
+│   ├── add-timestamps-to-xray-report.js # Ajout timestamps au rapport Xray
+│   └── update-confluence-report.js    # Mise à jour dashboard Confluence (optionnel)
 ├── playwright.config.js              # Configuration locale
 ├── playwright.config.browserstack.js # Configuration BrowserStack
 ├── browserstack.config.js            # Capacités BrowserStack
@@ -193,6 +194,36 @@ Les rapports Xray sont générés automatiquement avec `@xray-app/playwright-jun
 - `add-timestamps-to-xray-report.js` : Ajoute les timestamps et evidence
 - `upload-xray.ps1` : Upload vers Xray
 - `jira-post-execution.ps1` : Enrichit les tickets Jira
+
+## 📊 Reporting Confluence (optionnel)
+
+Le projet supporte la publication automatique d'un dashboard de reporting sur Confluence, en complément de l'intégration Xray/Jira.
+
+### Deux approches complémentaires
+
+| Approche | Type | Contenu | Maintenance |
+|----------|------|---------|-------------|
+| **Macros Xray/Jira** | Manuelle (éditeur Confluence) | Couverture, état des Test Plans, tableaux JQL dynamiques | Aucune (temps réel) |
+| **Script CI/CD** | Automatique (pipeline) | Tableau historique des exécutions avec liens | Aucune (idempotent) |
+
+### Activation du reporting CI/CD
+
+Le reporting Confluence est **désactivé par défaut**. Pour l'activer, cocher **"Publier le rapport sur Confluence"** lors du déclenchement du workflow GitHub Actions, ou ajouter `"confluenceReport": "true"` dans le payload webhook Jira.
+
+### Secrets requis
+
+| Secret | Description |
+|--------|-------------|
+| `CONFLUENCE_URL` | URL de base Confluence (ex: `https://domaine.atlassian.net/wiki`) |
+| `CONFLUENCE_USER` | Email utilisateur Confluence |
+| `CONFLUENCE_API_TOKEN` | Token API Atlassian |
+| `CONFLUENCE_SPACE_KEY` | Clé de l'espace Confluence (ex: `QA`) |
+| `CONFLUENCE_PAGE_TITLE` | Titre de la page dashboard (optionnel) |
+| `CONFLUENCE_PARENT_PAGE_ID` | ID de la page parente (optionnel) |
+
+> **Note** : Si Jira et Confluence sont sur le même site Atlassian Cloud, `CONFLUENCE_USER` et `CONFLUENCE_API_TOKEN` peuvent être les mêmes que `JIRA_USER` et `JIRA_API_TOKEN`.
+
+Voir le guide complet : [CONFLUENCE_REPORTING_GUIDE.md](./CONFLUENCE_REPORTING_GUIDE.md)
 
 ## 🌐 Intégration BrowserStack
 
@@ -228,6 +259,7 @@ Le projet inclut une documentation complète :
 | [BROWSERSTACK.md](./BROWSERSTACK.md) | Configuration BrowserStack |
 | [XRAY_REPORTER_GUIDE.md](./XRAY_REPORTER_GUIDE.md) | Guide reporting Xray |
 | [JIRA_CUSTOM_FIELDS_SETUP.md](./JIRA_CUSTOM_FIELDS_SETUP.md) | Configuration champs Jira |
+| [CONFLUENCE_REPORTING_GUIDE.md](./CONFLUENCE_REPORTING_GUIDE.md) | Guide reporting Confluence |
 | [CLAUDE.md](./CLAUDE.md) | Documentation pour Claude AI |
 | [CHANGES_SUMMARY.md](./CHANGES_SUMMARY.md) | Résumé des changements |
 
@@ -246,6 +278,7 @@ Le projet inclut un répertoire `.claude/` avec :
 - **Node.js** : Runtime JavaScript
 - **BrowserStack** : Plateforme de tests cross-browser
 - **Jira / Xray** : Gestion des tests et traçabilité
+- **Confluence** : Reporting high-level (optionnel)
 - **GitHub Actions** : CI/CD
 - **PowerShell** : Scripts d'automatisation
 
@@ -269,6 +302,9 @@ Le projet inclut un répertoire `.claude/` avec :
 - ✅ Annoter les tests avec `test_key`, `tags` et `test_description`
 
 ## 📈 Évolutions récentes
+
+### Février 2026
+- 📊 **Reporting Confluence** : Dashboard high-level avec macros Xray/Jira + tableau CI/CD automatique (toggle on/off)
 
 ### Janvier 2026
 - ✨ **Extension massive de la couverture** : 15+ nouveaux scénarios de tests
