@@ -1,9 +1,6 @@
 # Guide de Reporting Confluence
 
-Ce guide décrit les deux approches de reporting Confluence disponibles pour le projet Tricentis Demo Tests :
-
-1. **Approche 1 — Macros Xray/Jira natives** (manuelle, sans CI/CD)
-2. **Approche 2 — Mise à jour automatique via CI/CD** (script Node.js avec toggle on/off)
+Ce guide décrit les approches de reporting Confluence disponibles pour le projet Tricentis Demo Tests.
 
 ---
 
@@ -14,10 +11,10 @@ Ce guide décrit les deux approches de reporting Confluence disponibles pour le 
 │                    Confluence                             │
 │                                                          │
 │  ┌─────────────────────────────────────────────────┐    │
-│  │  Approche 1 : Macros Xray/Jira (temps réel)    │    │
-│  │  - Couverture de test                            │    │
-│  │  - État des Test Plans                           │    │
-│  │  - Tableau JQL dynamique                         │    │
+│  │  Approche 1 : Macros Jira natives (temps réel)  │    │
+│  │  - Tableau JQL dynamique des Test Executions    │    │
+│  │  - Graphiques de tendance Jira                   │    │
+│  │  - Filtres par statut, navigateur, OS            │    │
 │  └─────────────────────────────────────────────────┘    │
 │                                                          │
 │  ┌─────────────────────────────────────────────────┐    │
@@ -30,18 +27,17 @@ Ce guide décrit les deux approches de reporting Confluence disponibles pour le 
 └──────────────────────────────────────────────────────────┘
          ▲                            ▲
          │                            │
-    Données Jira/Xray          Pipeline CI/CD
+    Données Jira                Pipeline CI/CD
     (temps réel)               (post-exécution)
 ```
 
 ---
 
-## Approche 1 — Macros Xray/Jira natives dans Confluence
+## Approche 1 — Macros Jira natives dans Confluence
 
 ### Prérequis
 
 - Confluence Cloud sur le même site Atlassian que Jira
-- Xray Cloud installé (les macros Confluence sont incluses)
 - Permissions d'édition sur l'espace Confluence cible
 
 ### Étapes de mise en place
@@ -52,18 +48,7 @@ Ce guide décrit les deux approches de reporting Confluence disponibles pour le 
 2. Créer une page nommée **"Dashboard Qualité - Tricentis Demo Shop"**
 3. Choisir un template vierge
 
-#### 2. Ajouter la macro "Xray Test Plan Board"
-
-Cette macro affiche l'état de couverture d'un Test Plan.
-
-1. Taper `/xray` dans l'éditeur Confluence
-2. Sélectionner **Xray Test Plan Board**
-3. Configurer :
-   - **Test Plan** : sélectionner le Test Plan du projet (ex: DEMO-1)
-   - **Columns** : Status, Priority, Test Type
-4. La macro affichera automatiquement le nombre de tests PASS/FAIL/TODO
-
-#### 3. Ajouter la macro "Jira Issues" (tableau JQL)
+#### 2. Ajouter la macro "Jira Issues" (tableau JQL)
 
 Cette macro crée un tableau dynamique des dernières Test Executions.
 
@@ -78,10 +63,10 @@ Cette macro crée un tableau dynamique des dernières Test Executions.
    - Status
    - Labels
    - Created
-   - (Custom fields : OS, Browser si visibles)
+   - Custom fields : OS, Browser, Browser Version (si configurés)
 5. Limiter à 20 résultats
 
-#### 4. Ajouter un graphique de tendance (Jira Chart macro)
+#### 3. Ajouter un graphique de tendance (Jira Chart macro)
 
 1. Taper `/jira` dans l'éditeur
 2. Sélectionner **Jira Chart**
@@ -92,35 +77,51 @@ Cette macro crée un tableau dynamique des dernières Test Executions.
    ```
 5. Période : 30 jours, granularité : semaine
 
-#### 5. Ajouter un filtre par résultat
+#### 4. Ajouter des filtres par résultat
 
-Pour voir uniquement les exécutions en échec :
+**Pour voir uniquement les exécutions en échec :**
 
 ```jql
 project = DEMO AND issuetype = "Test Execution" AND labels = "FAIL" ORDER BY created DESC
 ```
 
-Pour voir la couverture par navigateur :
+**Pour voir la couverture par navigateur :**
 
 ```jql
 project = DEMO AND issuetype = "Test Execution" AND labels in ("win-11-chrome-latest", "win-11-firefox-latest", "mac-sonoma-safari-18") ORDER BY created DESC
+```
+
+**Pour voir les exécutions récentes (7 derniers jours) :**
+
+```jql
+project = DEMO AND issuetype = "Test Execution" AND created >= -7d ORDER BY created DESC
 ```
 
 ### Structure de page recommandée
 
 ```
 📊 Dashboard Qualité - Tricentis Demo Shop
-├── Section 1 : Vue d'ensemble
-│   └── Macro Xray Test Plan Board (Test Plan principal)
-├── Section 2 : Dernières exécutions
+├── Section 1 : Dernières exécutions
 │   └── Macro Jira Issues (JQL : Test Executions récentes)
-├── Section 3 : Tendances
+├── Section 2 : Tendances
 │   └── Macro Jira Chart (Created vs Resolved, 30 jours)
-├── Section 4 : Tests en échec
+├── Section 3 : Tests en échec
 │   └── Macro Jira Issues (JQL : labels = FAIL)
+├── Section 4 : Couverture par environnement
+│   └── Macro Jira Issues (JQL : par navigateur/OS)
 └── Section 5 : Historique CI/CD (Approche 2, automatique)
     └── Tableau mis à jour par le pipeline
 ```
+
+### 💡 Limitations
+
+> **Note importante** : Xray for Jira Cloud n'inclut **pas de macros Confluence natives** pour afficher les données de test directement. Les macros Xray (comme "Xray Test Plan Board") n'existent pas dans Confluence Cloud.
+>
+> Pour afficher des rapports Xray avancés dans Confluence, vous auriez besoin d'add-ons tiers comme :
+> - **Jira Snapshots for Confluence** (payant)
+> - **eazyBI Reports** (payant)
+>
+> L'approche décrite ci-dessus utilise uniquement les macros Jira standards (gratuites) qui affichent les issues Jira, ce qui est suffisant pour un dashboard de base.
 
 ---
 
@@ -167,7 +168,7 @@ Ajouter le paramètre `confluenceReport` dans le payload JSON du webhook :
 }
 ```
 
-Pour désactiver, omettre le paramètre ou le mettre à `"false"`.
+Pour désactiver, omettre le paramètre ou le mettre à "false".
 
 ### Secrets GitHub requis
 
@@ -229,14 +230,38 @@ node scripts/update-confluence-report.js \
 
 Les deux approches sont complémentaires :
 
-| Aspect | Approche 1 (Macros) | Approche 2 (CI/CD) |
-|--------|---------------------|---------------------|
+| Aspect | Approche 1 (Macros Jira) | Approche 2 (CI/CD) |
+|--------|--------------------------|---------------------|
 | Mise à jour | Temps réel (dynamique) | Post-exécution (push) |
-| Données | Jira/Xray (tous les champs) | Résumé du run CI/CD |
+| Données | Jira (tous les champs) | Résumé du run CI/CD |
 | Configuration | Manuelle (éditeur Confluence) | Automatique (script) |
+| Coût | Gratuit (macros natives) | Gratuit |
 | Maintenance | Aucune | Aucune (script idempotent) |
 | Toggle | Toujours actif | On/off via workflow |
 
 La page Confluence combine les deux :
-- **Haut de page** : macros Xray/Jira pour la vue temps réel
+- **Haut de page** : macros Jira pour la vue temps réel des Test Executions
 - **Bas de page** : tableau CI/CD pour l'historique des exécutions automatisées
+
+---
+
+## Solutions alternatives pour reporting Xray avancé
+
+Si vous avez besoin de rapports Xray plus détaillés (couverture de tests, test plans, traceability), vous pouvez :
+
+### Option 1 : Add-ons Confluence (payant)
+- **Jira Snapshots for Confluence** : Affiche les données Xray avec des macros dédiées
+- **eazyBI Reports** : Analytics avancés avec import de données Xray
+
+### Option 2 : Export manuel
+- Générer des rapports depuis Xray (PDF, DOCX, XLSX)
+- Les attacher à la page Confluence
+
+### Option 3 : API Xray + Script personnalisé
+- Créer un script qui récupère les données via l'API Xray
+- Générer du contenu Confluence formaté
+- Publier via l'API Confluence
+
+### Option 4 : Liens directs vers Xray
+- Créer des liens dans Confluence vers les rapports Xray Cloud
+- Exemple : `https://domaine.atlassian.net/plugins/servlet/ac/com.xpandit.plugins.xray/test-plan-view?testPlan=DEMO-1`
