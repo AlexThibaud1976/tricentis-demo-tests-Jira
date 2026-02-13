@@ -152,17 +152,97 @@ jobs:
             echo "pattern=tests/02-login-logout.spec.js" >> $GITHUB_OUTPUT
             echo "description=Login/Logout Tests" >> $GITHUB_OUTPUT
             ;;
+          "account-management")
+            echo "pattern=tests/12-account-management.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Account Management Tests" >> $GITHUB_OUTPUT
+            ;;
           "catalog-navigation")
             echo "pattern=tests/03-catalog-navigation.spec.js" >> $GITHUB_OUTPUT
             echo "description=Catalog Navigation Tests" >> $GITHUB_OUTPUT
+            ;;
+          "product-search")
+            echo "pattern=tests/06-product-search.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Product Search Tests" >> $GITHUB_OUTPUT
+            ;;
+          "product-filtering")
+            echo "pattern=tests/14-product-filtering.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Product Filtering Tests" >> $GITHUB_OUTPUT
+            ;;
+          "manufacturer-filter")
+            echo "pattern=tests/20-manufacturer-filter.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Manufacturer Filter Tests" >> $GITHUB_OUTPUT
+            ;;
+          "new-products")
+            echo "pattern=tests/21-new-products.spec.js" >> $GITHUB_OUTPUT
+            echo "description=New Products Tests" >> $GITHUB_OUTPUT
+            ;;
+          "configurable-products")
+            echo "pattern=tests/15-configurable-products.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Configurable Products Tests" >> $GITHUB_OUTPUT
+            ;;
+          "product-comparison")
+            echo "pattern=tests/08-product-comparison.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Product Comparison Tests" >> $GITHUB_OUTPUT
+            ;;
+          "product-reviews")
+            echo "pattern=tests/09-product-reviews.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Product Reviews Tests" >> $GITHUB_OUTPUT
+            ;;
+          "product-tags")
+            echo "pattern=tests/16-product-tags.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Product Tags Tests" >> $GITHUB_OUTPUT
+            ;;
+          "recently-viewed")
+            echo "pattern=tests/17-recently-viewed.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Recently Viewed Tests" >> $GITHUB_OUTPUT
+            ;;
+          "email-friend")
+            echo "pattern=tests/18-email-friend.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Email Friend Tests" >> $GITHUB_OUTPUT
             ;;
           "cart-management")
             echo "pattern=tests/04-cart-management.spec.js" >> $GITHUB_OUTPUT
             echo "description=Cart Management Tests" >> $GITHUB_OUTPUT
             ;;
+          "cart-updates")
+            echo "pattern=tests/25-cart-updates.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Cart Updates Tests" >> $GITHUB_OUTPUT
+            ;;
           "order-checkout")
             echo "pattern=tests/05-order-checkout.spec.js" >> $GITHUB_OUTPUT
             echo "description=Order Checkout Tests" >> $GITHUB_OUTPUT
+            ;;
+          "order-history")
+            echo "pattern=tests/13-order-history.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Order History Tests" >> $GITHUB_OUTPUT
+            ;;
+          "guest-checkout")
+            echo "pattern=tests/24-guest-checkout.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Guest Checkout Tests" >> $GITHUB_OUTPUT
+            ;;
+          "wishlist-management")
+            echo "pattern=tests/07-wishlist-management.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Wishlist Management Tests" >> $GITHUB_OUTPUT
+            ;;
+          "newsletter-subscription")
+            echo "pattern=tests/10-newsletter-subscription.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Newsletter Subscription Tests" >> $GITHUB_OUTPUT
+            ;;
+          "contact-form")
+            echo "pattern=tests/11-contact-form.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Contact Form Tests" >> $GITHUB_OUTPUT
+            ;;
+          "community-poll")
+            echo "pattern=tests/19-community-poll.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Community Poll Tests" >> $GITHUB_OUTPUT
+            ;;
+          "news-blog")
+            echo "pattern=tests/23-news-blog.spec.js" >> $GITHUB_OUTPUT
+            echo "description=News Blog Tests" >> $GITHUB_OUTPUT
+            ;;
+          "footer-links")
+            echo "pattern=tests/22-footer-links.spec.js" >> $GITHUB_OUTPUT
+            echo "description=Footer Links Tests" >> $GITHUB_OUTPUT
             ;;
           *)
             echo "pattern=tests/" >> $GITHUB_OUTPUT
