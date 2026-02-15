@@ -9,8 +9,17 @@ Le script Confluence retourne une erreur 404 avec du HTML de JIRA :
 Oops, you've found a dead link. - JIRA
 ```
 
-### Cause
+### Causes possibles
+
+#### Cause 1 : URL Confluence incorrecte
 Le secret GitHub `CONFLUENCE_URL` pointe vers **JIRA** au lieu de **Confluence**.
+
+**Solution** : Vérifiez que l'URL se termine par `/wiki`
+
+#### Cause 2 : Bug de construction d'URL (corrigé dans la dernière version)
+Les anciennes versions du script avaient un bug qui supprimait `/wiki` de l'URL lors de la construction.
+
+**Solution** : Mettez à jour le fichier `scripts/update-confluence-report.js` avec la dernière version.
 
 ### Solution
 

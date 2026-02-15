@@ -100,8 +100,17 @@ function validateConfig() {
 
 function request(method, path, body) {
   return new Promise((resolve, reject) => {
-    const url = new URL(path, config.confluenceUrl);
+    // Fix: concatenate baseUrl + path to preserve /wiki in the URL
+    // new URL(path, baseUrl) with path starting with / would remove /wiki
+    const fullUrl = config.confluenceUrl + path;
+    const url = new URL(fullUrl);
     const auth = Buffer.from(`${config.user}:${config.apiToken}`).toString('base64');
+
+    // Debug logging (only for first request)
+    if (!request._debugLogged) {
+      console.log(`[DEBUG] Requesting: ${method} ${url.href}`);
+      request._debugLogged = true;
+    }
 
     const options = {
       hostname: url.hostname,

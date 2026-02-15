@@ -2,7 +2,8 @@
 
 ## 🔄 Mises à jour récentes (Février 2026)
 
-📊 **Reporting Confluence** : Dashboard high-level avec macros Xray/Jira + tableau CI/CD automatique, toggle on/off (9 février)
+� **Bug Confluence corrigé** : URLs mal formées causant erreurs 404 - résolu avec tests (15 février)
+�📊 **Reporting Confluence** : Dashboard high-level avec macros Xray/Jira + tableau CI/CD automatique, toggle on/off (9 février)
 ✨ **Tests types de cartes** : 6 nouveaux tests couvrant Visa, Mastercard, Amex, Discover, Diners, JCB (5 février)
 💳 **Cartes de test Adyen** : Intégration des numéros de test officiels dans `utils/helpers.js` (5 février)
 🛒 **Extension checkout** : 37 tests couvrant méthodes de livraison, moyens de paiement et combinaisons
@@ -40,6 +41,10 @@
 
 ### "Je veux publier un reporting sur Confluence"
 → Consultez [CONFLUENCE_REPORTING_GUIDE.md](./CONFLUENCE_REPORTING_GUIDE.md)
+
+### "J'ai des problèmes avec le rapport Confluence (erreur 404)"
+→ Consultez [CONFLUENCE_TROUBLESHOOTING.md](./CONFLUENCE_TROUBLESHOOTING.md)
+→ Voir aussi [CONFLUENCE_URL_BUG_FIX.md](./CONFLUENCE_URL_BUG_FIX.md) pour le bug corrigé
 
 ### "Je veux configurer Jira Automation"
 → Consultez [JIRA_AUTOMATION_SETUP.md](./JIRA_AUTOMATION_SETUP.md)
@@ -81,6 +86,7 @@
 |----------|-------------|------------------|
 | [JIRA_AUTOMATION_SETUP.md](./JIRA_AUTOMATION_SETUP.md) | Administrateurs Jira | 15 min |
 | [CONFLUENCE_REPORTING_GUIDE.md](./CONFLUENCE_REPORTING_GUIDE.md) | QA Managers, Administrateurs | 10 min |
+| [CONFLUENCE_TROUBLESHOOTING.md](./CONFLUENCE_TROUBLESHOOTING.md) | Développeurs, Administrateurs | 5 min |
 | [IMPLEMENTATION_CHECKLIST.md](./IMPLEMENTATION_CHECKLIST.md) | Administrateurs, DevOps | 20 min |
 
 ### Documentation technique
@@ -88,6 +94,7 @@
 | Document | Public cible | Durée de lecture |
 |----------|-------------|------------------|
 | [CHANGES_SUMMARY.md](./CHANGES_SUMMARY.md) | Développeurs, Architectes | 10 min |
+| [CONFLUENCE_URL_BUG_FIX.md](./CONFLUENCE_URL_BUG_FIX.md) | Développeurs | 5 min |
 
 ---
 
@@ -99,13 +106,17 @@
 📁 scripts/
   ├── 🆕 resolve-browserstack-config.js    # Validation et mapping des paramètres
   ├── 🆕 update-confluence-report.js       # Mise à jour dashboard Confluence
-  └── 🆕 test-browserstack-config.ps1      # Script PowerShell de test
+  ├── 🆕 test-browserstack-config.ps1      # Script PowerShell de test
+  ├── 🆕 test-confluence-url.js            # Test simple du bug URL Confluence
+  └── 🆕 test-confluence-url-integration.js # Test d'intégration URL Confluence
 
 📁 Documentation/
   ├── 🆕 DYNAMIC_TESTING_README.md         # Vue d'ensemble rapide
   ├── 🆕 DYNAMIC_EXECUTION_GUIDE.md        # Guide d'utilisation complet
   ├── 🆕 JIRA_AUTOMATION_SETUP.md          # Configuration Jira
   ├── 🆕 CONFLUENCE_REPORTING_GUIDE.md     # Guide reporting Confluence
+  ├── 🆕 CONFLUENCE_TROUBLESHOOTING.md     # Dépannage Confluence (404, etc.)
+  ├── 🆕 CONFLUENCE_URL_BUG_FIX.md         # Documentation du bug URL corrigé
   ├── 🆕 IMPLEMENTATION_CHECKLIST.md       # Checklist d'implémentation
   ├── 🆕 CHANGES_SUMMARY.md                # Résumé des changements
   ├── 🆕 COPY_PASTE_EXAMPLES.md            # Exemples prêts à copier
