@@ -208,6 +208,7 @@ function buildNewRow() {
  * Inclut un en-tête avec les macros Xray recommandées et le tableau historique.
  */
 function buildInitialPageContent(firstRow) {
+  console.log('✓ Creating new page with initial content and history markers...');
   return [
     // En-tête
     `<h1>${buildResultEmoji(reportData.testResult)} Dashboard Qualit&#233; - Tricentis Demo Shop</h1>`,
@@ -230,7 +231,7 @@ function buildInitialPageContent(firstRow) {
 
     // Séparateur
     `<h2>Historique des ex&#233;cutions CI/CD</h2>`,
-    `<p>Les 50 derni&#232;res ex&#233;cutions sont affich&#233;es ci-dessous (les plus r&#233;centes en premier).</p>`,
+    `<p>Jusqu'&#224; ${MAX_ROWS} ex&#233;cutions sont conserv&#233;es (les plus r&#233;centes en premier).</p>`,
 
     // Marqueur de début de tableau (pour le parsing)
     `<!-- CONFLUENCE_CI_TABLE_START -->`,
@@ -258,6 +259,79 @@ function buildInitialPageContent(firstRow) {
 
 const MAX_ROWS = 50;
 
+/**
+ * Extrait les lignes existantes d'un tableau HTML (tbody rows)
+ */
+function extractExistingRows(htmlContent) {
+  const tbodyMatch = htmlContent.match(/<tbody>([\s\S]*?)<\/tbody>/);
+  if (!tbodyMatch) return [];
+  
+  const tbodyContent = tbodyMatch[1];
+  const rows = tbodyContent.match(/<tr>[\s\S]*?<\/tr>/g) || [];
+  return rows;
+}
+
+/**
+ * Reconstruit le contenu de la page avec l'historique préservé
+ */
+function rebuildPageWithHistory(existingBody, newRow) {
+  console.log('⚠️  Rebuilding page content while preserving existing history...');
+  
+  // Extraire les lignes existantes
+  const existingRows = extractExistingRows(existingBody);
+  console.log(`   Found ${existingRows.length} existing row(s) to preserve.`);
+  
+  // Combiner nouvelle ligne + lignes existantes (limite MAX_ROWS)
+  const allRows = [newRow, ...existingRows].slice(0, MAX_ROWS);
+  const rowsHtml = allRows.join('\n');
+  
+  // Construire le nouveau contenu complet
+  return [
+    // En-tête
+    `<h1>${buildResultEmoji(reportData.testResult)} Dashboard Qualit&#233; - Tricentis Demo Shop</h1>`,
+    `<p><em>Page mise &#224; jour automatiquement par le pipeline CI/CD.</em></p>`,
+    `<hr/>`,
+
+    // Section macros Xray (info panel)
+    `<ac:structured-macro ac:name="info">`,
+    `<ac:parameter ac:name="title">Compl&#233;ter avec les macros Xray</ac:parameter>`,
+    `<ac:rich-text-body>`,
+    `<p>Pour un dashboard complet, ajoutez manuellement les macros Xray suivantes au-dessus du tableau :</p>`,
+    `<ul>`,
+    `<li><strong>Xray Test Plan Board</strong> : vue d'ensemble de la couverture</li>`,
+    `<li><strong>Xray Test Execution Status</strong> : &#233;tat d'avancement par Test Plan</li>`,
+    `<li><strong>Jira Issue/Filter</strong> : tableau dynamique bas&#233; sur JQL</li>`,
+    `</ul>`,
+    `<p>Voir le guide : <strong>CONFLUENCE_REPORTING_GUIDE.md</strong></p>`,
+    `</ac:rich-text-body>`,
+    `</ac:structured-macro>`,
+
+    // Séparateur
+    `<h2>Historique des ex&#233;cutions CI/CD</h2>`,
+    `<p>Les ${MAX_ROWS} derni&#232;res ex&#233;cutions sont affich&#233;es ci-dessous (les plus r&#233;centes en premier).</p>`,
+
+    // Marqueur de début de tableau (pour le parsing)
+    `<!-- CONFLUENCE_CI_TABLE_START -->`,
+    `<table>`,
+    `<colgroup><col/><col/><col/><col/><col/><col/><col/><col/></colgroup>`,
+    `<thead><tr>`,
+    `<th>Date</th>`,
+    `<th>R&#233;sultat</th>`,
+    `<th>Scope</th>`,
+    `<th>OS</th>`,
+    `<th>Navigateur</th>`,
+    `<th>Jira</th>`,
+    `<th>GitHub</th>`,
+    `<th>BrowserStack</th>`,
+    `</tr></thead>`,
+    `<tbody>`,
+    rowsHtml,
+    `</tbody>`,
+    `</table>`,
+    `<!-- CONFLUENCE_CI_TABLE_END -->`,
+  ].join('\n');
+}
+
 function insertRowInTable(existingBody, newRow) {
   const tableStartMarker = '<!-- CONFLUENCE_CI_TABLE_START -->';
   const tableEndMarker = '<!-- CONFLUENCE_CI_TABLE_END -->';
@@ -266,10 +340,12 @@ function insertRowInTable(existingBody, newRow) {
   const endIdx = existingBody.indexOf(tableEndMarker);
 
   if (startIdx === -1 || endIdx === -1) {
-    // Markers not found — rebuild the page with initial content
-    console.log('Table markers not found, rebuilding page content.');
-    return buildInitialPageContent(newRow);
+    // Markers not found — try to preserve existing rows
+    console.log('⚠️  Table markers not found in existing page.');
+    return rebuildPageWithHistory(existingBody, newRow);
   }
+
+  console.log('✓ Table markers found, updating existing table...');
 
   // Extract table section
   const tableSection = existingBody.substring(startIdx, endIdx + tableEndMarker.length);
@@ -278,8 +354,8 @@ function insertRowInTable(existingBody, newRow) {
   const tbodyOpen = '<tbody>';
   const tbodyIdx = tableSection.indexOf(tbodyOpen);
   if (tbodyIdx === -1) {
-    console.log('<tbody> not found in table, rebuilding.');
-    return buildInitialPageContent(newRow);
+    console.log('⚠️  <tbody> not found in table.');
+    return rebuildPageWithHistory(existingBody, newRow);
   }
 
   const insertPoint = tbodyIdx + tbodyOpen.length;
@@ -289,13 +365,15 @@ function insertRowInTable(existingBody, newRow) {
   const tbodyContent = updatedTable.substring(updatedTable.indexOf(tbodyOpen) + tbodyOpen.length, updatedTable.indexOf('</tbody>'));
   const rows = tbodyContent.match(/<tr>[\s\S]*?<\/tr>/g) || [];
 
+  console.log(`   Total rows in table: ${rows.length}`);
+
   if (rows.length > MAX_ROWS) {
     const keepRows = rows.slice(0, MAX_ROWS);
     const newTbodyContent = '\n' + keepRows.join('\n') + '\n';
     updatedTable = updatedTable.substring(0, updatedTable.indexOf(tbodyOpen) + tbodyOpen.length)
       + newTbodyContent
       + updatedTable.substring(updatedTable.indexOf('</tbody>'));
-    console.log(`Trimmed table from ${rows.length} to ${MAX_ROWS} rows.`);
+    console.log(`   Trimmed table from ${rows.length} to ${MAX_ROWS} rows.`);
   }
 
   // Replace table section in full body
@@ -376,23 +454,25 @@ async function main() {
   let page = await findPage();
 
   if (page) {
-    console.log(`Page found: ${page.id} (version ${page.version.number})`);
+    console.log(`✓ Page found: ${page.id} (version ${page.version.number})`);
+    console.log('  Updating page with new execution data...');
     const existingBody = page.body.storage.value;
     const updatedContent = insertRowInTable(existingBody, newRow);
 
     await updatePage(page.id, page.version.number, updatedContent);
-    console.log(`Page updated successfully (version ${page.version.number + 1}).`);
+    console.log(`✓ Page updated successfully (now version ${page.version.number + 1}).`);
   } else {
-    console.log('Page not found, creating new page...');
+    console.log('⚠️  Page not found, creating new page...');
     const initialContent = buildInitialPageContent(newRow);
     page = await createPage(initialContent);
-    console.log(`Page created: ${page.id}`);
+    console.log(`✓ Page created: ${page.id}`);
   }
 
   const pageUrl = `${config.confluenceUrl}/spaces/${config.spaceKey}/pages/${page.id}`;
   console.log('==============================================');
-  console.log('[Confluence Report] Completed');
-  console.log(`  View: ${pageUrl}`);
+  console.log('[Confluence Report] Completed ✓');
+  console.log(`  📄 View: ${pageUrl}`);
+  console.log(`  📊 History: Up to ${MAX_ROWS} executions preserved`);
   console.log('==============================================');
 }
 
