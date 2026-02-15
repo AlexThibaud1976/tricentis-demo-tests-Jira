@@ -292,20 +292,6 @@ function rebuildPageWithHistory(existingBody, newRow) {
     `<p><em>Page mise &#224; jour automatiquement par le pipeline CI/CD.</em></p>`,
     `<hr/>`,
 
-    // Section macros Xray (info panel)
-    `<ac:structured-macro ac:name="info">`,
-    `<ac:parameter ac:name="title">Compl&#233;ter avec les macros Xray</ac:parameter>`,
-    `<ac:rich-text-body>`,
-    `<p>Pour un dashboard complet, ajoutez manuellement les macros Xray suivantes au-dessus du tableau :</p>`,
-    `<ul>`,
-    `<li><strong>Xray Test Plan Board</strong> : vue d'ensemble de la couverture</li>`,
-    `<li><strong>Xray Test Execution Status</strong> : &#233;tat d'avancement par Test Plan</li>`,
-    `<li><strong>Jira Issue/Filter</strong> : tableau dynamique bas&#233; sur JQL</li>`,
-    `</ul>`,
-    `<p>Voir le guide : <strong>CONFLUENCE_REPORTING_GUIDE.md</strong></p>`,
-    `</ac:rich-text-body>`,
-    `</ac:structured-macro>`,
-
     // Séparateur
     `<h2>Historique des ex&#233;cutions CI/CD</h2>`,
     `<p>Les ${MAX_ROWS} derni&#232;res ex&#233;cutions sont affich&#233;es ci-dessous (les plus r&#233;centes en premier).</p>`,
