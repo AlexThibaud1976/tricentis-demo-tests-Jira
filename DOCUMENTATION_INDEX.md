@@ -1,8 +1,7 @@
 # 📖 Index de la Documentation
 
 ## 🔄 Mises à jour récentes (Février 2026)
-
-� **Bug Confluence corrigé** : URLs mal formées causant erreurs 404 - résolu avec tests (15 février)
+📊 **GitHub Actions Reporter** : Ajout du reporter visuel pour les summaries GitHub Actions (15 février)� **Bug Confluence corrigé** : URLs mal formées causant erreurs 404 - résolu avec tests (15 février)
 �📊 **Reporting Confluence** : Dashboard high-level avec macros Xray/Jira + tableau CI/CD automatique, toggle on/off (9 février)
 ✨ **Tests types de cartes** : 6 nouveaux tests couvrant Visa, Mastercard, Amex, Discover, Diners, JCB (5 février)
 💳 **Cartes de test Adyen** : Intégration des numéros de test officiels dans `utils/helpers.js` (5 février)
@@ -41,6 +40,9 @@
 
 ### "Je veux publier un reporting sur Confluence"
 → Consultez [CONFLUENCE_REPORTING_GUIDE.md](./CONFLUENCE_REPORTING_GUIDE.md)
+
+### "Je veux voir les résultats de tests dans le GitHub Actions Summary"
+→ Consultez [GITHUB_ACTIONS_REPORTER.md](./GITHUB_ACTIONS_REPORTER.md)
 
 ### "J'ai des problèmes avec le rapport Confluence (erreur 404)"
 → Consultez [CONFLUENCE_TROUBLESHOOTING.md](./CONFLUENCE_TROUBLESHOOTING.md)
@@ -89,6 +91,13 @@
 | [CONFLUENCE_TROUBLESHOOTING.md](./CONFLUENCE_TROUBLESHOOTING.md) | Développeurs, Administrateurs | 5 min |
 | [IMPLEMENTATION_CHECKLIST.md](./IMPLEMENTATION_CHECKLIST.md) | Administrateurs, DevOps | 20 min |
 
+### Documentation Reporters 📊
+
+| Document | Public cible | Durée de lecture |
+|----------|-------------|------------------|
+| [GITHUB_ACTIONS_REPORTER.md](./GITHUB_ACTIONS_REPORTER.md) | Développeurs, Testeurs | 10 min |
+| [XRAY_REPORTER_GUIDE.md](./XRAY_REPORTER_GUIDE.md) | Testeurs, Développeurs | 15 min |
+
 ### Documentation technique
 
 | Document | Public cible | Durée de lecture |
@@ -117,6 +126,7 @@
   ├── 🆕 CONFLUENCE_REPORTING_GUIDE.md     # Guide reporting Confluence
   ├── 🆕 CONFLUENCE_TROUBLESHOOTING.md     # Dépannage Confluence (404, etc.)
   ├── 🆕 CONFLUENCE_URL_BUG_FIX.md         # Documentation du bug URL corrigé
+  ├── 🆕 GITHUB_ACTIONS_REPORTER.md        # Guide GitHub Actions Reporter
   ├── 🆕 IMPLEMENTATION_CHECKLIST.md       # Checklist d'implémentation
   ├── 🆕 CHANGES_SUMMARY.md                # Résumé des changements
   ├── 🆕 COPY_PASTE_EXAMPLES.md            # Exemples prêts à copier

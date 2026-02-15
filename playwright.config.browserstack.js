@@ -25,7 +25,14 @@ module.exports = defineConfig({
       embedTestrunAnnotationsAsItemProperties: true,
       embedAttachmentsAsProperty: 'testrun_evidence',
       textContentAnnotations: ['test_description', 'testrun_comment']
-    }]
+    }],
+    // GitHub Actions reporter - affiche un résumé visuel dans le Job Summary
+    ...(process.env.GITHUB_ACTIONS ? [['@estruyf/github-actions-reporter', { 
+      title: '🎭 Playwright Test Results - BrowserStack',
+      useDetails: true,
+      showError: true,
+      showTags: true
+    }]] : [])
   ],
 
   // Options communes à tous les tests

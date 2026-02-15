@@ -24,6 +24,7 @@
   "author": "Alexandre",
   "license": "MIT",
   "devDependencies": {
+    "@estruyf/github-actions-reporter": "^1.11.0",
     "@playwright/test": "^1.56.1",
     "@types/node": "^24.10.0",
     "@xray-app/playwright-junit-reporter": "^0.10.0",

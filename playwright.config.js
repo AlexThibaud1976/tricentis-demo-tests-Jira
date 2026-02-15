@@ -18,7 +18,14 @@ module.exports = defineConfig({
       textContentAnnotations: ['test_description', 'testrun_comment'],
       // Ne pas inclure test_key pour éviter les erreurs avec des tests non existants dans Jira
       annotationsToExclude: ['test_key']
-    }]
+    }],
+    // GitHub Actions reporter - affiche un résumé visuel dans le Job Summary
+    ...(process.env.GITHUB_ACTIONS ? [['@estruyf/github-actions-reporter', { 
+      title: '🎭 Playwright Test Results',
+      useDetails: true,
+      showError: true,
+      showTags: true
+    }]] : [])
   ],
   use: {
     baseURL: 'https://demowebshop.tricentis.com',
