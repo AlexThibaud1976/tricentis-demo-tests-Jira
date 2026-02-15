@@ -51,6 +51,9 @@
 ### "Je veux configurer Jira Automation"
 → Consultez [JIRA_AUTOMATION_SETUP.md](./JIRA_AUTOMATION_SETUP.md)
 
+### "Je dois mettre à jour mes règles d'automatisation Jira existantes"
+→ Consultez [JIRA_AUTOMATION_MIGRATION.md](./JIRA_AUTOMATION_MIGRATION.md)
+
 ### "Je dois mettre en place tout le système"
 → Suivez [IMPLEMENTATION_CHECKLIST.md](./IMPLEMENTATION_CHECKLIST.md)
 
@@ -86,7 +89,8 @@
 
 | Document | Public cible | Durée de lecture |
 |----------|-------------|------------------|
-| [JIRA_AUTOMATION_SETUP.md](./JIRA_AUTOMATION_SETUP.md) | Administrateurs Jira | 15 min |
+| [JIRA_AUTOMATION_SETUP.md](./JIRA_AUTOMATION_SETUP.md) | Administrateurs Jira | 20 min |
+| [JIRA_AUTOMATION_MIGRATION.md](./JIRA_AUTOMATION_MIGRATION.md) | Administrateurs Jira | 10 min |
 | [CONFLUENCE_REPORTING_GUIDE.md](./CONFLUENCE_REPORTING_GUIDE.md) | QA Managers, Administrateurs | 10 min |
 | [CONFLUENCE_TROUBLESHOOTING.md](./CONFLUENCE_TROUBLESHOOTING.md) | Développeurs, Administrateurs | 5 min |
 | [IMPLEMENTATION_CHECKLIST.md](./IMPLEMENTATION_CHECKLIST.md) | Administrateurs, DevOps | 20 min |
@@ -123,6 +127,7 @@
   ├── 🆕 DYNAMIC_TESTING_README.md         # Vue d'ensemble rapide
   ├── 🆕 DYNAMIC_EXECUTION_GUIDE.md        # Guide d'utilisation complet
   ├── 🆕 JIRA_AUTOMATION_SETUP.md          # Configuration Jira
+  ├── 🆕 JIRA_AUTOMATION_MIGRATION.md      # Migration règles existantes
   ├── 🆕 CONFLUENCE_REPORTING_GUIDE.md     # Guide reporting Confluence
   ├── 🆕 CONFLUENCE_TROUBLESHOOTING.md     # Dépannage Confluence (404, etc.)
   ├── 🆕 CONFLUENCE_URL_BUG_FIX.md         # Documentation du bug URL corrigé
