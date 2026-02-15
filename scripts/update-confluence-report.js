@@ -87,6 +87,13 @@ function validateConfig() {
     console.error('Required: CONFLUENCE_URL, CONFLUENCE_USER, CONFLUENCE_API_TOKEN, CONFLUENCE_SPACE_KEY');
     process.exit(1);
   }
+  
+  // Validate Confluence URL format
+  if (!config.confluenceUrl.includes('/wiki')) {
+    console.warn('⚠️  WARNING: CONFLUENCE_URL does not contain "/wiki".');
+    console.warn('   For Atlassian Cloud, Confluence URL should be: https://domain.atlassian.net/wiki');
+    console.warn('   Current value:', config.confluenceUrl);
+  }
 }
 
 // ── HTTP helper ─────────────────────────────────────────────────────────────
@@ -113,6 +120,14 @@ function request(method, path, body) {
       res.on('data', chunk => (data += chunk));
       res.on('end', () => {
         if (res.statusCode < 200 || res.statusCode >= 300) {
+          // Check if we're getting JIRA HTML instead of Confluence API response
+          if (data.includes('JIRA') && data.includes('<!DOCTYPE html>')) {
+            return reject(new Error(
+              `Confluence API ${res.statusCode}: Received JIRA page instead of Confluence API response.\n` +
+              `Check that CONFLUENCE_URL points to Confluence (should end with /wiki), not JIRA.\n` +
+              `Current URL: ${config.confluenceUrl}`
+            ));
+          }
           return reject(new Error(`Confluence API ${res.statusCode}: ${data}`));
         }
         try {
@@ -338,8 +353,9 @@ async function main() {
 
   console.log('==============================================');
   console.log('[Confluence Report] Starting update');
-  console.log(`  Space: ${config.spaceKey}`);
-  console.log(`  Page:  ${config.pageTitle}`);
+  console.log(`  URL:    ${config.confluenceUrl}`);
+  console.log(`  Space:  ${config.spaceKey}`);
+  console.log(`  Page:   ${config.pageTitle}`);
   console.log(`  Result: ${reportData.testResult}`);
   console.log(`  Scope:  ${reportData.testScope}`);
   console.log(`  Device: ${reportData.deviceName}`);
